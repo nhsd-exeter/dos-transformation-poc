@@ -15,12 +15,14 @@ jobs:  #Workflow run is made up of one or more jobs
     #Using versioned actions 
       - uses: actions/checkout@v2  # --> Reference a specific version
       - name: Configure AWS Credentials  
-        uses: aws-actions/configure-aws-credentials@master #--> Setup the Credential for the AWS cli
+        uses: aws-actions/configure-aws-credentials@v1 #--> Setup the Credential for the AWS cli
         with:
         # Created the Secrets Under the Repo only with These Variables
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }} 
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: arn:aws:iam::202422821117:role/github
+          role-session-name: github-pipeline-session
           aws-region: eu-west-2 #--> Define Region of the AWS-CLI 
+          # aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }} 
+          # aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: deploy
         run: |
           zip -j deploy.zip ./directory-data-manager/* 
