@@ -1,0 +1,26 @@
+{
+  "extends": "nx/presets/npm.json",
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "npmScope": "mvp-demonstrator",
+  "affected": {
+    "defaultBase": "master"
+  },
+  "workspaceLayout": {
+    "appsDir": "microservices",
+    "libsDir": "libs"
+  },
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@nrwl/nx-cloud",
+      "options": {
+        "cacheableOperations": [
+          "build",
+          "lint",
+          "test",
+          "e2e"
+        ],
+        "accessToken": "MDNjMmQyOTMtODc3OC00ZWUxLWEwNGMtNjRkMWZlMDZjNjA3fHJlYWQtd3JpdGU="
+      }
+    }
+  }
+}

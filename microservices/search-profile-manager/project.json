@@ -1,0 +1,7 @@
+{
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "microservices/search-profile-manager/",
+    "projectType": "application",
+    "generators": {},
+    "targets": {}
+}
