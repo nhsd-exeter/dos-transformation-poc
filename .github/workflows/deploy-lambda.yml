@@ -32,7 +32,7 @@ jobs:  #Workflow run is made up of one or more jobs
           node-version: ${{ matrix.node-version }}
       - run: git fetch origin master
       - run: npm install
-      - run: nx print-affected
+      - run: npx nx print-affected
       - name: deploy
         run: |
           zip -j deploy.zip ./microservices/directory-data-manager/* 
