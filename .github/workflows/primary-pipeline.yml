@@ -39,7 +39,7 @@ jobs:
     if: ${{ needs.get_updated_microservices.outputs.affected != '[]' && needs.get_updated_microservices.outputs.affected != '' }}
     strategy:
       matrix:
-        services: ${{ fromJson(needs.get_updated_microservices.outputs.affected) }}
+        services: ${{ needs.get_updated_microservices.outputs.affected }}
     permissions:
       id-token: write
       contents: read
