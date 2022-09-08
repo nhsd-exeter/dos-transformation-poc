@@ -24,7 +24,7 @@ jobs:
       - name: Get Affected Services
         id: set-affected
         run: |
-          nx_output=$(npx nx print-affected)
+          nx_output=$(npx nx print-affected --base=master~1 --head=master)
           echo $nx_output
           affected=$(jq -r '.projects' <<< "$nx_output")
           echo "The Following Microservices have been updated: $affected"
