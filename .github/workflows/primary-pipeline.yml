@@ -9,7 +9,7 @@ jobs:
   get_updated_microservices:
     runs-on: ubuntu-latest 
     outputs:
-      affected: ${{ toJson(steps.set-affected.outputs.affected) }} 
+      services: ${{ toJson(steps.set-affected.outputs.affected) }} 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -35,16 +35,16 @@ jobs:
   deploy_microservices:
     needs: get_updated_microservices
     runs-on: ubuntu-latest  
-    if: ${{ needs.get_updated_microservices.outputs.affected != '[]' && needs.get_updated_microservices.outputs.affected != '' }}
+    if: ${{ needs.get_updated_microservices.outputs.services != '[]' && needs.get_updated_microservices.outputs.services != '' }}
     strategy:
       matrix:
-        services: ${{ fromJson(needs.get_updated_microservices.outputs.affected) }}
+        services: ${{ fromJson(needs.get_updated_microservices.outputs.services) }}
     permissions:
       id-token: write
       contents: read
     steps:
       - name: Check Inputs
-        run: echo ${{ needs.get_updated_microservices.outputs.affected }}
+        run: echo ${{ needs.get_updated_microservices.outputs.services }}
       - name: Checkout Repository
         uses: actions/checkout@v2
         with:
@@ -55,10 +55,10 @@ jobs:
           role-to-assume: arn:aws:iam::202422821117:role/github
           role-session-name: github-pipeline-session
           aws-region: eu-west-2 
-      - name: Deploy Lambda
-        run: |
-          zip -j deploy.zip ./microservices/${{ matrix.services }}/* 
-          aws lambda update-function-code --function-name=${{ matrix.services }} --zip-file=fileb://deploy.zip 
+      # - name: Deploy Lambda
+      #   run: |
+      #     zip -j deploy.zip ./microservices/${{ matrix.services }}/* 
+      #     aws lambda update-function-code --function-name=${{ matrix.services }} --zip-file=fileb://deploy.zip 
 
 # nx_output=$(npx nx print-affected --base=master~1 --head=master)
 # echo $nx_output
