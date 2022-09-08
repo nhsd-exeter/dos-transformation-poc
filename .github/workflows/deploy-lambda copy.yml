@@ -37,6 +37,7 @@ jobs:  #Workflow run is made up of one or more jobs
   deploy_microservices:
     needs: get_updated_microservices
     runs-on: ubuntu-latest  #Through which Server OS we need to Work (type of machine to run the job on)
+    if: ${{ needs.get_updated_microservices.outputs.affected != '[]' && needs.get_updated_microservices.outputs.affected != '' }}
     strategy:
       matrix:
         services: ${{ fromJson(needs.get_updated_microservices.outputs.affected) }}
