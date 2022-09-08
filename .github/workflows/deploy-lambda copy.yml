@@ -27,9 +27,10 @@ jobs:  #Workflow run is made up of one or more jobs
       - name: Get Affected Services
         id: set-affected
         run: |
-          nx_output= $(npx nx print-affected)
+          nx_output=$(npx nx print-affected)
           echo $nx_output
-          affected=`echo $(jq -r '.projects' <<< "$nx_output")`
+          affected=$(jq -r '.projects' <<< "$nx_output")
+          echo $affected
           echo "::set-output name=affected::$affected"
         # $(npx nx print-affected)"
     outputs:
