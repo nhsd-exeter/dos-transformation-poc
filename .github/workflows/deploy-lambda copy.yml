@@ -16,10 +16,11 @@ jobs:  #Workflow run is made up of one or more jobs
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Install Node.js Dependencies
+      - name: Install Node.js
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Install Node.js Dependencies 
         run: |
           git fetch origin master
           npm install
