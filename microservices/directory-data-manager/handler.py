@@ -7,7 +7,7 @@ def index(event, context):
         "input": event,
     }
 
-    response1 = "Lets add some changings"
+    response1 = "Lets add some changeroonies"
 
     response = {"statusCode": 200, "body": json.dumps(body)}
 
