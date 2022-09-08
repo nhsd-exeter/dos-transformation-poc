@@ -7,7 +7,9 @@ on:
 
 jobs:  
   get_updated_microservices:
-    runs-on: ubuntu-latest  
+    runs-on: ubuntu-latest 
+    outputs:
+      affected: ${{ toJson(steps.set-affected.outputs.affected) }} 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -27,8 +29,7 @@ jobs:
           affected=[directory-data-manager]
           echo ::set-output name=affected::${affected}
 
-    outputs:
-      affected: ${{ steps.set-affected.outputs.affected }}
+
 
 
   deploy_microservices:
