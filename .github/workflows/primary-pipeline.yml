@@ -26,7 +26,7 @@ jobs:
         run: |
           nx_output=$(npx nx print-affected --base=master~1 --head=master)
           echo $nx_output
-          affected=$(jq -r '.projects' <<< "$nx_output")
+          affected=$(jq -r '.projects' --compact-output <<< "$nx_output")
           echo "The Following Microservices have been updated: $affected"
           echo "::set-output name=affected::$affected"
     outputs:
