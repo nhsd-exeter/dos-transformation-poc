@@ -26,7 +26,7 @@ jobs:  #Workflow run is made up of one or more jobs
           npm install
       - name: Get Affected Services
         id: set-affected
-        run: echo "::set-output name=affected::FOO
+        run: echo "::set-output name=affected::"FOO"
         # $(npx nx print-affected)"
     outputs:
       affected: ${{ steps.set-affected.outputs.affected }}
