@@ -26,7 +26,8 @@ jobs:  #Workflow run is made up of one or more jobs
           npm install
       - name: Get Affected Services
         id: set-affected
-        run: echo "::set-output name=affected::$(npx nx print-affected)"
+        run: echo "::set-output name=affected::FOO
+        # $(npx nx print-affected)"
     outputs:
       affected: ${{ steps.set-affected.outputs.affected }}
 
@@ -34,15 +35,18 @@ jobs:  #Workflow run is made up of one or more jobs
   deploy_microservices:
     needs: get_updated_microservices
     runs-on: ubuntu-latest  #Through which Server OS we need to Work (type of machine to run the job on)
-    strategy:
-      matrix:
-        services: ${{ fromJson(needs.get_updated_microservices.outputs.affected) }}
+    # strategy:
+    #   matrix:
+    #     services: ["bar","baz"]
     permissions:
       id-token: write
       contents: read
     steps:
     #Using versioned actions 
-      - uses: actions/checkout@v2
+      - name: Check outputs
+        run: echo ${{ needs.get_updated_microservices.outputs.affected }}
+      - name: Checkout Repository
+        uses: actions/checkout@v2
         with:
           fetch-depth: 0
       - name: Configure AWS Credentials  
