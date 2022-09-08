@@ -26,8 +26,9 @@ jobs:
         run: |
           nx_output=$(npx nx print-affected --base=master~1 --head=master)
           echo $nx_output
-          OUTPUT='${{ toJson(jq -r '.projects' --compact-output <<< "$nx_output" | tr -d \")}}'
-          echo ::set-output name=affected::${OUTPUT}
+          affected=$(jq -r '.projects' --compact-output <<< "$nx_output" | tr -d \")
+          echo "The Following Microservices have been updated: $affected"
+          echo ::set-output name=affected::${affected}
     outputs:
       affected: ${{ steps.set-affected.outputs.affected }}
 
@@ -38,7 +39,7 @@ jobs:
     if: ${{ needs.get_updated_microservices.outputs.affected != '[]' && needs.get_updated_microservices.outputs.affected != '' }}
     strategy:
       matrix:
-        services: ${{ fromJson(needs.get_updated_microservices.outputs.affected) }}
+        services: ${{ fromJson(needs.get_updated_microservices.outputs.affected }}
     permissions:
       id-token: write
       contents: read
