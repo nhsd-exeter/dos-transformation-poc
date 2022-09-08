@@ -37,9 +37,9 @@ jobs:
     needs: get_updated_microservices
     runs-on: ubuntu-latest  
     if: ${{ needs.get_updated_microservices.outputs.affected != '[]' && needs.get_updated_microservices.outputs.affected != '' }}
-    strategy:
-      matrix:
-        services: ${{ needs.get_updated_microservices.outputs.affected }}
+    # strategy:
+    #   matrix:
+    #     services: ${{ needs.get_updated_microservices.outputs.affected }}
     permissions:
       id-token: write
       contents: read
