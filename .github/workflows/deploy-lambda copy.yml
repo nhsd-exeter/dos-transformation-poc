@@ -13,22 +13,19 @@ jobs:  #Workflow run is made up of one or more jobs
         node-version: [12.x]
     steps:
       - name: Checkout Repository
-      - uses: actions/checkout@v2
+        uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: Install Node.js Dependencies
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: git fetch origin master
-      - run: npm install
-
+        run: |
+          git fetch origin master
+          npm install
       - name: Get Affected Services
-      - id: set-affected
-      - run: echo "::set-output name=affected::$(npx nx print-affected)"
-
-    
+        id: set-affected
+        run: echo "::set-output name=affected::$(npx nx print-affected)"
     outputs:
       affected: ${{ steps.set-affected.outputs.affected }}
 
@@ -38,7 +35,7 @@ jobs:  #Workflow run is made up of one or more jobs
     runs-on: ubuntu-latest  #Through which Server OS we need to Work (type of machine to run the job on)
     strategy:
       matrix:
-        services: ${{ fromJson(needs.get_updated_microservices.outputs.matrix) }}
+        services: ${{ fromJson(needs.get_updated_microservices.outputs.affected) }}
     permissions:
       id-token: write
       contents: read
