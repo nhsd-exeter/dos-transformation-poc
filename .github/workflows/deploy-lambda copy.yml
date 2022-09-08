@@ -39,7 +39,7 @@ jobs:  #Workflow run is made up of one or more jobs
     runs-on: ubuntu-latest  #Through which Server OS we need to Work (type of machine to run the job on)
     strategy:
       matrix:
-        services: ${{ needs.get_updated_microservices.outputs.affected }}
+        services: ${{ fromJson(needs.get_updated_microservices.outputs.affected) }}
     permissions:
       id-token: write
       contents: read
