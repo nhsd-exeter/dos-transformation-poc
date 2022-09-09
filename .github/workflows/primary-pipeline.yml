@@ -28,9 +28,13 @@ jobs:
         run: |
           nx_output=$(npx nx print-affected --base=master~1 --head=master)
           echo $nx_output
-          affected=$(jq -r '.projects' --compact-output <<< "$nx_output" | sed 's/"/\\"/g')
+          affected=$(jq -r '.projects' --compact-output <<< "$nx_output" )
           echo $affected
           echo "::set-output name=affected::$affected"
+      - name: Check matrix      
+        run: |
+          echo ${{ steps.set-affected.outputs.affected }} 
+
 
 
 
@@ -73,3 +77,6 @@ jobs:
 
 
           # echo "::set-output name=affected::[\"project\",\"foo\",\"config\"]"
+
+
+# | sed 's/"/\\"/g'
