@@ -26,7 +26,7 @@ jobs:
       - name: Get Affected Services
         id: set-affected
         run: |
-          affected="{\"include\": [\"project\":\"data-directory-manager\"]}"
+          affected="{\"include\": [{\"project\":\"data-directory-manager\"}]}"
           echo ::set-output name=affected::${affected}
 
 
