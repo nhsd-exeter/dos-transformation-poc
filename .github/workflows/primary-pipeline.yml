@@ -9,7 +9,7 @@ jobs:
   get_updated_microservices:
     runs-on: ubuntu-latest 
     outputs:
-      services: ${{ toJSON(steps.set-affected.outputs.affected) }} 
+      services: ${{ steps.set-affected.outputs.affected }} 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -26,8 +26,7 @@ jobs:
       - name: Get Affected Services
         id: set-affected
         run: |
-          affected="{\"include\": [{\"project\":\"data-directory-manager\"}]}"
-          echo ::set-output name=affected::${affected}
+          echo "::set-output name=affected::{\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}"
 
 
 
