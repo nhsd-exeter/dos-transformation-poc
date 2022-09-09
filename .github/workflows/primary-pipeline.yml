@@ -26,7 +26,7 @@ jobs:
       - name: Get Affected Services
         id: set-affected
         run: |
-          affected=[directory]
+          affected='["Ford", "BMW", "Fiat"]'
           echo ::set-output name=affected::${affected}
 
 
