@@ -26,7 +26,7 @@ jobs:
       - name: Get Affected Services
         id: set-affected
         run: |
-          echo "::set-output name=affected::{\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}"
+          echo "::set-output name=affected::{[{\"project\",\"config\",\"test\"]}"
 
 
 
@@ -36,7 +36,8 @@ jobs:
     runs-on: ubuntu-latest  
     if: ${{ needs.get_updated_microservices.outputs.services != '[]' && needs.get_updated_microservices.outputs.services != '' }}
     strategy:
-      matrix: ${{ fromJSON(needs.get_updated_microservices.outputs.services) }}
+      matrix: 
+        services: ${{ fromJSON(needs.get_updated_microservices.outputs.services) }}
     permissions:
       id-token: write
       contents: read
@@ -64,3 +65,5 @@ jobs:
 # echo "The Following Microservices have been updated: $affected"
 
 # echo ::set-output name=affected::${affected}
+
+#           echo "::set-output name=affected::{\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}"
