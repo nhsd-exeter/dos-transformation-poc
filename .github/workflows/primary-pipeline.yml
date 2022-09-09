@@ -59,11 +59,15 @@ jobs:
       #     zip -j deploy.zip ./microservices/${{ matrix.services }}/* 
       #     aws lambda update-function-code --function-name=${{ matrix.services }} --zip-file=fileb://deploy.zip 
 
-# nx_output=$(npx nx print-affected --base=master~1 --head=master)
-# echo $nx_output
-# affected=$(jq -r '.projects' --compact-output <<< "$nx_output" | tr -d \")
+nx_output=$(npx nx print-affected --base=master~1 --head=master)
+echo $nx_output
+affected=$(jq -r '.projects' --compact-output <<< "$nx_output" | tr -d \")
 # echo "The Following Microservices have been updated: $affected"
 
 # echo ::set-output name=affected::${affected}
 
 #           echo "::set-output name=affected::{\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}"
+
+
+
+          # echo "::set-output name=affected::[\"project\",\"foo\",\"config\"]"
