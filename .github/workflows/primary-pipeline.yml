@@ -55,6 +55,7 @@ jobs:
 
     - name: Run Tests
       run: |
+        cd ./microservices/${{ matrix.services }}
         python3 -m pytest
 
 
