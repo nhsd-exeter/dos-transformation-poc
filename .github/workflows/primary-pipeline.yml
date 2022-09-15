@@ -37,6 +37,7 @@ jobs:
   run_unit_tests:
     needs: get_updated_microservices
     runs-on: ubuntu-latest  
+    if: ${{ needs.get_updated_microservices.outputs.services != '[]' && needs.get_updated_microservices.outputs.services != '' }}
     strategy:
       matrix: 
         services: ${{ fromJSON(needs.get_updated_microservices.outputs.services) }}
