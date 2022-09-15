@@ -92,10 +92,12 @@ jobs:
   perform_integration_tests:
     needs: deploy_microservices
     runs-on: ubuntu-latest  
-    if: ${{ github.GITHUB_REF != 'master' }}
+    if: ${{ github.ref != 'master' }} 
+    env:
+     branch_name: ${{ github.ref }}
     steps:
     - name: Check branches
-      run: echo ${{ github.GITHUB_REF }}
+      run: echo ${branch_name}
 
     - name: Checkout Repository
       uses: actions/checkout@v2
