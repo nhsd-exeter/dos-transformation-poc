@@ -92,22 +92,16 @@ jobs:
     runs-on: ubuntu-latest  
     if: ${{ github.GITHUB_REF != 'master' }}
     steps:
-    # Check out the repo, so the job can access it.  
-    - uses: actions/checkout@v2
-
-
-    # Install Node on the runner
-    - name: Use Node.js ${{ matrix.node-version }}      
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+    - name: Install Node.js
       uses: actions/setup-node@v1
-      
-    # Install newman globally, the reporter for slack and install the html extra reporter
+      with:
+        node-version: 12.x
     - name: Install newman
       run: |
         npm install -g newman
         npm install -g newman-reporter-htmlextra
-
-
-    # Create directory to upload test results
     - name: Make Directory for Test Results
       run: mkdir -p testArtifacts
 
