@@ -27,20 +27,39 @@ jobs:
         id: set-affected
         run: |
           nx_output=$(npx nx print-affected --base=master~1 --head=master)
-          echo $nx_output
           affected=$(jq -r '.projects' --compact-output <<< "$nx_output" )
-          echo $affected
           echo "::set-output name=affected::$affected"
       - name: Check matrix      
         run: |
           echo ${{ steps.set-affected.outputs.affected }} 
 
 
+  run_unit_tests:
+    needs: get_updated_microservices
+    runs-on: ubuntu-latest  
+    strategy:
+      matrix: 
+        services: ${{ fromJSON(needs.get_updated_microservices.outputs.services) }}
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.8
 
+    - name: Install Dependencies
+      run: |
+        cd ./microservices/${{ matrix.services }}
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run Tests
+      run: |
+        python -m pytest
 
 
   deploy_microservices:
-    needs: get_updated_microservices
+    needs: [ get_updated_microservices, run_unit_tests ]
     runs-on: ubuntu-latest  
     if: ${{ needs.get_updated_microservices.outputs.services != '[]' && needs.get_updated_microservices.outputs.services != '' }}
     strategy:
@@ -62,21 +81,45 @@ jobs:
           role-to-assume: arn:aws:iam::202422821117:role/github
           role-session-name: github-pipeline-session
           aws-region: eu-west-2 
-      # - name: Deploy Lambda
-      #   run: |
-      #     zip -j deploy.zip ./microservices/${{ matrix.services }}/* 
-      #     aws lambda update-function-code --function-name=${{ matrix.services }} --zip-file=fileb://deploy.zip 
+      - name: Deploy Lambda
+        run: |
+          zip -j deploy.zip ./microservices/${{ matrix.services }}/* 
+          aws lambda update-function-code --function-name=${{ matrix.services }} --zip-file=fileb://deploy.zip 
 
 
-# echo "The Following Microservices have been updated: $affected"
-
-# echo ::set-output name=affected::${affected}
-
-#           echo "::set-output name=affected::{\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}"
-
-
-
-          # echo "::set-output name=affected::[\"project\",\"foo\",\"config\"]"
+  perform_integration_tests:
+    needs: deploy_microservices
+    runs-on: ubuntu-latest  
+    if: ${{ github.GITHUB_REF != 'master' }}
+    steps:
+    # Check out the repo, so the job can access it.  
+    - uses: actions/checkout@v2
 
 
-# | sed 's/"/\\"/g'
+    # Install Node on the runner
+    - name: Use Node.js ${{ matrix.node-version }}      
+      uses: actions/setup-node@v1
+      
+    # Install newman globally, the reporter for slack and install the html extra reporter
+    - name: Install newman
+      run: |
+        npm install -g newman
+        npm install -g newman-reporter-htmlextra
+
+
+    # Create directory to upload test results
+    - name: Make Directory for Test Results
+      run: mkdir -p testArtifacts
+
+
+    # Run postman collection
+    - name: Run Postman Collection  
+      run: |
+        newman  run ./test/integration/postman.json --suppress-exit-code -r htmlextra --reporter-htmlextra-export testArtifacts/htmlreport.html
+    
+    # Upload the reports to TestArtifacts directory
+    - name: Output the results
+      uses: actions/upload-artifact@v2
+      with:
+        name: Reports
+        path: testArtifacts
