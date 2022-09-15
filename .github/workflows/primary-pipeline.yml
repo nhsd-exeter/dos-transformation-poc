@@ -93,6 +93,9 @@ jobs:
     runs-on: ubuntu-latest  
     if: ${{ github.GITHUB_REF != 'master' }}
     steps:
+    - name: Check branches
+      run: echo ${{ github.GITHUB_REF }}
+
     - name: Checkout Repository
       uses: actions/checkout@v2
     - name: Install Node.js
