@@ -50,12 +50,12 @@ jobs:
     - name: Install Dependencies
       run: |
         cd ./microservices/${{ matrix.services }}
-        python -m pip install --upgrade pip
+        python3 -m pip install --upgrade pip
         pip install -r requirements.txt
 
     - name: Run Tests
       run: |
-        python -m pytest
+        python3 -m pytest
 
 
   deploy_microservices:
