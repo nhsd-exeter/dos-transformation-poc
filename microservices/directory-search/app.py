@@ -2,7 +2,7 @@ from flask import Flask
 
 app = Flask(__name__)
 
-# var = 'updated'
+var = 'updated'
 
 @app.route('/')
 def hello():
