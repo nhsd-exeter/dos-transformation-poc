@@ -11,24 +11,29 @@ jobs:
     outputs:
       services: ${{ steps.set-affected.outputs.affected }} 
     steps:
+
       - name: Checkout Repository
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+
       - name: Install Node.js
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
+
       - name: Install Node.js Dependencies 
         run: |
           git fetch origin master
           npm install
+
       - name: Get Affected Services
         id: set-affected
         run: |
           nx_output=$(npx nx print-affected --base=master~1 --head=master)
           affected=$(jq -r '.projects' --compact-output <<< "$nx_output" )
           echo "::set-output name=affected::$affected"
+
       - name: Check matrix      
         run: |
           echo ${{ steps.set-affected.outputs.affected }} 
@@ -42,7 +47,10 @@ jobs:
       matrix: 
         services: ${{ fromJSON(needs.get_updated_microservices.outputs.services) }}
     steps:
-    - uses: actions/checkout@v2
+
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
     - name: Set up Python
       uses: actions/setup-python@v1
       with:
@@ -64,6 +72,8 @@ jobs:
     needs: [ get_updated_microservices, run_unit_tests ]
     runs-on: ubuntu-latest  
     if: ${{ needs.get_updated_microservices.outputs.services != '[]' && needs.get_updated_microservices.outputs.services != '' }}
+    env:
+      branch_name: ${{ github.ref }}
     strategy:
       matrix: 
         services: ${{ fromJSON(needs.get_updated_microservices.outputs.services) }}
@@ -71,54 +81,65 @@ jobs:
       id-token: write
       contents: read
     steps:
+
       - name: Check Inputs
         run: echo ${{ needs.get_updated_microservices.outputs.services }}
+
       - name: Checkout Repository
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+
       - name: Configure AWS Credentials  
         uses: aws-actions/configure-aws-credentials@v1 
         with:
           role-to-assume: arn:aws:iam::202422821117:role/github
           role-session-name: github-pipeline-session
           aws-region: eu-west-2 
+
       - name: Deploy Lambda
         run: |
           zip -j deploy.zip ./microservices/${{ matrix.services }}/* 
           aws lambda update-function-code --function-name=${{ matrix.services }} --zip-file=fileb://deploy.zip 
+          aws lambda publish-version --function-name=${{ matrix.services }}
+          if [ ${branch_name} = 'refs/heads/master' ]
+          then
+            aws lambda update-alias --function-name=${{ matrix.services }} --name deployedVersion --routing-config '{"AdditionalVersionWeights" : {"2" : 0.05} }'
+          else
+            aws lambda update-alias --function-name=${{ matrix.services }} --name deployedVersion --function-version 2 --routing-config '{}'
+          fi
+
+
 
 
   perform_integration_tests:
     needs: deploy_microservices
     runs-on: ubuntu-latest  
-    if: ${{ github.ref != 'master' }} 
+    if: ${{ github.ref != 'refs/heads/master' }} 
     env:
-     branch_name: ${{ github.ref }}
+      branch_name: ${{ github.ref }}
     steps:
-    - name: Check branches
-      run: echo ${branch_name}
 
     - name: Checkout Repository
       uses: actions/checkout@v2
+
     - name: Install Node.js
       uses: actions/setup-node@v1
       with:
         node-version: 12.x
+
     - name: Install newman
       run: |
         npm install -g newman
         npm install -g newman-reporter-htmlextra
+
     - name: Make Directory for Test Results
       run: mkdir -p testArtifacts
 
-
-    # Run postman collection
     - name: Run Postman Collection  
       run: |
         newman  run ./test/integration/postman.json --suppress-exit-code -r htmlextra --reporter-htmlextra-export testArtifacts/htmlreport.html
-    
-    # Upload the reports to TestArtifacts directory
+
     - name: Output the results
       uses: actions/upload-artifact@v2
       with:
