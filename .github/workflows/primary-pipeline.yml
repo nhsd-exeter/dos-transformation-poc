@@ -102,14 +102,6 @@ jobs:
           zip -j deploy.zip ./microservices/${{ matrix.services }}/* 
           aws lambda update-function-code --function-name=${{ matrix.services }} --zip-file=fileb://deploy.zip 
           aws lambda publish-version --function-name=${{ matrix.services }}
-          if [ ${branch_name} = 'refs/heads/master' ]
-          then
-            aws lambda update-alias --function-name=${{ matrix.services }} --name deployedVersion --routing-config '{"AdditionalVersionWeights" : {"2" : 0.05} }'
-          else
-            aws lambda update-alias --function-name=${{ matrix.services }} --name deployedVersion --function-version 2 --routing-config '{}'
-          fi
-
-
 
 
   perform_integration_tests:
