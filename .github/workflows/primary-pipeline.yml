@@ -103,7 +103,7 @@ jobs:
         run: |
           zip -j deploy.zip ./microservices/${{ matrix.services }}/* 
           lambda_output=$(aws lambda update-function-code --function-name=${{ matrix.services }} --zip-file=fileb://deploy.zip --publish)
-          latest_version=$(jq -r '.version' --compact-output <<< "$lambda_output" )
+          latest_version=$(jq -r '.Version' --compact-output <<< "$lambda_output" )
 
           echo "$lambda_output"
           echo "$latest_version"
