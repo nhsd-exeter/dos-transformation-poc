@@ -102,16 +102,16 @@ jobs:
       - name: Deploy Lambda
         run: |
           zip -j deploy.zip ./microservices/${{ matrix.services }}/* 
-          lambda_output=$(aws lambda update-function-code --function-name=${{ matrix.services }} --zip-file=fileb://deploy.zip --publish)
-          latest_version=$(jq -r '.Version' --compact-output <<< "$lambda_output" )
-          previous_version=$(expr $latest_version - 1)
+          LAMBDA_OUTPUT=$(aws lambda update-function-code --function-name=${{ matrix.services }} --zip-file=fileb://deploy.zip --publish)
+          LATEST_VERSION=$(jq -r '.Version' --compact-output <<< "$LAMBDA_OUTPUT" )
+          PREVIOUS_VERSION=$(expr $LATEST_VERSION - 1)
 
-          echo "$lambda_output"
-          echo "$latest_version"
-          echo "$previous_version"
-
-          aws lambda update-alias --function-name=${{ matrix.services }} --name live-service --function-version 2 --routing-config '{}'
-          
+          if [ ${branch_name} = 'refs/heads/master' ]
+          then
+            aws lambda update-alias --function-name=${{ matrix.services }} --name live-service --function-version $PREVIOUS_VERSION --routing-config '{"AdditionalVersionWeights" : {$LATEST_VERSION : 0.05} }'
+          else
+            aws lambda update-alias --function-name=${{ matrix.services }} --name live-service --function-version $LATEST_VERSION  --routing-config '{}'
+          fi          
 
 
   perform_integration_tests:
