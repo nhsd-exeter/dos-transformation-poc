@@ -102,8 +102,8 @@ jobs:
       - name: Deploy Lambda
         run: |
           zip -j deploy.zip ./microservices/${{ matrix.services }}/* 
-          aws lambda update-function-code --function-name=${{ matrix.services }} --zip-file=fileb://deploy.zip --no-publish
-          aws lambda update-alias --function-name=${{ matrix.services }} --name live-service --function-version $LATEST --routing-config '{}'
+          aws lambda update-function-code --function-name=${{ matrix.services }} --zip-file=fileb://deploy.zip 
+          aws lambda update-alias --function-name=${{ matrix.services }} --name live-service --function-version 1 --routing-config '{}'
           
 
 
