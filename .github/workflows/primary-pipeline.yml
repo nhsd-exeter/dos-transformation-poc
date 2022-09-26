@@ -3,7 +3,9 @@ name: Primary Pipeline
 on:  
   push:   
     branches:  
-    - master   
+    - master
+    - staging   
+    - dev
 
 jobs:  
   get_updated_microservices:
