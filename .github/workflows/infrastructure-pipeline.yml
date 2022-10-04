@@ -28,7 +28,7 @@ jobs:
 
       - name: Initialise Terraform
         run: |
-          cd ./infrastructure/${{ inputs.environment }}
+          cd ./infrastructure/
           terraform init
       
       - name: Configure AWS Credentials  
@@ -42,3 +42,7 @@ jobs:
         run: |
           cd ./infrastructure/${{ inputs.environment }}
           terraform plan
+
+
+
+
