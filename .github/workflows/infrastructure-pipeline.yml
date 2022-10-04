@@ -16,6 +16,9 @@ on:
 jobs:  
   run_terraform:
     runs-on: ubuntu-latest 
+    permissions:
+      id-token: write
+      contents: read
     # outputs:
     #   services: ${{ steps.set-affected.outputs.affected }} 
     steps:
