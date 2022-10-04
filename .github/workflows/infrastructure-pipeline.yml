@@ -29,11 +29,6 @@ jobs:
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v2
 
-      - name: Initialise Terraform
-        run: |
-          cd ./infrastructure/
-          terraform init
-      
       - name: Configure AWS Credentials  
         uses: aws-actions/configure-aws-credentials@v1 
         with:
@@ -41,8 +36,11 @@ jobs:
           role-session-name: github-pipeline-session
           aws-region: eu-west-2 
 
-      - name: Plan Terraform
-        run: terraform plan
+      - name: Initialise and Run Terraform
+        run: |
+          cd ./infrastructure/
+          terraform init
+          terraform plan
 
 
 
