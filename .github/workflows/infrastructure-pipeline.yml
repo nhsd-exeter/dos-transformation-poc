@@ -42,9 +42,7 @@ jobs:
           aws-region: eu-west-2 
 
       - name: Plan Terraform
-        run: |
-          cd ./infrastructure/${{ inputs.environment }}
-          terraform plan
+        run: terraform plan
 
 
 
