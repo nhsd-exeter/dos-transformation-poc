@@ -119,6 +119,8 @@ module "api_gateway" {
 
   }
 
+  //NEED TO ADD ALIAS TO LAMBDA
+
   body = templatefile("api.yaml", {
     example_function_arn = module.directory-search-lambda.lambda_function_arn
   })
@@ -210,7 +212,7 @@ module "directory-search-lambda" {
   handler       = "app.lambda_handler"
   runtime       = "python3.9"
 
-  source_path = "../directory-search/"
+  source_path = "../microservices/directory-search/"
 
   publish      = true
 
@@ -232,7 +234,7 @@ module "directory-data-manager-lambda" {
   handler       = "app.lambda_handler"
   runtime       = "python3.9"
 
-  source_path = "../directory-data-manager/"
+  source_path = "../microservices/directory-data-manager/"
 
   publish      = true
 
@@ -254,7 +256,7 @@ module "search-profile-manager-lambda" {
   handler       = "app.lambda_handler"
   runtime       = "python3.9"
 
-  source_path = "../search-profile-manager/"
+  source_path = "../microservices/search-profile-manager/"
 
   publish      = true
 

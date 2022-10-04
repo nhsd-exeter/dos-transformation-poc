@@ -108,7 +108,7 @@ jobs:
 
           if [ ${branch_name} = 'refs/heads/master' ]
           then
-            PREVIOUS_VERSION_STRING='"'$PREVIOUS_VERSION'"'
+            ROUTING_CONFIG=\'{"AdditionalVersionWeights" : {'"$LATEST_VERSION"' : 0.05} }\'       
             aws lambda update-alias --function-name=${{ matrix.services }} --name live-service --function-version $PREVIOUS_VERSION --routing-config '{"AdditionalVersionWeights" : {$PREVIOUS_VERSION_STRING : 0.05} }'
           else
             aws lambda update-alias --function-name=${{ matrix.services }} --name live-service --function-version $LATEST_VERSION  --routing-config '{}'

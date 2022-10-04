@@ -1,0 +1,44 @@
+name: Infrastructure Pipeline
+
+on: 
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        description: Make a choice
+        required: true
+        options:
+        - develop
+        - staging
+        - production
+
+
+jobs:  
+  run_terraform:
+    runs-on: ubuntu-latest 
+    # outputs:
+    #   services: ${{ steps.set-affected.outputs.affected }} 
+    steps:
+
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Initialise Terraform
+        run: |
+          cd ./infrastructure/${{ inputs.environment }}
+          terraform init
+      
+      - name: Configure AWS Credentials  
+        uses: aws-actions/configure-aws-credentials@v1 
+        with:
+          role-to-assume: arn:aws:iam::202422821117:role/github
+          role-session-name: github-pipeline-session
+          aws-region: eu-west-2 
+
+      - name: Plan Terraform
+        run: |
+          cd ./infrastructure/${{ inputs.environment }}
+          terraform plan
