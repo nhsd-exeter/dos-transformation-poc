@@ -10,10 +10,9 @@ on:
 jobs:  
   get_updated_microservices:
     runs-on: ubuntu-latest
-    environment: 
-      name: ${{ fromJSON('{"refs/heads/master":"prod","refs/heads/dev":"dev","refs/heads/staging":"staging"}')[github.ref] || github.ref }}
     outputs:
       services: ${{ steps.set-affected.outputs.affected }} 
+      environment: ${{ steps.determine-environment.outputs.environment}} 
     steps:
 
       - name: Checkout Repository
@@ -37,6 +36,27 @@ jobs:
           nx_output=$(npx nx print-affected --base=master~1 --head=master)
           affected=$(jq -r '.projects' --compact-output <<< "$nx_output" )
           echo "::set-output name=affected::$affected"
+          
+      - name: Determine Environment
+        id: determine-environment
+        run: |
+            case $GITHUB_REF_NAME in
+
+              master)
+                DEPLOY_ENV=prod
+                ;;
+
+              dev)
+                DEPLOY_ENV=dev
+                ;;
+
+              staging)
+                DEPLOY_ENV=staging
+                ;;
+              *)
+                ;;
+            esac
+            echo "::set-output name=environment::$DEPLOY_ENV"
 
       - name: Check matrix      
         run: |
@@ -74,7 +94,9 @@ jobs:
 
   deploy_microservices:
     needs: [ get_updated_microservices, run_unit_tests ]
-    runs-on: ubuntu-latest  
+    runs-on: ubuntu-latest
+    environment: 
+      name: ${{ needs.get_updated_microservices.outputs.environment }}
     if: ${{ needs.get_updated_microservices.outputs.services != '[]' && needs.get_updated_microservices.outputs.services != '' }}
     env:
       branch_name: ${{ github.ref }}
