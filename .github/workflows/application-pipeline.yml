@@ -1,4 +1,4 @@
-name: Primary Pipeline
+name: Application Pipeline
 
 on:  
   push:   
