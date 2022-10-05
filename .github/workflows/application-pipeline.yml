@@ -33,7 +33,7 @@ jobs:
       - name: Get Affected Services
         id: set-affected
         run: |
-          NX_OUTPUT=$(npx nx print-affected --base=$GITHUB_REF_NAME~1 --head=$GITHUB_REF_NAME)
+          NX_OUTPUT=$(npx nx print-affected --base="$GITHUB_REF_NAME"~1 --head="$GITHUB_REF_NAME")
           AFFECTED_SERVICES=$(jq -r '.projects' --compact-output <<< "$NX_OUTPUT" )
           echo "::set-output name=affected_services::$AFFECTED_SERVICES"
           
