@@ -5,22 +5,22 @@ on:
     inputs:
       environment:
         type: choice
-        description: Make a choice
+        description: Choose the Environment
         required: true
         options:
-        - develop
+        - dev
         - staging
-        - production
+        - prod
 
 
 jobs:  
   run_terraform:
     runs-on: ubuntu-latest 
+    environment: 
+      name: ${{ inputs.environment }}
     permissions:
       id-token: write
       contents: read
-    # outputs:
-    #   services: ${{ steps.set-affected.outputs.affected }} 
     steps:
 
       - name: Checkout Repository
@@ -32,7 +32,7 @@ jobs:
       - name: Configure AWS Credentials  
         uses: aws-actions/configure-aws-credentials@v1 
         with:
-          role-to-assume: arn:aws:iam::751840016211:role/github
+          role-to-assume: arn:aws:iam::${{ secrets.ACCOUNT_ID }}:role/github
           role-session-name: github-pipeline-session
           aws-region: eu-west-2 
 
