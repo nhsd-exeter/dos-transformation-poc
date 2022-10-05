@@ -306,31 +306,3 @@ resource "tls_self_signed_cert" "example" {
     "server_auth",
   ]
 }
-
-
-
-
-
-
-
-
-
-
-
-
-# module "ec2_instance" {
-#   source  = "terraform-aws-modules/ec2-instance/aws"
-#   version = "~> 3.0"
-
-#   name = "single-instance"
-
-#   ami                    = "ami-0e34bbddc66def5ac"
-#   instance_type          = "t2.micro"
-#   monitoring             = true
-#   user_data              = file("drone_config.sh")
-
-#   tags = {
-#     Terraform   = "true"
-#     Environment = "dev"
-#   }
-# }
