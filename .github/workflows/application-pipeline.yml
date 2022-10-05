@@ -9,7 +9,9 @@ on:
 
 jobs:  
   get_updated_microservices:
-    runs-on: ubuntu-latest 
+    runs-on: ubuntu-latest
+    environment: 
+      name: ${{ fromJSON('{"refs/heads/master":"prod","refs/heads/dev":"dev","refs/heads/staging":"staging"}')[github.ref] || github.ref }}
     outputs:
       services: ${{ steps.set-affected.outputs.affected }} 
     steps:
