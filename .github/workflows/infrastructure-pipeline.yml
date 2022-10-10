@@ -38,10 +38,9 @@ jobs:
 
       - name: Initialise and Run Terraform
         run: |
-          cd ./infrastructure/
+          cd ./infrastructure/${{ inputs.environment }}
           terraform init
           terraform plan
-
 
 
 

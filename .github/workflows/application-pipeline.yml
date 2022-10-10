@@ -11,7 +11,7 @@ jobs:
   get_updated_microservices:
     runs-on: ubuntu-latest
     outputs:
-      services: ${{ steps.set-affected.outputs.affected }} 
+      services: ${{ steps.set-affected.outputs.affected_services }} 
       environment: ${{ steps.determine-environment.outputs.environment}} 
     steps:
 
@@ -33,9 +33,9 @@ jobs:
       - name: Get Affected Services
         id: set-affected
         run: |
-          nx_output=$(npx nx print-affected --base=master~1 --head=master)
-          affected=$(jq -r '.projects' --compact-output <<< "$nx_output" )
-          echo "::set-output name=affected::$affected"
+          NX_OUTPUT=$(npx nx print-affected --base="$GITHUB_REF_NAME"~1 --head="$GITHUB_REF_NAME")
+          AFFECTED_SERVICES=$(jq -r '.projects' --compact-output <<< "$NX_OUTPUT" )
+          echo "::set-output name=affected_services::$AFFECTED_SERVICES"
           
       - name: Determine Environment
         id: determine-environment
@@ -172,7 +172,6 @@ jobs:
       with:
         name: Reports
         path: testArtifacts
-
 
 
 
