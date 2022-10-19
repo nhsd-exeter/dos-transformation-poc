@@ -128,7 +128,7 @@ jobs:
           LATEST_VERSION=$(jq -r '.Version' --compact-output <<< "$LAMBDA_OUTPUT" )
           PREVIOUS_VERSION=$(expr $LATEST_VERSION - 1)
 
-          if [ ${{ needs.get_updated_microservices.outputs.environment }} = 'prod' ]
+          if [ ${{ needs.get_updated_microservices.outputs.environment }} = 'staging' ]
           then
             ROUTING_CONFIG=\'{"AdditionalVersionWeights" : {'"$LATEST_VERSION"' : 0.05} }\'       
             aws lambda update-alias --function-name=${{ matrix.services }} --name live-service --function-version $PREVIOUS_VERSION --routing-config '{"AdditionalVersionWeights" : {$PREVIOUS_VERSION_STRING : 0.05} }'
