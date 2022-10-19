@@ -307,7 +307,9 @@ resource "tls_self_signed_cert" "example" {
   ]
 }
 
-
+##########################
+# DynamoDB Service Table
+##########################
 
 module "dynamodb_table" {
   source   = "terraform-aws-modules/dynamodb-table/aws"

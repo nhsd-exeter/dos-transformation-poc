@@ -73,6 +73,7 @@ module "api_gateway" {
       authorizer_key         = "cognito"
     }
 
+ 
     "GET /services" = {
       lambda_arn             = module.directory-data-manager-lambda.lambda_function_arn
       payload_format_version = "2.0"

@@ -98,8 +98,6 @@ jobs:
     environment: 
       name: ${{ needs.get_updated_microservices.outputs.environment }}
     if: ${{ needs.get_updated_microservices.outputs.services != '[]' && needs.get_updated_microservices.outputs.services != '' }}
-    env:
-      branch_name: ${{ github.ref }}
     strategy:
       matrix: 
         services: ${{ fromJSON(needs.get_updated_microservices.outputs.services) }}
@@ -130,7 +128,7 @@ jobs:
           LATEST_VERSION=$(jq -r '.Version' --compact-output <<< "$LAMBDA_OUTPUT" )
           PREVIOUS_VERSION=$(expr $LATEST_VERSION - 1)
 
-          if [ ${branch_name} = 'refs/heads/master' ]
+          if [ ${{ needs.get_updated_microservices.outputs.environment }} = 'prod' ]
           then
             ROUTING_CONFIG=\'{"AdditionalVersionWeights" : {'"$LATEST_VERSION"' : 0.05} }\'       
             aws lambda update-alias --function-name=${{ matrix.services }} --name live-service --function-version $PREVIOUS_VERSION --routing-config '{"AdditionalVersionWeights" : {$PREVIOUS_VERSION_STRING : 0.05} }'
@@ -140,11 +138,9 @@ jobs:
 
 
   perform_integration_tests:
-    needs: deploy_microservices
+    needs: [get_updated_microservices, deploy_microservices]
     runs-on: ubuntu-latest  
-    if: ${{ github.ref != 'refs/heads/master' }} 
-    env:
-      branch_name: ${{ github.ref }}
+    if: ${{ needs.get_updated_microservices.outputs.environment = 'prod'}}
     steps:
 
     - name: Checkout Repository
