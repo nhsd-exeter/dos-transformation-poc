@@ -140,7 +140,7 @@ jobs:
   perform_integration_tests:
     needs: [get_updated_microservices, deploy_microservices]
     runs-on: ubuntu-latest  
-    if: ${{ needs.get_updated_microservices.outputs.environment = 'prod'}}
+    if: ${{ needs.get_updated_microservices.outputs.environment == 'prod'}}
     steps:
 
     - name: Checkout Repository
