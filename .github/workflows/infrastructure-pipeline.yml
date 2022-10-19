@@ -40,7 +40,6 @@ jobs:
         run: |
           cd ./infrastructure/${{ inputs.environment }}
           terraform init
-          terraform plan
 
 
 
