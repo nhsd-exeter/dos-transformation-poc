@@ -23,7 +23,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12.x
+          node-version: 16.x
 
       - name: Install Node.js Dependencies 
         run: |
@@ -56,7 +56,7 @@ jobs:
               *)
                 ;;
             esac
-            echo "::set-output name=environment::$DEPLOY_ENV"
+            echo "environment=$DEPLOY_ENV" >> $GITHUB_OUTPUT
 
       - name: Check matrix      
         run: |
@@ -149,7 +149,7 @@ jobs:
     - name: Install Node.js
       uses: actions/setup-node@v1
       with:
-        node-version: 12.x
+        node-version: 16.x
 
     - name: Install newman
       run: |
