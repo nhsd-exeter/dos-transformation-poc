@@ -23,7 +23,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 16.x
+          node-version: '16.x'
 
       - name: Install Node.js Dependencies 
         run: |
@@ -73,7 +73,7 @@ jobs:
     steps:
 
     - name: Checkout Repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up Python
       uses: actions/setup-python@v1
@@ -110,7 +110,7 @@ jobs:
         run: echo ${{ needs.get_updated_microservices.outputs.services }}
 
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -144,7 +144,7 @@ jobs:
     steps:
 
     - name: Checkout Repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Install Node.js
       uses: actions/setup-node@v1
