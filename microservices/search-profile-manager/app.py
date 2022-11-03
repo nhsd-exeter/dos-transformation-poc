@@ -1,6 +1,6 @@
-from flask import Flask
+from flask_lambda import FlaskLambda
 #deploy
-app = Flask(__name__)
+app = FlaskLambda(__name__)
 
 @app.route('/')
 def hello():
