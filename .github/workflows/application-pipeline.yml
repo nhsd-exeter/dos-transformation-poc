@@ -123,8 +123,9 @@ jobs:
 
       - name: Deploy Lambda
         run: |
-          pip install -r ./microservices/${{ matrix.services }}/requirements.txt
-          zip -j deploy.zip ./microservices/${{ matrix.services }}/* 
+          cd ./microservices/${{ matrix.services }}/
+          pip install -r requirements.txt
+          zip -j deploy.zip * 
           LAMBDA_OUTPUT=$(aws lambda update-function-code --function-name=${{ matrix.services }} --zip-file=fileb://deploy.zip --publish)
           LATEST_VERSION=$(jq -r '.Version' --compact-output <<< "$LAMBDA_OUTPUT" )
           PREVIOUS_VERSION=$(expr $LATEST_VERSION - 1)
