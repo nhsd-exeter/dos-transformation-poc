@@ -2,9 +2,9 @@ from chalice import Chalice
 #deploy
 app = Chalice(app_name="helloworld")
 
-@app.route("/searchprofiles", methods=['GET'])
+@app.route("/searchprofiles/{id}", methods=['GET'])
 def index():
-    return {"hello": "world"}
+    return {"hello": id}
 
 @app.route('/{id}', methods=['GET'])
 def get_search_profile(id):
