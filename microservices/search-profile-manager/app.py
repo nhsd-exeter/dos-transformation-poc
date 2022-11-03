@@ -1,12 +1,8 @@
-from flask import Flask
+from chalice import Chalice
+#deploy
+app = Chalice(app_name="helloworld")
 
-app = Flask(__name__)
+@app.route("/")
+def index():
+    return {"hello": "world"}
 
-#var = 'updated'
-
-@app.route('/')
-def hello():
-    return 'Hello, World! I am the Directory-Data-Manager'
-
-if __name__ == '__main__':
-    app.run(debug=True)
