@@ -5,11 +5,11 @@ from boto3.dynamodb.conditions import Key
 
 app = Chalice(app_name="helloworld")
 dynamodb = boto3.resource('dynamodb')
-id = app.current_request.query_params.get('id')
+
 
 @app.route("/searchprofiles", methods=['GET'])
 def get_search_profile():
-
+    id = app.current_request.query_params.get('id')
     search_profiles_table = dynamodb.Table('search-profiles')      
     
     search_profile_resp = search_profiles_table.get_item(
