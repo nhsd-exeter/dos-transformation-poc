@@ -4,7 +4,7 @@ app = Chalice(app_name="helloworld")
 
 @app.route("/searchprofiles", methods=['GET'])
 def index():
-    id = event['queryStringParameters']['id']
+    id = app.current_request.query_params.get('id')
     return {"hello": id}
 
 @app.route('/{id}', methods=['GET'])
