@@ -2,8 +2,9 @@ from chalice import Chalice
 #deploy
 app = Chalice(app_name="helloworld")
 
-@app.route("/searchprofiles/{id}", methods=['GET'])
+@app.route("/searchprofiles", methods=['GET'])
 def index():
+    id = event['queryStringParameters']['id']
     return {"hello": id}
 
 @app.route('/{id}', methods=['GET'])
