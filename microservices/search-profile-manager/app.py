@@ -1,11 +1,7 @@
-from flask_lambda import FlaskLambda
-#deploy
-app = FlaskLambda(__name__)
+from chalice import Chalice
 
-@app.route('/')
-def hello():
-    return 'Hello, World!'
-    
-@app.route('/say-my-name')
-def hello_world():
-    return 'Hello, ' + request.args.get('name')
+app = Chalice(app_name="helloworld")
+
+@app.route("/")
+def index():
+    return {"hello": "world"}

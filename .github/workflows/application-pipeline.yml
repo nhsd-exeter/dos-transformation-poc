@@ -63,37 +63,37 @@ jobs:
           echo ${{ steps.set-affected.outputs.affected }} 
 
 
-  run_unit_tests:
-    needs: get_updated_microservices
-    runs-on: ubuntu-latest  
-    if: ${{ needs.get_updated_microservices.outputs.services != '[]' && needs.get_updated_microservices.outputs.services != '' }}
-    strategy:
-      matrix: 
-        services: ${{ fromJSON(needs.get_updated_microservices.outputs.services) }}
-    steps:
+  # run_unit_tests:
+  #   needs: get_updated_microservices
+  #   runs-on: ubuntu-latest  
+  #   if: ${{ needs.get_updated_microservices.outputs.services != '[]' && needs.get_updated_microservices.outputs.services != '' }}
+  #   strategy:
+  #     matrix: 
+  #       services: ${{ fromJSON(needs.get_updated_microservices.outputs.services) }}
+  #   steps:
 
-    - name: Checkout Repository
-      uses: actions/checkout@v3
+  #   - name: Checkout Repository
+  #     uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.8
+  #   - name: Set up Python
+  #     uses: actions/setup-python@v1
+  #     with:
+  #       python-version: 3.8
 
-    - name: Install Dependencies
-      run: |
-        cd ./microservices/${{ matrix.services }}
-        python3 -m pip install --upgrade pip
-        pip install -r requirements.txt
+  #   - name: Install Dependencies
+  #     run: |
+  #       cd ./microservices/${{ matrix.services }}
+  #       python3 -m pip install --upgrade pip
+  #       pip install -r requirements.txt
 
-    - name: Run Tests
-      run: |
-        cd ./microservices/${{ matrix.services }}
-        python3 -m pytest
+  #   - name: Run Tests
+  #     run: |
+  #       cd ./microservices/${{ matrix.services }}
+  #       python3 -m pytest
 
 
   deploy_microservices:
-    needs: [ get_updated_microservices, run_unit_tests ]
+    needs: get_updated_microservices
     runs-on: ubuntu-latest
     environment: 
       name: ${{ needs.get_updated_microservices.outputs.environment }}
