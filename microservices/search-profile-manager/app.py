@@ -4,7 +4,7 @@ import boto3
 import uuid
 from boto3.dynamodb.conditions import Key
 
-app = Chalice(app_name="helloworld")
+app = Chalice(app_name="search-profile-manager")
 dynamodb = boto3.resource('dynamodb')
 
 
