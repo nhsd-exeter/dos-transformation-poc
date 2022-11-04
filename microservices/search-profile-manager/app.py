@@ -1,6 +1,7 @@
 from chalice import Chalice
 import json
 import boto3
+import uuid
 from boto3.dynamodb.conditions import Key
 
 app = Chalice(app_name="helloworld")
@@ -26,9 +27,11 @@ def get_search_profile():
 @app.route("/searchprofiles", methods=['POST'])
 def create_search_profile():
     search_profiles_table = dynamodb.Table('search-profiles') 
+
+    generated_identifier = uuid.uuid4()
     search_profiles_table.put_item(
                 Item={
-                    'year': 'test',
+                    'id': generated_identifier,
                     'title': 'test',
                     'info': 'test'})
 
