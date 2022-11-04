@@ -31,7 +31,7 @@ def create_search_profile():
     generated_identifier = uuid.uuid4()
     search_profiles_table.put_item(
                 Item={
-                    'id': generated_identifier,
+                    'id': '134134034y',
                     'title': 'test',
                     'info': 'test'})
 
