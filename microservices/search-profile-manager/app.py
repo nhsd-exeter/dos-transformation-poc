@@ -43,12 +43,21 @@ def create_search_profile():
                     })
 
 
-    return {"hello" : "world"}
+    return {"id" : generated_identifier}
 
 
 @app.route("/searchprofiles", methods=['DELETE'])
 def delete_search_profile():
-    id = app.current_request.query_params.get('id')
-    return {"hello" : "world"}
+    search_profile_id = app.current_request.query_params.get('id')
+
+    search_profiles_table = dynamodb.Table('search-profiles') 
+
+    search_profiles_table.delete_item(
+        Key={
+            'id' : search_profile_id,
+        }
+    )
+
+    return {"id" : search_profile_id}
 
 
