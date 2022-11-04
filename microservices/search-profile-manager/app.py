@@ -32,8 +32,12 @@ def create_search_profile():
     search_profiles_table.put_item(
                 Item={
                     'id': '134134034y',
-                    'title': 'test',
-                    'info': 'test'})
+                    'name': 'test',
+                    'formatters': ['test'],
+                    'redactions': ['test'],
+                    'sorters': ['test'],
+                    'exclusions': ['test']
+                    })
 
 
     return {"hello": id}
