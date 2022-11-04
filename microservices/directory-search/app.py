@@ -26,7 +26,7 @@ def lambda_handler(event, context):
         "size": 25,
         "query": {
             "multi_match": {
-                "query": event['queryStringParameters']['q'],
+                "query": "Test",
                 "fields": ["title^4", "plot^2", "actors", "directors"]
             }
         }
