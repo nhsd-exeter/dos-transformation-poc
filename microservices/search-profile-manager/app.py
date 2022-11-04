@@ -26,17 +26,20 @@ def get_search_profile():
 
 @app.route("/searchprofiles", methods=['POST'])
 def create_search_profile():
+
+    request = app.current_request.json_body
+
     search_profiles_table = dynamodb.Table('search-profiles') 
 
     generated_identifier = uuid.uuid4().hex
     search_profiles_table.put_item(
                 Item={
                     'id': generated_identifier,
-                    'name': 'test',
-                    'formatters': ['test'],
-                    'redactions': ['test'],
-                    'sorters': ['test'],
-                    'exclusions': ['test']
+                    'name': request["name"],
+                    'formatters': request["formatters"],
+                    'redactions': request["redactions"],
+                    'sorters': request["sorters"],
+                    'exclusions': request["exclusions"]
                     })
 
 
