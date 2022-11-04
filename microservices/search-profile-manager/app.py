@@ -21,7 +21,7 @@ def get_search_profile():
     
     search_profile = search_profile_resp['Item']
 
-    return { search_profile_resp }
+    return { "searchprofile": search_profile_resp }
 
 
 @app.route("/searchprofiles", methods=['POST'])
@@ -40,12 +40,12 @@ def create_search_profile():
                     })
 
 
-    return {"hello"}
+    return {"hello" : "world"}
 
 
 @app.route("/searchprofiles", methods=['DELETE'])
 def delete_search_profile():
     id = app.current_request.query_params.get('id')
-    return {"hello"}
+    return {"hello" : "world"}
 
 
