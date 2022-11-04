@@ -20,12 +20,19 @@ def get_search_profile():
     
     search_profile = search_profile_resp['Item']
 
-    return {"hello": search_profile_resp}
+    return { search_profile_resp }
 
 
 @app.route("/searchprofiles", methods=['POST'])
 def create_search_profile():
-    id = app.current_request.query_params.get('id')
+    search_profiles_table = dynamodb.Table('search-profiles') 
+    search_profiles_table.put_item(
+                Item={
+                    'year': 'test',
+                    'title': 'test',
+                    'info': 'test'})
+
+
     return {"hello": id}
 
 
