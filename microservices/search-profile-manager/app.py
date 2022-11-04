@@ -29,15 +29,15 @@ def create_search_profile():
     search_profiles_table = dynamodb.Table('search-profiles') 
 
     generated_identifier = uuid.uuid4()
-    search_profiles_table.put_item(
-                Item={
-                    'id': '134134034y',
-                    'name': 'test',
-                    'formatters': ['test'],
-                    'redactions': ['test'],
-                    'sorters': ['test'],
-                    'exclusions': ['test']
-                    })
+    # search_profiles_table.put_item(
+    #             Item={
+    #                 'id': '134134034y',
+    #                 'name': 'test',
+    #                 'formatters': ['test'],
+    #                 'redactions': ['test'],
+    #                 'sorters': ['test'],
+    #                 'exclusions': ['test']
+    #                 })
 
 
     return {"hello": id}
