@@ -49,6 +49,8 @@ def create_search_profile():
 @app.route("/searchprofiles", methods=['PUT'])
 def update_search_profile():
 
+    search_profile_id = app.current_request.query_params.get('id')
+
     request = app.current_request.json_body
 
     search_profiles_table = dynamodb.Table('search-profiles') 
@@ -84,3 +86,75 @@ def delete_search_profile():
     return {"id" : search_profile_id}
 
 
+#######################
+#Search Consumer Routes
+#######################
+
+@app.route("/searchprofiles/consumers", methods=['GET'])
+def get_search_consumer():
+    search_consumer_api_key = app.current_request.query_params.get('key')
+    search_consumers_table = dynamodb.Table('search-consumers')      
+    
+    search_consumers_resp = search_pconsumers_table.get_item(
+            Key={
+                'key' : search_consumer_api_key,
+            }
+        )
+    
+    search_consumer = search_consumer_resp['Item']
+
+    return { "searchconsumer": search_consumer_resp }
+
+
+@app.route("/searchprofiles/consumers", methods=['POST'])
+def create_search_consumer():
+
+    request = app.current_request.json_body
+
+    search_consumers_table = dynamodb.Table('search-consumers')      
+
+    search_consumers_table.put_item(
+                Item={
+                    'key': request["key"],
+                    'name': request["name"],
+                    'search-profile-id': request["search-profile-id"],
+                    })
+
+
+    return {"id" : request["key"]}
+
+
+@app.route("/searchprofiles/consumers", methods=['PUT'])
+def update_search_consumer():
+
+    search_consumer_api_key = app.current_request.query_params.get('key')
+
+    request = app.current_request.json_body
+
+    search_consumers_table = dynamodb.Table('search-consumers')      
+
+    search_consumers_table.update_item(
+                Key={'key': search_consumer_api_key},
+                UpdateExpression="set name=:n, search-profile-id=:s",
+                ExpressionAttributeValues={
+                    ':n': request["name"], 
+                    ':s': request["search-profile-id"]
+                    },
+                ReturnValues="UPDATED_NEW")
+
+    return {"id" : search_consumer_api_key}
+
+
+@app.route("/searchprofiles/consumers", methods=['DELETE'])
+def delete_search_consumer():
+    search_consumer_api_key = app.current_request.query_params.get('key')
+
+    search_consumers_table = dynamodb.Table('search-consumers')      
+
+    search_consumers_table.delete_item(
+        Key={
+            'key' : search_consumer_api_key,
+        }
+    )
+
+    return {"id" : search_consumer_api_key}
