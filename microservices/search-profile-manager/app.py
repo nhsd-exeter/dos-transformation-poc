@@ -28,7 +28,7 @@ def get_search_profile():
 def create_search_profile():
     search_profiles_table = dynamodb.Table('search-profiles') 
 
-    generated_identifier = uuid.uuid4()
+    generated_identifier = uuid.uuid4().hex
     search_profiles_table.put_item(
                 Item={
                     'id': generated_identifier,
