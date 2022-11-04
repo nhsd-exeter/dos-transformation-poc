@@ -46,6 +46,29 @@ def create_search_profile():
     return {"id" : generated_identifier}
 
 
+@app.route("/searchprofiles", methods=['PUT'])
+def update_search_profile():
+
+    request = app.current_request.json_body
+
+    search_profiles_table = dynamodb.Table('search-profiles') 
+
+    search_profiles_table.update_item(
+                Key={'id': search_profile_id},
+                UpdateExpression="set name=:n, formatters=:f, redactions=:r, exclusions=:e, sorters=:s",
+                ExpressionAttributeValues={
+                    ':n': request["name"], 
+                    ':f': request["formatters"],
+                    ':r': request["redactions"],
+                    ':e': request["exclusions"],
+                    ':s': request["sorterss"]
+
+                    },
+                ReturnValues="UPDATED_NEW")
+
+    return {"id" : search_profile_id}
+
+
 @app.route("/searchprofiles", methods=['DELETE'])
 def delete_search_profile():
     search_profile_id = app.current_request.query_params.get('id')
