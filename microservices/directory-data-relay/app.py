@@ -3,6 +3,8 @@ import boto3
 import requests
 from requests_aws4auth import AWS4Auth
 
+#comment
+
 region = 'eu-west-2'
 service = 'es'
 credentials = boto3.Session().get_credentials()
