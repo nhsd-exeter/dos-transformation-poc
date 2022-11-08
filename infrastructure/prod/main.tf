@@ -11,18 +11,15 @@ provider "aws" {
   skip_requesting_account_id = false
 }
 
-locals {
-  domain_name = "api-integration-testing.co.uk" 
-}
 
 ###################
-# HTTP API Gateway
+# API Gateway
 ###################
 
 module "api_gateway" {
   source = "terraform-aws-modules/apigateway-v2/aws"
 
-  name          = "future-dos-http"
+  name          = "future-dos-http2"
   description   = "HTTP API Gateway demonstrator for a future DoS"
   protocol_type = "HTTP"
 
@@ -130,37 +127,7 @@ module "api_gateway" {
   }
 }
 
-######
-# ACM
-######
 
-data "aws_route53_zone" "this" {
-  name = local.domain_name
-}
-
-module "acm" {
-  source  = "terraform-aws-modules/acm/aws"
-  version = "~> 3.0"
-
-  domain_name               = local.domain_name
-  zone_id                   = data.aws_route53_zone.this.id
-}
-
-##########
-# Route53
-##########
-
-resource "aws_route53_record" "api" {
-  zone_id = data.aws_route53_zone.this.zone_id
-  name    = local.domain_name
-  type    = "A"
-
-  alias {
-    name                   = module.api_gateway.apigatewayv2_domain_name_configuration[0].target_domain_name
-    zone_id                = module.api_gateway.apigatewayv2_domain_name_configuration[0].hosted_zone_id
-    evaluate_target_health = false
-  }
-}
 
 #############################
 # AWS API Gateway Authorizer
@@ -212,7 +179,7 @@ module "directory-search-lambda" {
   handler       = "app.lambda_handler"
   runtime       = "python3.9"
 
-  source_path = "../microservices/directory-search/"
+  source_path = "../../microservices/directory-search/"
 
   publish      = true
 
@@ -234,7 +201,7 @@ module "directory-data-manager-lambda" {
   handler       = "app.lambda_handler"
   runtime       = "python3.9"
 
-  source_path = "../microservices/directory-data-manager/"
+  source_path = "../../microservices/directory-data-manager/"
 
   publish      = true
 
@@ -256,7 +223,7 @@ module "search-profile-manager-lambda" {
   handler       = "app.lambda_handler"
   runtime       = "python3.9"
 
-  source_path = "../microservices/search-profile-manager/"
+  source_path = "../../microservices/search-profile-manager/"
 
   publish      = true
 
@@ -271,41 +238,7 @@ module "search-profile-manager-lambda" {
 
 
 
-###############################################
-# S3 bucket and TLS certificate for truststore
-###############################################
 
-resource "aws_s3_bucket" "truststore" {
-  bucket = "future-dos-truststore"
-}
-
-resource "aws_s3_bucket_object" "truststore" {
-  bucket                 = aws_s3_bucket.truststore.bucket
-  key                    = "truststore.pem"
-  server_side_encryption = "AES256"
-  content                = tls_self_signed_cert.example.cert_pem
-}
-
-resource "tls_private_key" "private_key" {
-  algorithm = "RSA"
-}
-
-resource "tls_self_signed_cert" "example" {
-  is_ca_certificate = true
-  private_key_pem   = tls_private_key.private_key.private_key_pem
-
-  subject {
-    common_name  = "example.com"
-    organization = "Example DoS"
-  }
-
-  validity_period_hours = 12
-
-  allowed_uses = [
-    "cert_signing",
-    "server_auth",
-  ]
-}
 
 ##########################
 # DynamoDB Service Table
