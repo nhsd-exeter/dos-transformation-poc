@@ -144,7 +144,7 @@ resource "aws_api_gateway_method" "consumers_DELETE" {
   rest_api_id   = aws_api_gateway_rest_api.DoS_REST.id
 }
 
-resource "aws_api_gateway_integration" consumers_GET_integration" {
+resource "aws_api_gateway_integration" "consumers_GET_integration" {
   rest_api_id             = aws_api_gateway_rest_api.DoS_REST.id
   resource_id             = aws_api_gateway_resourceconsumers.id
   http_method             = aws_api_gateway_method.method.http_method
@@ -153,7 +153,7 @@ resource "aws_api_gateway_integration" consumers_GET_integration" {
   uri                     = module.search-profile-manager-lambda.lambda_function_arn
 }
 
-resource "aws_api_gateway_integration" consumers_POST_integration" {
+resource "aws_api_gateway_integration" "consumers_POST_integration" {
   rest_api_id             = aws_api_gateway_rest_api.DoS_REST.id
   resource_id             = aws_api_gateway_resourceconsumers.id
   http_method             = aws_api_gateway_method.method.http_method
@@ -162,7 +162,7 @@ resource "aws_api_gateway_integration" consumers_POST_integration" {
   uri                     = module.search-profile-manager-lambda.lambda_function_arn
 }
 
-resource "aws_api_gateway_integration" consumers_DELETE_integration" {
+resource "aws_api_gateway_integration" "consumers_DELETE_integration" {
   rest_api_id             = aws_api_gateway_rest_api.DoS_REST.id
   resource_id             = aws_api_gateway_resourceconsumers.id
   http_method             = aws_api_gateway_method.method.http_method
