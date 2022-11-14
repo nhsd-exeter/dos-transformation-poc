@@ -269,7 +269,7 @@ resource "aws_api_gateway_authorizer" "DoS_Users" {
   name                   = "DoS Users"
   rest_api_id            = aws_api_gateway_rest_api.DoS_REST.id
   type                   = "COGNITO_USER_POOLS"
-  provider_arns          = [${aws_cognito_user_pool.DoS_Users.arn}]
+  provider_arns          = ["${aws_cognito_user_pool.DoS_Users.arn}"]
 }
 
 
