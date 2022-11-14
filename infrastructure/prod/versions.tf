@@ -2,7 +2,7 @@ terraform {
   required_version = ">= 0.13.1"
   
   backend "s3" {
-    bucket = "terraform"
+    bucket = "terraform251087"
     key    = "state"
     region = "eu-west-2"
   }
