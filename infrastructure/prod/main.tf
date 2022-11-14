@@ -44,7 +44,7 @@ resource "aws_api_gateway_integration" "search_POST-integration" {
     {
     {
       "input": "{\"search_query\":$util.escapeJavaScript($input.json('$.search_query')),\"api_key\":\"$context.identity.apiKey\"}",
-      "stateMachineArn": "${arn:aws:states:eu-west-2:202422821117:stateMachine:DoSSearchWorkflow}"
+      "stateMachineArn": "example"
     } 
     }
     EOF
