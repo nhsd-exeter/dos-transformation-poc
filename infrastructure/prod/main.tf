@@ -37,7 +37,7 @@ resource "aws_api_gateway_method" "search_POST" {
 
 resource "aws_api_gateway_integration" "search_POST-integration" {
   rest_api_id = aws_api_gateway_rest_api.DoS_REST.id
-  resource_id = aws_api_gateway_resource.search_POST.id
+  resource_id = aws_api_gateway_resource.search.id
 
   request_templates = {
     "application/json" = <<EOF
@@ -90,7 +90,7 @@ resource "aws_api_gateway_method" "searchprofiles_DELETE" {
 resource "aws_api_gateway_integration" "searchprofiles_GET_integration" {
   rest_api_id             = aws_api_gateway_rest_api.DoS_REST.id
   resource_id             = aws_api_gateway_resource.searchprofiles.id
-  http_method             = aws_api_gateway_method.method.http_method
+  http_method             = aws_api_gateway_method.searchprofiles_GET.http_method
   integration_http_method = "GET"
   type                    = "AWS_PROXY"
   uri                     = module.search-profile-manager-lambda.lambda_function_arn
@@ -99,7 +99,7 @@ resource "aws_api_gateway_integration" "searchprofiles_GET_integration" {
 resource "aws_api_gateway_integration" "searchprofiles_POST_integration" {
   rest_api_id             = aws_api_gateway_rest_api.DoS_REST.id
   resource_id             = aws_api_gateway_resource.searchprofiles.id
-  http_method             = aws_api_gateway_method.method.http_method
+  http_method             = aws_api_gateway_method.searchprofiles_POST.http_method
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
   uri                     = module.search-profile-manager-lambda.lambda_function_arn
@@ -108,7 +108,7 @@ resource "aws_api_gateway_integration" "searchprofiles_POST_integration" {
 resource "aws_api_gateway_integration" "searchprofiles_DELETE_integration" {
   rest_api_id             = aws_api_gateway_rest_api.DoS_REST.id
   resource_id             = aws_api_gateway_resource.searchprofiles.id
-  http_method             = aws_api_gateway_method.method.http_method
+  http_method             = aws_api_gateway_method.searchprofiles_DELETE.http_method
   integration_http_method = "DELETE"
   type                    = "AWS_PROXY"
   uri                     = module.search-profile-manager-lambda.lambda_function_arn
@@ -147,7 +147,7 @@ resource "aws_api_gateway_method" "consumers_DELETE" {
 resource "aws_api_gateway_integration" "consumers_GET_integration" {
   rest_api_id             = aws_api_gateway_rest_api.DoS_REST.id
   resource_id             = aws_api_gateway_resourceconsumers.id
-  http_method             = aws_api_gateway_method.method.http_method
+  http_method             = aws_api_gateway_method.consumers_GET.http_method
   integration_http_method = "GET"
   type                    = "AWS_PROXY"
   uri                     = module.search-profile-manager-lambda.lambda_function_arn
@@ -156,7 +156,7 @@ resource "aws_api_gateway_integration" "consumers_GET_integration" {
 resource "aws_api_gateway_integration" "consumers_POST_integration" {
   rest_api_id             = aws_api_gateway_rest_api.DoS_REST.id
   resource_id             = aws_api_gateway_resourceconsumers.id
-  http_method             = aws_api_gateway_method.method.http_method
+  http_method             = aws_api_gateway_method.consumers_POST.http_method
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
   uri                     = module.search-profile-manager-lambda.lambda_function_arn
@@ -165,7 +165,7 @@ resource "aws_api_gateway_integration" "consumers_POST_integration" {
 resource "aws_api_gateway_integration" "consumers_DELETE_integration" {
   rest_api_id             = aws_api_gateway_rest_api.DoS_REST.id
   resource_id             = aws_api_gateway_resourceconsumers.id
-  http_method             = aws_api_gateway_method.method.http_method
+  http_method             = aws_api_gateway_method.consumers_DELETE.http_method
   integration_http_method = "DELETE"
   type                    = "AWS_PROXY"
   uri                     = module.search-profile-manager-lambda.lambda_function_arn
@@ -204,7 +204,7 @@ resource "aws_api_gateway_method" "services_DELETE" {
 resource "aws_api_gateway_integration" "services_GET_integration" {
   rest_api_id             = aws_api_gateway_rest_api.DoS_REST.id
   resource_id             = aws_api_gateway_resource.services.id
-  http_method             = aws_api_gateway_method.method.http_method
+  http_method             = aws_api_gateway_method.services_GET.http_method
   integration_http_method = "GET"
   type                    = "AWS_PROXY"
   uri                     = module.directory-data-manager-lambda.lambda_function_arn
@@ -213,7 +213,7 @@ resource "aws_api_gateway_integration" "services_GET_integration" {
 resource "aws_api_gateway_integration" "services_POST_integration" {
   rest_api_id             = aws_api_gateway_rest_api.DoS_REST.id
   resource_id             = aws_api_gateway_resource.services.id
-  http_method             = aws_api_gateway_method.method.http_method
+  http_method             = aws_api_gateway_method.services_POST.http_method
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
   uri                     = module.directory-data-manager-lambda.lambda_function_arn
@@ -222,14 +222,14 @@ resource "aws_api_gateway_integration" "services_POST_integration" {
 resource "aws_api_gateway_integration" "services_DELETE_integration" {
   rest_api_id             = aws_api_gateway_rest_api.DoS_REST.id
   resource_id             = aws_api_gateway_resource.services.id
-  http_method             = aws_api_gateway_method.method.http_method
+  http_method             = aws_api_gateway_method.services_DELETE.http_method
   integration_http_method = "DELETE"
   type                    = "AWS_PROXY"
   uri                     = module.directory-data-manager-lambda.lambda_function_arn
 }
 
-resource "aws_api_gateway_deployment" "example" {
-  rest_api_id = aws_api_gateway_rest_api.example.id
+resource "aws_api_gateway_deployment" "main" {
+  rest_api_id = aws_api_gateway_rest_api.DoS_REST.id
 
   triggers = {
     # NOTE: The configuration below will satisfy ordering considerations,
@@ -240,9 +240,9 @@ resource "aws_api_gateway_deployment" "example" {
     #       resources will show a difference after the initial implementation.
     #       It will stabilize to only change when resources change afterwards.
     redeployment = sha1(jsonencode([
-      aws_api_gateway_resource.example.id,
-      aws_api_gateway_method.example.id,
-      aws_api_gateway_integration.example.id,
+      aws_api_gateway_resource.DoS_REST.id,
+      aws_api_gateway_method.serch.id,
+      aws_api_gateway_integration.search_POST.id,
     ]))
   }
 
@@ -251,10 +251,10 @@ resource "aws_api_gateway_deployment" "example" {
   }
 }
 
-resource "aws_api_gateway_stage" "example" {
-  deployment_id = aws_api_gateway_deployment.example.id
-  rest_api_id   = aws_api_gateway_rest_api.example.id
-  stage_name    = "example"
+resource "aws_api_gateway_stage" "main" {
+  deployment_id = aws_api_gateway_deployment.main.id
+  rest_api_id   = aws_api_gateway_rest_api.DoS_REST.id
+  stage_name    = "main"
 }
 
 
@@ -273,7 +273,7 @@ resource "aws_api_gateway_authorizer" "DoS_Users" {
 ########################
 
 resource "aws_cognito_user_pool" "DoS_Users" {
-  name = "user-pool-future-dos"
+  name = "user-pool-future-dos2"
 }
 
 
@@ -293,117 +293,117 @@ resource "aws_cloudwatch_log_group" "logs" {
 
 
 
-module "directory-search-lambda" {
-  source  = "terraform-aws-modules/lambda/aws"
-  version = "~> 2.0"
+# module "directory-search-lambda" {
+#   source  = "terraform-aws-modules/lambda/aws"
+#   version = "~> 2.0"
 
-  function_name = "directory-search"
-  description   = "Primary DoS search service"
-  handler       = "app.lambda_handler"
-  runtime       = "python3.9"
+#   function_name = "directory-search"
+#   description   = "Primary DoS search service"
+#   handler       = "app.lambda_handler"
+#   runtime       = "python3.9"
 
-  source_path = "../../microservices/directory-search/"
+#   source_path = "../../microservices/directory-search/"
 
-  publish      = true
+#   publish      = true
 
-  allowed_triggers = {
-    AllowExecutionFromAPIGateway = {
-      service    = "apigateway"
-      source_arn = "${module.api_gateway.apigatewayv2_api_execution_arn}/*/*"
-    }
-  }
-}
-
-
-module "directory-data-manager-lambda" {
-  source  = "terraform-aws-modules/lambda/aws"
-  version = "~> 2.0"
-
-  function_name = "directory-data-manager"
-  description   = "Microservice for management of DoS data"
-  handler       = "app.lambda_handler"
-  runtime       = "python3.9"
-
-  source_path = "../../microservices/directory-data-manager/"
-
-  publish      = true
+#   allowed_triggers = {
+#     AllowExecutionFromAPIGateway = {
+#       service    = "apigateway"
+#       source_arn = "${module.api_gateway.apigatewayv2_api_execution_arn}/*/*"
+#     }
+#   }
+# }
 
 
-  allowed_triggers = {
-    AllowExecutionFromAPIGateway = {
-      service    = "apigateway"
-      source_arn = "${module.api_gateway.apigatewayv2_api_execution_arn}/*/*"
-    }
-  }
-}
+# module "directory-data-manager-lambda" {
+#   source  = "terraform-aws-modules/lambda/aws"
+#   version = "~> 2.0"
 
-module "search-profile-manager-lambda" {
-  source  = "terraform-aws-modules/lambda/aws"
-  version = "~> 2.0"
+#   function_name = "directory-data-manager"
+#   description   = "Microservice for management of DoS data"
+#   handler       = "app.lambda_handler"
+#   runtime       = "python3.9"
 
-  function_name = "search-profile-manager"
-  description   = "Microservice for search profiles"
-  handler       = "app.lambda_handler"
-  runtime       = "python3.9"
+#   source_path = "../../microservices/directory-data-manager/"
 
-  source_path = "../../microservices/search-profile-manager/"
-
-  publish      = true
+#   publish      = true
 
 
-  allowed_triggers = {
-    AllowExecutionFromAPIGateway = {
-      service    = "apigateway"
-      source_arn = "${module.api_gateway.apigatewayv2_api_execution_arn}/*/*"
-    }
-  }
-}
+#   allowed_triggers = {
+#     AllowExecutionFromAPIGateway = {
+#       service    = "apigateway"
+#       source_arn = "${module.api_gateway.apigatewayv2_api_execution_arn}/*/*"
+#     }
+#   }
+# }
+
+# module "search-profile-manager-lambda" {
+#   source  = "terraform-aws-modules/lambda/aws"
+#   version = "~> 2.0"
+
+#   function_name = "search-profile-manager"
+#   description   = "Microservice for search profiles"
+#   handler       = "app.lambda_handler"
+#   runtime       = "python3.9"
+
+#   source_path = "../../microservices/search-profile-manager/"
+
+#   publish      = true
 
 
-module "search-profiler-lambda" {
-  source  = "terraform-aws-modules/lambda/aws"
-  version = "~> 2.0"
-
-  function_name = "search-profiler"
-  description   = "Microservice for filtering searches based on profiles"
-  handler       = "app.lambda_handler"
-  runtime       = "python3.9"
-
-  source_path = "../../microservices/search-profiler/"
-
-  publish      = true
+#   allowed_triggers = {
+#     AllowExecutionFromAPIGateway = {
+#       service    = "apigateway"
+#       source_arn = "${module.api_gateway.apigatewayv2_api_execution_arn}/*/*"
+#     }
+#   }
+# }
 
 
-  allowed_triggers = {
-    AllowExecutionFromAPIGateway = {
-      service    = "apigateway"
-      source_arn = "${module.api_gateway.apigatewayv2_api_execution_arn}/*/*"
-    }
-  }
-}
+# module "search-profiler-lambda" {
+#   source  = "terraform-aws-modules/lambda/aws"
+#   version = "~> 2.0"
+
+#   function_name = "search-profiler"
+#   description   = "Microservice for filtering searches based on profiles"
+#   handler       = "app.lambda_handler"
+#   runtime       = "python3.9"
+
+#   source_path = "../../microservices/search-profiler/"
+
+#   publish      = true
 
 
-module "directory-data-relay-lambda" {
-  source  = "terraform-aws-modules/lambda/aws"
-  version = "~> 2.0"
-
-  function_name = "directory-data-relay"
-  description   = "Microservice for populating Opensearch with Dynamo data"
-  handler       = "app.lambda_handler"
-  runtime       = "python3.9"
-
-  source_path = "../../microservices/directory-data-relay/"
-
-  publish      = true
+#   allowed_triggers = {
+#     AllowExecutionFromAPIGateway = {
+#       service    = "apigateway"
+#       source_arn = "${module.api_gateway.apigatewayv2_api_execution_arn}/*/*"
+#     }
+#   }
+# }
 
 
-  allowed_triggers = {
-    AllowExecutionFromAPIGateway = {
-      service    = "apigateway"
-      source_arn = "${module.api_gateway.apigatewayv2_api_execution_arn}/*/*"
-    }
-  }
-}
+# module "directory-data-relay-lambda" {
+#   source  = "terraform-aws-modules/lambda/aws"
+#   version = "~> 2.0"
+
+#   function_name = "directory-data-relay"
+#   description   = "Microservice for populating Opensearch with Dynamo data"
+#   handler       = "app.lambda_handler"
+#   runtime       = "python3.9"
+
+#   source_path = "../../microservices/directory-data-relay/"
+
+#   publish      = true
+
+
+#   allowed_triggers = {
+#     AllowExecutionFromAPIGateway = {
+#       service    = "apigateway"
+#       source_arn = "${module.api_gateway.apigatewayv2_api_execution_arn}/*/*"
+#     }
+#   }
+# }
 
 
 ##########################
