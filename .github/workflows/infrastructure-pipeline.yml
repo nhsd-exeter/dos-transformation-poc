@@ -26,6 +26,11 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'   
+
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v2
 

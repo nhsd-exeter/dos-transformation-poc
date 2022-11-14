@@ -25,6 +25,10 @@ provider "aws" {
 
 resource "aws_api_gateway_rest_api" "DoS_REST" {
   name = "DoS_REST"
+  endpoint_configuration = 
+  {
+    types = "REGIONAL"
+  }
 }
 
 //SEARCH ENDPOINTS
@@ -45,6 +49,7 @@ resource "aws_api_gateway_method" "search_POST" {
 resource "aws_api_gateway_integration" "search_POST_integration" {
   rest_api_id = aws_api_gateway_rest_api.DoS_REST.id
   resource_id = aws_api_gateway_resource.search.id
+  credentials = "${aws_iam_role.APIGatewaytoDoSSearchWorkflow.arn}"
 
   request_templates = {
     "application/json" = <<EOF
@@ -266,7 +271,7 @@ resource "aws_api_gateway_stage" "main" {
 
 
 resource "aws_api_gateway_authorizer" "DoS_Users" {
-  name                   = "DoS Users"
+  name                   = "DoS_Users"
   rest_api_id            = aws_api_gateway_rest_api.DoS_REST.id
   type                   = "COGNITO_USER_POOLS"
   provider_arns          = ["${aws_cognito_user_pool.DoS_Users.arn}"]
@@ -290,7 +295,7 @@ resource "aws_cognito_user_pool" "DoS_Users" {
 
 
 resource "aws_cloudwatch_log_group" "logs" {
-  name = "future-dos"
+  name = "future-dos2"
 }
 
 
@@ -304,7 +309,7 @@ module "directory-search-lambda" {
   source  = "terraform-aws-modules/lambda/aws"
   version = "~> 2.0"
 
-  function_name = "directory-search"
+  function_name = "directory-search2"
   description   = "Primary DoS search service"
   handler       = "app.lambda_handler"
   runtime       = "python3.9"
@@ -531,3 +536,42 @@ module "dynamodb_table" {
 #     Domain = "TestDomain"
 #   }
 # }
+
+
+######
+# IAM
+######
+
+resource "aws_iam_role" "APIGatewaytoDoSSearchWorkflow" {
+  name               = "APIGatewaytoDoSSearchWorkflow2"
+  assume_role_policy = jsonencode({
+    Version: "2012-10-17",
+    Statement: [
+        {
+            Effect: "Allow",
+            Principal: {
+                Service: "apigateway.amazonaws.com"
+            },
+            Action: "sts:AssumeRole"
+        }
+    ]
+})
+
+  inline_policy {
+    name = "APIGatewaytoStepFunction"
+
+    policy = jsonencode({
+    Version: "2012-10-17",
+    Statement: [
+        {
+            Sid: "ExecuteStateMachine",
+            Effect: "Allow",
+            Action: "states:StartSyncExecution",
+            Resource: [
+                "arn:aws:states:eu-west-2:202422821117:stateMachine:DoSSearchWorkflow"
+            ]
+        }
+    ]
+})
+  }
+}
