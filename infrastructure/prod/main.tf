@@ -42,7 +42,7 @@ resource "aws_api_gateway_method" "search_POST" {
   rest_api_id   = aws_api_gateway_rest_api.DoS_REST.id
 }
 
-resource "aws_api_gateway_integration" "search_POST-integration" {
+resource "aws_api_gateway_integration" "search_POST_integration" {
   rest_api_id = aws_api_gateway_rest_api.DoS_REST.id
   resource_id = aws_api_gateway_resource.search.id
 
@@ -316,7 +316,7 @@ module "directory-search-lambda" {
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
       service    = "apigateway"
-      source_arn = "${aws_api_gateway_rest_api.DoS_REST.api_execution_arn}/*/*"
+      source_arn = "${aws_api_gateway_rest_api.DoS_REST.execution_arn}/*/*"
     }
   }
 }
