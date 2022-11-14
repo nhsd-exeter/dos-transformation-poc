@@ -104,7 +104,7 @@ resource "aws_api_gateway_integration" "searchprofiles_GET_integration" {
   http_method             = aws_api_gateway_method.searchprofiles_GET.http_method
   integration_http_method = "GET"
   type                    = "AWS_PROXY"
-  uri                     = module.search-profile-manager-lambda.lambda_function_arn
+  uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${module.search-profile-manager-lambda.lambda_function_arn}/invocations"
 }
 
 resource "aws_api_gateway_integration" "searchprofiles_POST_integration" {
@@ -113,7 +113,7 @@ resource "aws_api_gateway_integration" "searchprofiles_POST_integration" {
   http_method             = aws_api_gateway_method.searchprofiles_POST.http_method
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
-  uri                     = module.search-profile-manager-lambda.lambda_function_arn
+  uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${module.search-profile-manager-lambda.lambda_function_arn}/invocations"
 }
 
 resource "aws_api_gateway_integration" "searchprofiles_DELETE_integration" {
@@ -122,7 +122,7 @@ resource "aws_api_gateway_integration" "searchprofiles_DELETE_integration" {
   http_method             = aws_api_gateway_method.searchprofiles_DELETE.http_method
   integration_http_method = "DELETE"
   type                    = "AWS_PROXY"
-  uri                     = module.search-profile-manager-lambda.lambda_function_arn
+  uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${module.search-profile-manager-lambda.lambda_function_arn}/invocations"
 }
 
 
@@ -161,7 +161,7 @@ resource "aws_api_gateway_integration" "consumers_GET_integration" {
   http_method             = aws_api_gateway_method.consumers_GET.http_method
   integration_http_method = "GET"
   type                    = "AWS_PROXY"
-  uri                     = module.search-profile-manager-lambda.lambda_function_arn
+  uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${module.search-profile-manager-lambda.lambda_function_arn}/invocations"
 }
 
 resource "aws_api_gateway_integration" "consumers_POST_integration" {
@@ -170,7 +170,7 @@ resource "aws_api_gateway_integration" "consumers_POST_integration" {
   http_method             = aws_api_gateway_method.consumers_POST.http_method
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
-  uri                     = module.search-profile-manager-lambda.lambda_function_arn
+  uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${module.search-profile-manager-lambda.lambda_function_arn}/invocations"
 }
 
 resource "aws_api_gateway_integration" "consumers_DELETE_integration" {
@@ -179,7 +179,7 @@ resource "aws_api_gateway_integration" "consumers_DELETE_integration" {
   http_method             = aws_api_gateway_method.consumers_DELETE.http_method
   integration_http_method = "DELETE"
   type                    = "AWS_PROXY"
-  uri                     = module.search-profile-manager-lambda.lambda_function_arn
+  uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${module.search-profile-manager-lambda.lambda_function_arn}/invocations"
 }
 
 //SERVICES ENDPOINTS
@@ -218,7 +218,7 @@ resource "aws_api_gateway_integration" "services_GET_integration" {
   http_method             = aws_api_gateway_method.services_GET.http_method
   integration_http_method = "GET"
   type                    = "AWS_PROXY"
-  uri                     = module.directory-data-manager-lambda.lambda_function_arn
+  uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${module.directory-data-manager-lambda.lambda_function_arn}/invocations"
 }
 
 resource "aws_api_gateway_integration" "services_POST_integration" {
@@ -227,7 +227,7 @@ resource "aws_api_gateway_integration" "services_POST_integration" {
   http_method             = aws_api_gateway_method.services_POST.http_method
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
-  uri                     = module.directory-data-manager-lambda.lambda_function_arn
+  uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${module.directory-data-manager-lambda.lambda_function_arn}/invocations"
 }
 
 resource "aws_api_gateway_integration" "services_DELETE_integration" {
@@ -236,7 +236,7 @@ resource "aws_api_gateway_integration" "services_DELETE_integration" {
   http_method             = aws_api_gateway_method.services_DELETE.http_method
   integration_http_method = "DELETE"
   type                    = "AWS_PROXY"
-  uri                     = module.directory-data-manager-lambda.lambda_function_arn
+  uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${module.directory-data-manager-lambda.lambda_function_arn}/invocations"
 }
 
 resource "aws_api_gateway_deployment" "main" {
