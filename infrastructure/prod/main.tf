@@ -1,5 +1,10 @@
+variable "aws_region" {
+  type = string
+  default = "eu-west-2"
+}
+
 provider "aws" {
-  region = "eu-west-2"
+  region = var.aws_region
 
   # Make it faster by skipping something
   skip_get_ec2_platforms      = true
@@ -12,12 +17,14 @@ provider "aws" {
 }
 
 
+
+
 ###################
 # API Gateway
 ###################
 
 resource "aws_api_gateway_rest_api" "DoS_REST" {
-  name = "example"
+  name = "DoS_REST"
 }
 
 //SEARCH ENDPOINTS
@@ -241,7 +248,7 @@ resource "aws_api_gateway_deployment" "main" {
     #       It will stabilize to only change when resources change afterwards.
     redeployment = sha1(jsonencode([
       aws_api_gateway_resource.DoS_REST.id,
-      aws_api_gateway_method.serch.id,
+      aws_api_gateway_method.search.id,
       aws_api_gateway_integration.search_POST.id,
     ]))
   }
@@ -293,117 +300,117 @@ resource "aws_cloudwatch_log_group" "logs" {
 
 
 
-# module "directory-search-lambda" {
-#   source  = "terraform-aws-modules/lambda/aws"
-#   version = "~> 2.0"
+module "directory-search-lambda" {
+  source  = "terraform-aws-modules/lambda/aws"
+  version = "~> 2.0"
 
-#   function_name = "directory-search"
-#   description   = "Primary DoS search service"
-#   handler       = "app.lambda_handler"
-#   runtime       = "python3.9"
+  function_name = "directory-search"
+  description   = "Primary DoS search service"
+  handler       = "app.lambda_handler"
+  runtime       = "python3.9"
 
-#   source_path = "../../microservices/directory-search/"
+  source_path = "../../microservices/directory-search/"
 
-#   publish      = true
+  publish      = true
 
-#   allowed_triggers = {
-#     AllowExecutionFromAPIGateway = {
-#       service    = "apigateway"
-#       source_arn = "${module.api_gateway.apigatewayv2_api_execution_arn}/*/*"
-#     }
-#   }
-# }
-
-
-# module "directory-data-manager-lambda" {
-#   source  = "terraform-aws-modules/lambda/aws"
-#   version = "~> 2.0"
-
-#   function_name = "directory-data-manager"
-#   description   = "Microservice for management of DoS data"
-#   handler       = "app.lambda_handler"
-#   runtime       = "python3.9"
-
-#   source_path = "../../microservices/directory-data-manager/"
-
-#   publish      = true
+  allowed_triggers = {
+    AllowExecutionFromAPIGateway = {
+      service    = "apigateway"
+      source_arn = "${module.api_gateway.DoS_REST.api_execution_arn}/*/*"
+    }
+  }
+}
 
 
-#   allowed_triggers = {
-#     AllowExecutionFromAPIGateway = {
-#       service    = "apigateway"
-#       source_arn = "${module.api_gateway.apigatewayv2_api_execution_arn}/*/*"
-#     }
-#   }
-# }
+module "directory-data-manager-lambda" {
+  source  = "terraform-aws-modules/lambda/aws"
+  version = "~> 2.0"
 
-# module "search-profile-manager-lambda" {
-#   source  = "terraform-aws-modules/lambda/aws"
-#   version = "~> 2.0"
+  function_name = "directory-data-manager2"
+  description   = "Microservice for management of DoS data"
+  handler       = "app.lambda_handler"
+  runtime       = "python3.9"
 
-#   function_name = "search-profile-manager"
-#   description   = "Microservice for search profiles"
-#   handler       = "app.lambda_handler"
-#   runtime       = "python3.9"
+  source_path = "../../microservices/directory-data-manager/"
 
-#   source_path = "../../microservices/search-profile-manager/"
-
-#   publish      = true
+  publish      = true
 
 
-#   allowed_triggers = {
-#     AllowExecutionFromAPIGateway = {
-#       service    = "apigateway"
-#       source_arn = "${module.api_gateway.apigatewayv2_api_execution_arn}/*/*"
-#     }
-#   }
-# }
+  allowed_triggers = {
+    AllowExecutionFromAPIGateway = {
+      service    = "apigateway"
+      source_arn = "${module.api_gateway.DoS_REST.api_execution_arn}/*/*"
+    }
+  }
+}
+
+module "search-profile-manager-lambda" {
+  source  = "terraform-aws-modules/lambda/aws"
+  version = "~> 2.0"
+
+  function_name = "search-profile-manager2"
+  description   = "Microservice for search profiles"
+  handler       = "app.lambda_handler"
+  runtime       = "python3.9"
+
+  source_path = "../../microservices/search-profile-manager/"
+
+  publish      = true
 
 
-# module "search-profiler-lambda" {
-#   source  = "terraform-aws-modules/lambda/aws"
-#   version = "~> 2.0"
-
-#   function_name = "search-profiler"
-#   description   = "Microservice for filtering searches based on profiles"
-#   handler       = "app.lambda_handler"
-#   runtime       = "python3.9"
-
-#   source_path = "../../microservices/search-profiler/"
-
-#   publish      = true
+  allowed_triggers = {
+    AllowExecutionFromAPIGateway = {
+      service    = "apigateway"
+      source_arn = "${module.api_gateway.DoS_REST.api_execution_arn}/*/*"
+    }
+  }
+}
 
 
-#   allowed_triggers = {
-#     AllowExecutionFromAPIGateway = {
-#       service    = "apigateway"
-#       source_arn = "${module.api_gateway.apigatewayv2_api_execution_arn}/*/*"
-#     }
-#   }
-# }
+module "search-profiler-lambda" {
+  source  = "terraform-aws-modules/lambda/aws"
+  version = "~> 2.0"
+
+  function_name = "search-profiler2"
+  description   = "Microservice for filtering searches based on profiles"
+  handler       = "app.lambda_handler"
+  runtime       = "python3.9"
+
+  source_path = "../../microservices/search-profiler/"
+
+  publish      = true
 
 
-# module "directory-data-relay-lambda" {
-#   source  = "terraform-aws-modules/lambda/aws"
-#   version = "~> 2.0"
-
-#   function_name = "directory-data-relay"
-#   description   = "Microservice for populating Opensearch with Dynamo data"
-#   handler       = "app.lambda_handler"
-#   runtime       = "python3.9"
-
-#   source_path = "../../microservices/directory-data-relay/"
-
-#   publish      = true
+  allowed_triggers = {
+    AllowExecutionFromAPIGateway = {
+      service    = "apigateway"
+      source_arn = "${module.api_gateway.DoS_REST.api_execution_arn}/*/*"
+    }
+  }
+}
 
 
-#   allowed_triggers = {
-#     AllowExecutionFromAPIGateway = {
-#       service    = "apigateway"
-#       source_arn = "${module.api_gateway.apigatewayv2_api_execution_arn}/*/*"
-#     }
-#   }
-# }
+module "directory-data-relay-lambda" {
+  source  = "terraform-aws-modules/lambda/aws"
+  version = "~> 2.0"
+
+  function_name = "directory-data-relay2"
+  description   = "Microservice for populating Opensearch with Dynamo data"
+  handler       = "app.lambda_handler"
+  runtime       = "python3.9"
+
+  source_path = "../../microservices/directory-data-relay/"
+
+  publish      = true
+
+
+  allowed_triggers = {
+    AllowExecutionFromAPIGateway = {
+      service    = "apigateway"
+      source_arn = "${module.api_gateway.DoS_REST.api_execution_arn}/*/*"
+    }
+  }
+}
 
 
 ##########################
