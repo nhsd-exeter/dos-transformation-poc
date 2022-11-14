@@ -25,9 +25,9 @@ provider "aws" {
 
 resource "aws_api_gateway_rest_api" "DoS_REST" {
   name = "DoS_REST"
-  endpoint_configuration = 
+  endpoint_configuration 
   {
-    types = "REGIONAL"
+    types = ["REGIONAL"]
   }
 }
 
