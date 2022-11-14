@@ -1,5 +1,11 @@
 terraform {
   required_version = ">= 0.13.1"
+  
+  backend "s3" {
+    bucket = "terraform"
+    key    = "state"
+    region = "eu-west-2"
+  }
 
   required_providers {
     aws = {
@@ -20,3 +26,4 @@ terraform {
     }
   }
 }
+

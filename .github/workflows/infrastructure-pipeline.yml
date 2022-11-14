@@ -41,6 +41,7 @@ jobs:
           cd ./infrastructure/${{ inputs.environment }}
           terraform init
           terraform plan
+          terraform apply -input=false
 
 
 
