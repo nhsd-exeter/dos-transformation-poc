@@ -39,9 +39,9 @@ jobs:
       - name: Initialise and Run Terraform
         run: |
           cd ./infrastructure/${{ inputs.environment }}
-          terraform init
-          terraform plan
-          terraform apply -input=false
+          terraform init -input=false 
+          terraform plan -out=tfplan -input=false 
+          terraform apply -input=false tfplan
 
 
 
