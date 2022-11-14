@@ -153,7 +153,7 @@ resource "aws_api_gateway_method" "consumers_DELETE" {
 
 resource "aws_api_gateway_integration" "consumers_GET_integration" {
   rest_api_id             = aws_api_gateway_rest_api.DoS_REST.id
-  resource_id             = aws_api_gateway_resourceconsumers.id
+  resource_id             = aws_api_gateway_resource.consumers.id
   http_method             = aws_api_gateway_method.consumers_GET.http_method
   integration_http_method = "GET"
   type                    = "AWS_PROXY"
@@ -162,7 +162,7 @@ resource "aws_api_gateway_integration" "consumers_GET_integration" {
 
 resource "aws_api_gateway_integration" "consumers_POST_integration" {
   rest_api_id             = aws_api_gateway_rest_api.DoS_REST.id
-  resource_id             = aws_api_gateway_resourceconsumers.id
+  resource_id             = aws_api_gateway_resource.consumers.id
   http_method             = aws_api_gateway_method.consumers_POST.http_method
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
@@ -171,7 +171,7 @@ resource "aws_api_gateway_integration" "consumers_POST_integration" {
 
 resource "aws_api_gateway_integration" "consumers_DELETE_integration" {
   rest_api_id             = aws_api_gateway_rest_api.DoS_REST.id
-  resource_id             = aws_api_gateway_resourceconsumers.id
+  resource_id             = aws_api_gateway_resource.consumers.id
   http_method             = aws_api_gateway_method.consumers_DELETE.http_method
   integration_http_method = "DELETE"
   type                    = "AWS_PROXY"
@@ -247,9 +247,9 @@ resource "aws_api_gateway_deployment" "main" {
     #       resources will show a difference after the initial implementation.
     #       It will stabilize to only change when resources change afterwards.
     redeployment = sha1(jsonencode([
-      aws_api_gateway_resource.DoS_REST.id,
-      aws_api_gateway_method.search.id,
-      aws_api_gateway_integration.search_POST.id,
+      aws_api_gateway_resource.search.id,
+      aws_api_gateway_method.search_POST.id,
+      aws_api_gateway_integration.search_POST_integration.id,
     ]))
   }
 
@@ -316,7 +316,7 @@ module "directory-search-lambda" {
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
       service    = "apigateway"
-      source_arn = "${module.api_gateway.DoS_REST.api_execution_arn}/*/*"
+      source_arn = "${aws_api_gateway_rest_api.DoS_REST.api_execution_arn}/*/*"
     }
   }
 }
@@ -339,7 +339,7 @@ module "directory-data-manager-lambda" {
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
       service    = "apigateway"
-      source_arn = "${module.api_gateway.DoS_REST.api_execution_arn}/*/*"
+      source_arn = "${aws_api_gateway_rest_api.DoS_REST.api_execution_arn}/*/*"
     }
   }
 }
@@ -361,7 +361,7 @@ module "search-profile-manager-lambda" {
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
       service    = "apigateway"
-      source_arn = "${module.api_gateway.DoS_REST.api_execution_arn}/*/*"
+      source_arn = "${aws_api_gateway_rest_api.DoS_REST.api_execution_arn}/*/*"
     }
   }
 }
@@ -384,7 +384,7 @@ module "search-profiler-lambda" {
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
       service    = "apigateway"
-      source_arn = "${module.api_gateway.DoS_REST.api_execution_arn}/*/*"
+      source_arn = "${aws_api_gateway_rest_api.DoS_REST.api_execution_arn}/*/*"
     }
   }
 }
@@ -407,7 +407,7 @@ module "directory-data-relay-lambda" {
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
       service    = "apigateway"
-      source_arn = "${module.api_gateway.DoS_REST.api_execution_arn}/*/*"
+      source_arn = "${aws_api_gateway_rest_api.DoS_REST.api_execution_arn}/*/*"
     }
   }
 }
