@@ -339,7 +339,7 @@ module "directory-data-manager-lambda" {
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
       service    = "apigateway"
-      source_arn = "${aws_api_gateway_rest_api.DoS_REST.api_execution_arn}/*/*"
+      source_arn = "${aws_api_gateway_rest_api.DoS_REST.execution_arn}/*/*"
     }
   }
 }
@@ -361,7 +361,7 @@ module "search-profile-manager-lambda" {
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
       service    = "apigateway"
-      source_arn = "${aws_api_gateway_rest_api.DoS_REST.api_execution_arn}/*/*"
+      source_arn = "${aws_api_gateway_rest_api.DoS_REST.execution_arn}/*/*"
     }
   }
 }
@@ -384,7 +384,7 @@ module "search-profiler-lambda" {
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
       service    = "apigateway"
-      source_arn = "${aws_api_gateway_rest_api.DoS_REST.api_execution_arn}/*/*"
+      source_arn = "${aws_api_gateway_rest_api.DoS_REST.execution_arn}/*/*"
     }
   }
 }
@@ -407,7 +407,7 @@ module "directory-data-relay-lambda" {
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
       service    = "apigateway"
-      source_arn = "${aws_api_gateway_rest_api.DoS_REST.api_execution_arn}/*/*"
+      source_arn = "${aws_api_gateway_rest_api.DoS_REST.execution_arn}/*/*"
     }
   }
 }
