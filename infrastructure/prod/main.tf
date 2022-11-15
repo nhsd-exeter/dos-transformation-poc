@@ -598,6 +598,8 @@ resource "aws_elasticsearch_domain" "directory_search" {
     internal_user_database_enabled = true
     master_user_options {
       master_user_arn = "arn:aws:iam::202422821117:role/github"
+      master_user_name = "admin"
+      master_user_password = "admin"
     }
   }
 
