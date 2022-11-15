@@ -555,10 +555,6 @@ module "search_step_function" {
       xray = true 
     }
 
-    cloudwatch = {
-      cloudwatch = true 
-    }
-
     lambda = {
       lambda = ["${module.directory-search-lambda.lambda_function_arn}", "${module.search-profiler-lambda.lambda_function_arn}"]
     }
