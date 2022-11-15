@@ -567,7 +567,7 @@ module "search_step_function" {
 # ##########################
 
 variable "domain" {
-  default = "directory_search"
+  default = "directory-search"
 }
 
 data "aws_caller_identity" "current" {}
@@ -589,23 +589,22 @@ resource "aws_elasticsearch_domain" "directory_search" {
   }
 
 
-  access_policies = <<POLICY
-  {
-    "Version": "2012-10-17",
-    "Statement": [
-      {
-        "Effect": "Allow",
-        "Principal": {
-          "AWS": "*"
-        },
-        "Action": "es:*",
-        "Resource": "arn:aws:es:${var.aws_region}:${data.aws_caller_identity.current.account_id}:domain/${var.domain}/*""
-        }
-      ]
-    }
-  POLICY
-
+  access_policies = jsonencode({
+      Version: "2012-10-17",
+      Statement: [
+        {
+          Effect: "Allow",
+          Principal: {
+            "AWS": "*"
+          },
+          Action: "es:*",
+          Resource: "arn:aws:es:${var.aws_region}:${data.aws_caller_identity.current.account_id}:domain/${var.domain}/*"
+          }
+        ]
+      }
+    )
   }
+
 
   resource "null_resource" "elastic_provisioner_script" {
   provisioner "remote-exec" {
