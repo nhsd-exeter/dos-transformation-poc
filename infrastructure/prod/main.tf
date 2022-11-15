@@ -262,9 +262,9 @@ resource "aws_api_gateway_deployment" "main" {
   }
 
   depends_on = [
-      aws_api_gateway_resource.search.id,
-      aws_api_gateway_method.search_POST.id,
-      aws_api_gateway_integration.search_POST_integration.id
+      aws_api_gateway_resource.search,
+      aws_api_gateway_method.search_POST,
+      aws_api_gateway_integration.search_POST_integration
   ]
 }
 
