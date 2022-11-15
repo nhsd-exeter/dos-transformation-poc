@@ -584,6 +584,10 @@ resource "aws_elasticsearch_domain" "directory_search" {
     enabled = true
   }
 
+  encrypt_at_rest {
+    enabled = true
+  }
+
   advanced_security_options {
     enabled = true
     internal_user_database_enabled = true
