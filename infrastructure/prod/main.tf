@@ -567,7 +567,7 @@ module "search_step_function" {
 # ##########################
 
 variable "domain" {
-  default = "directory-search"
+  default = "directory-search2"
 }
 
 data "aws_caller_identity" "current" {}
