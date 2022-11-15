@@ -55,7 +55,7 @@ resource "aws_api_gateway_integration" "search_POST_integration" {
     {
     {
       "input": "{\"search_query\":$util.escapeJavaScript($input.json('$.search_query')),\"api_key\":\"$context.identity.apiKey\"}",
-      "stateMachineArn": "example"
+      "stateMachineArn": "${module.search_step_function.state_machine_arn}"
     } 
     }
     EOF
@@ -424,7 +424,7 @@ module "directory-data-relay-lambda" {
 
 
 ##########################
-# DynamoDB Service Table
+# DynamoDB Tables
 ##########################
 
 module "dynamodb_services_table" {
@@ -479,74 +479,86 @@ module "dynamodb_search_consumers_table" {
 ##########################
 
 
-# locals {
-#   definition_template = <<EOF
-#   {
-#     "Comment": "Perform DoS Directory Search",
-#     "StartAt": "Search-Profiler",
-#     "States": {
-#       "Search-Profiler": {
-#         "Type": "Task",
-#         "Resource": "arn:aws:states:::lambda:invoke",
-#         "OutputPath": "$.Payload",
-#         "Parameters": {
-#           "Payload.$": "$",
-#           "FunctionName": "arn:aws:lambda:eu-west-2:202422821117:function:search-profiler:$LATEST"
-#         },
-#         "Retry": [
-#           {
-#             "ErrorEquals": [
-#               "Lambda.ServiceException",
-#               "Lambda.AWSLambdaException",
-#               "Lambda.SdkClientException"
-#             ],
-#             "IntervalSeconds": 2,
-#             "MaxAttempts": 6,
-#             "BackoffRate": 2
-#           }
-#         ],
-#         "Next": "Directory-Search"
-#       },
-#       "Directory-Search": {
-#         "Type": "Task",
-#         "Resource": "arn:aws:states:::lambda:invoke",
-#         "OutputPath": "$.Payload",
-#         "Parameters": {
-#           "Payload.$": "$",
-#           "FunctionName": "arn:aws:lambda:eu-west-2:202422821117:function:directory-search:$LATEST"
-#         },
-#         "Retry": [
-#           {
-#             "ErrorEquals": [
-#               "Lambda.ServiceException",
-#               "Lambda.AWSLambdaException",
-#               "Lambda.SdkClientException"
-#             ],
-#             "IntervalSeconds": 2,
-#             "MaxAttempts": 6,
-#             "BackoffRate": 2
-#           }
-#         ],
-#         "End": true
-#       }
-#     }
-#   }
-#   EOF
-# }
+locals {
+  definition_template = <<EOF
+  {
+    "Comment": "Perform DoS Directory Search",
+    "StartAt": "Search-Profiler",
+    "States": {
+      "Search-Profiler": {
+        "Type": "Task",
+        "Resource": "arn:aws:states:::lambda:invoke",
+        "OutputPath": "$.Payload",
+        "Parameters": {
+          "Payload.$": "$",
+          "FunctionName": "${module.search-profiler-lambda.lambda_function_arn}:$LATEST"
+        },
+        "Retry": [
+          {
+            "ErrorEquals": [
+              "Lambda.ServiceException",
+              "Lambda.AWSLambdaException",
+              "Lambda.SdkClientException"
+            ],
+            "IntervalSeconds": 2,
+            "MaxAttempts": 6,
+            "BackoffRate": 2
+          }
+        ],
+        "Next": "Directory-Search"
+      },
+      "Directory-Search": {
+        "Type": "Task",
+        "Resource": "arn:aws:states:::lambda:invoke",
+        "OutputPath": "$.Payload",
+        "Parameters": {
+          "Payload.$": "$",
+          "FunctionName": "${module.directory-search-lambda.lambda_function_arn}:$LATEST"
+        },
+        "Retry": [
+          {
+            "ErrorEquals": [
+              "Lambda.ServiceException",
+              "Lambda.AWSLambdaException",
+              "Lambda.SdkClientException"
+            ],
+            "IntervalSeconds": 2,
+            "MaxAttempts": 6,
+            "BackoffRate": 2
+          }
+        ],
+        "End": true
+      }
+    }
+  }
+  EOF
+}
 
-# module "step_function" {
-#   source = "../../"
+module "search_step_function" {
+  source = "terraform-aws-modules/step-functions/aws"
+  name = "DirectorySearchWorkflow2"
+  type = "express"
 
-#   name = "DirectorySearchWorkflow"
+  definition = local.definition_template
 
-#   type = "express"
+  logging_configuration = {
+    include_execution_data = true
+    level                  = "ALL"
+  }
 
-#   definition = local.definition_template
+  service_integrations = {
+    xray = {
+      xray = true 
+    }
 
-#   logging_configuration = {
-#     include_execution_data = true
-#     level                  = "ALL"
-#   }
+    cloudwatch = {
+      cloudwatch = true 
+    }
+
+    lambda = {
+      lambda = ["${module.directory-search-lambda.lambda_function_arn}", "${module.search-profiler-lambda.lambda_function_arn}"]
+    }
+  }
 
 
 # ##########################
