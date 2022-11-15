@@ -601,6 +601,11 @@ resource "aws_elasticsearch_domain" "directory_search" {
     }
   }
 
+  ebs_options {
+    ebs_enabled = true
+    volume_size = "10 GiB"
+  }
+
 
   access_policies = jsonencode({
       Version: "2012-10-17",
