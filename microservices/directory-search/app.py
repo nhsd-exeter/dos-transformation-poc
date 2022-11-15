@@ -23,14 +23,10 @@ def lambda_handler(event, context):
     # Put the user query into the query DSL for more accurate search results.
     # Note that certain fields are boosted (^).
     query = {
-        "size": 25,
-        "query": {
-            "multi_match": {
-                "query": "Test",
-                "fields": ["title^4", "plot^2", "actors", "directors"]
-            }
+        "query" : {
+            "match_all" : {}
         }
-    }
+}
 
     # Elasticsearch 6.x requires an explicit Content-Type header
     headers = { "Content-Type": "application/json" }
@@ -50,14 +46,6 @@ def lambda_handler(event, context):
     # Add the search results to the response
     response['body'] = r.text
 
-    #perform search
-    
-    search_result = "Basildon"
-    
-    resp = {
-      "search_result": search_result
-    }
+    json_response = json.dumps(response)
 
-    json_response = json.dumps(resp)
-
-    return json_response
+    return response
