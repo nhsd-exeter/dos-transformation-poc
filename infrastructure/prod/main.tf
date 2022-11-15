@@ -322,6 +322,7 @@ module "directory-search-lambda" {
   source_path = "../../microservices/directory-search/"
 
   publish      = true
+  ignore_source_code_hash = true
 
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
@@ -344,6 +345,7 @@ module "directory-data-manager-lambda" {
   source_path = "../../microservices/directory-data-manager/"
 
   publish      = true
+  ignore_source_code_hash = true
 
 
   allowed_triggers = {
@@ -366,6 +368,7 @@ module "search-profile-manager-lambda" {
   source_path = "../../microservices/search-profile-manager/"
 
   publish      = true
+  ignore_source_code_hash = true
 
 
   allowed_triggers = {
@@ -389,7 +392,7 @@ module "search-profiler-lambda" {
   source_path = "../../microservices/search-profiler/"
 
   publish      = true
-
+  ignore_source_code_hash = true
 
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
@@ -412,6 +415,7 @@ module "directory-data-relay-lambda" {
   source_path = "../../microservices/directory-data-relay/"
 
   publish      = true
+  ignore_source_code_hash = true
 
 
   allowed_triggers = {
