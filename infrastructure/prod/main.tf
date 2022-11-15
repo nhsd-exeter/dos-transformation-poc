@@ -588,6 +588,10 @@ resource "aws_elasticsearch_domain" "directory_search" {
     enabled = true
   }
 
+  domain_endpoint_options {
+    enforce_https = true
+  }
+
   advanced_security_options {
     enabled = true
     internal_user_database_enabled = true
