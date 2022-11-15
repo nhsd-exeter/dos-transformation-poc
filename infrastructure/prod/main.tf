@@ -563,6 +563,7 @@ module "search_step_function" {
       lambda = ["${module.directory-search-lambda.lambda_function_arn}", "${module.search-profiler-lambda.lambda_function_arn}"]
     }
   }
+}
 
 
 # ##########################
