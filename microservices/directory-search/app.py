@@ -8,7 +8,7 @@ service = 'es'
 credentials = boto3.Session().get_credentials()
 awsauth = AWS4Auth(credentials.access_key, credentials.secret_key, region, service, session_token=credentials.token)
 
-host = 'https://vpc-directory-search-5qbxo6fnd5u5d4uyydeudu6hpm.eu-west-2.es.amazonaws.com'
+host = 'https://search-directory-search-5qbxo6fnd5u5d4uyydeudu6hpm.eu-west-2.es.amazonaws.com'
 index = 'services'
 url = host + '/' + index + '/_search'
 

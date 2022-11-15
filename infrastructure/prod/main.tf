@@ -566,19 +566,41 @@ module "search_step_function" {
 # # Opensearch
 # ##########################
 
+variable "domain" {
+  default = "directory_search"
+}
 
-# resource "aws_elasticsearch_domain" "example" {
-#   domain_name           = "example"
-#   elasticsearch_version = "7.10"
+data "aws_caller_identity" "current" {}
 
-#   cluster_config {
-#     instance_type = "r4.large.elasticsearch"
-#   }
+resource "aws_elasticsearch_domain" "directory_search" {
+  domain_name           = var.domain
+  elasticsearch_version = "7.10"
 
-#   tags = {
-#     Domain = "TestDomain"
-#   }
-# }
+  cluster_config {
+    instance_type = "t3.small.search"
+  }
+
+  access_policies = <<POLICY
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Principal": {
+          "AWS": "*"
+        },
+        "Action": "es:*",
+        "Resource": "arn:aws:es:${var.aws_region}:${data.aws_caller_identity.current.account_id}:domain/${var.domain}/*""
+        }
+      ]
+    }
+  POLICY
+  }
+
+  
+
+
+
 
 
 ######
