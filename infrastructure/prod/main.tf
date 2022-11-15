@@ -260,6 +260,12 @@ resource "aws_api_gateway_deployment" "main" {
   lifecycle {
     create_before_destroy = true
   }
+
+  depends_on = [
+      aws_api_gateway_resource.search.id,
+      aws_api_gateway_method.search_POST.id,
+      aws_api_gateway_integration.search_POST_integration.id
+  ]
 }
 
 resource "aws_api_gateway_stage" "main" {
@@ -424,7 +430,7 @@ module "directory-data-relay-lambda" {
 module "dynamodb_table" {
   source   = "terraform-aws-modules/dynamodb-table/aws"
 
-  name     = "directory2"
+  name     = "services2"
   hash_key = "id"
   autoscaling_enabled = true
 
@@ -434,11 +440,36 @@ module "dynamodb_table" {
       type = "S"
     }
   ]
+}
 
-  tags = {
-    Terraform   = "true"
-    Environment = "staging"
-  }
+module "dynamodb_table" {
+  source   = "terraform-aws-modules/dynamodb-table/aws"
+
+  name     = "search-profiles2"
+  hash_key = "id"
+  autoscaling_enabled = true
+
+  attributes = [
+    {
+      name = "id"
+      type = "S"
+    }
+  ]
+}
+
+module "dynamodb_table" {
+  source   = "terraform-aws-modules/dynamodb-table/aws"
+
+  name     = "search-consumers2"
+  hash_key = "key"
+  autoscaling_enabled = true
+
+  attributes = [
+    {
+      name = "key"
+      type = "S"
+    }
+  ]
 }
 
 
