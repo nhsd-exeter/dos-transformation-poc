@@ -427,7 +427,7 @@ module "directory-data-relay-lambda" {
 # DynamoDB Service Table
 ##########################
 
-module "dynamodb_table" {
+module "dynamodb_services_table" {
   source   = "terraform-aws-modules/dynamodb-table/aws"
 
   name     = "services2"
@@ -442,7 +442,7 @@ module "dynamodb_table" {
   ]
 }
 
-module "dynamodb_table" {
+module "dynamodb_search_profiles_table" {
   source   = "terraform-aws-modules/dynamodb-table/aws"
 
   name     = "search-profiles2"
@@ -457,7 +457,7 @@ module "dynamodb_table" {
   ]
 }
 
-module "dynamodb_table" {
+module "dynamodb_search_consumers_table" {
   source   = "terraform-aws-modules/dynamodb-table/aws"
 
   name     = "search-consumers2"
