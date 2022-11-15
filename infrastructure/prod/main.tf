@@ -580,10 +580,13 @@ resource "aws_elasticsearch_domain" "directory_search" {
     instance_type = "t3.small.search"
   }
 
-  internal_user_database_enabled = true
-  master_user_options {
-    master_user_arn = "arn:aws:iam::202422821117:role/github"
+  advanced_security_options {
+    internal_user_database_enabled = true
+    master_user_options {
+      master_user_arn = "arn:aws:iam::202422821117:role/github"
+    }
   }
+
 
   access_policies = <<POLICY
   {
