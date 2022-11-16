@@ -616,6 +616,7 @@ resource "aws_elasticsearch_domain" "directory_search" {
     ebs_enabled = true
     volume_size = "10"
     iops        = "3000" 
+    volume_type = "gp3"
   }
 
 
