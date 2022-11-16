@@ -46,6 +46,8 @@ def check_user_exists(name):
     r = requests.get(url, auth=awsauth, headers=headers)
     jsonResponse = r.json()
 
+    print(jsonResponse)
+
     if jsonResponse["status"] == "NOT_FOUND":
         return false
     else:
