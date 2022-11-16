@@ -348,8 +348,7 @@ module "directory-data-manager-lambda" {
   publish                = true
   create_package         = false
   local_existing_package = "./misc/init.zip"
-
-  ignore_source_code_hash = true
+  # ignore_source_code_hash = true
 
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
