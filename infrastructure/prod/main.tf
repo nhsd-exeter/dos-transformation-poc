@@ -324,6 +324,12 @@ module "directory-search-lambda" {
   publish      = true
   ignore_source_code_hash = true
 
+  lifecycle {
+    ignore_changes = [
+      archive
+    ]
+  }
+
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
       service    = "apigateway"
@@ -348,6 +354,13 @@ module "directory-data-manager-lambda" {
   ignore_source_code_hash = true
   recreate_missing_package = false
 
+  lifecycle {
+    ignore_changes = [
+      archive
+    ]
+  }
+
+
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
       service    = "apigateway"
@@ -370,6 +383,12 @@ module "search-profile-manager-lambda" {
   publish      = true
   ignore_source_code_hash = true
   recreate_missing_package = false
+
+  lifecycle {
+    ignore_changes = [
+      archive
+    ]
+  }
 
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
@@ -395,6 +414,12 @@ module "search-profiler-lambda" {
   ignore_source_code_hash = true
   recreate_missing_package = false
 
+  lifecycle {
+    ignore_changes = [
+      archive
+    ]
+  }
+
 
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
@@ -419,6 +444,12 @@ module "directory-data-relay-lambda" {
   publish      = true
   ignore_source_code_hash = true
   recreate_missing_package = false
+
+  lifecycle {
+    ignore_changes = [
+      archive
+    ]
+  }
 
 
   allowed_triggers = {
@@ -607,6 +638,7 @@ resource "aws_elasticsearch_domain" "directory_search" {
   ebs_options {
     ebs_enabled = true
     volume_size = "10"
+    iops        = "3000" 
   }
 
 
