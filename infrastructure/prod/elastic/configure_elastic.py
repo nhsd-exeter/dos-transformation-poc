@@ -5,6 +5,7 @@ import requests
 from requests_aws4auth import AWS4Auth
 
 region = sys.argv[1]
+host = sys.argv[2]
 service = 'es'
 credentials = boto3.Session().get_credentials()
 awsauth = AWS4Auth(credentials.access_key, credentials.secret_key, region, service, session_token=credentials.token)
@@ -40,7 +41,7 @@ def configure_elastic(host, search_arn, relay_arn):
 
 
 
-def check_user_exists(host, name):
+def check_user_exists(name):
     url = host + user_path + name
     r = requests.get(url, auth=awsauth, headers=headers)
     jsonResponse = r.json()
@@ -76,4 +77,4 @@ def create_index(index_name):
 
 
 if __name__== "__main__":
-   configure_elastic(sys.argv[2], sys.argv[3], sys.argv[4])
+   configure_elastic(host, sys.argv[3], sys.argv[4])
