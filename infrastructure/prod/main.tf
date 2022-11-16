@@ -319,11 +319,11 @@ module "directory-search-lambda" {
   handler       = "app.lambda_handler"
   runtime       = "python3.9"
 
-  # source_path = "../../microservices/directory-search/"
-
   publish                = true
   create_package         = false
   local_existing_package = "./misc/init.zip"
+  ignore_source_code_hash = true
+
 
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
@@ -332,6 +332,15 @@ module "directory-search-lambda" {
     }
   }
 }
+
+module "live-alias-directory-search" {
+  source = "terraform-aws-modules/lambda/aws//modules/alias"
+
+  name          = "live-service"
+  function_name = module.directory-search-lambda.lambda_function_name
+}
+
+
 
 
 module "directory-data-manager-lambda" {
@@ -343,12 +352,10 @@ module "directory-data-manager-lambda" {
   handler       = "app.lambda_handler"
   runtime       = "python3.9"
 
-  # source_path = "../../microservices/directory-data-manager/"
-
   publish                = true
   create_package         = false
   local_existing_package = "./misc/init.zip"
-  # ignore_source_code_hash = true
+  ignore_source_code_hash = true
 
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
@@ -356,6 +363,13 @@ module "directory-data-manager-lambda" {
       source_arn = "${aws_api_gateway_rest_api.DoS_REST.execution_arn}/*/*"
     }
   }
+}
+
+module "live-alias-directory-data-manager" {
+  source = "terraform-aws-modules/lambda/aws//modules/alias"
+
+  name          = "live-service"
+  function_name = module.directory-data-manager-lambda.lambda_function_name
 }
 
 module "search-profile-manager-lambda" {
@@ -367,15 +381,11 @@ module "search-profile-manager-lambda" {
   handler       = "app.lambda_handler"
   runtime       = "python3.9"
 
-  # source_path = "../../microservices/search-profile-manager/"
-
-  # publish      = true
-  # ignore_source_code_hash = true
-  # recreate_missing_package = false
-
   publish                = true
   create_package         = false
   local_existing_package = "./misc/init.zip"
+  ignore_source_code_hash = true
+
 
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
@@ -383,6 +393,13 @@ module "search-profile-manager-lambda" {
       source_arn = "${aws_api_gateway_rest_api.DoS_REST.execution_arn}/*/*"
     }
   }
+}
+
+module "live-alias-search-profile-manager" {
+  source = "terraform-aws-modules/lambda/aws//modules/alias"
+
+  name          = "live-service"
+  function_name = module.search-profile-manager-lambda.lambda_function_name
 }
 
 
@@ -395,11 +412,11 @@ module "search-profiler-lambda" {
   handler       = "app.lambda_handler"
   runtime       = "python3.9"
 
-  # source_path = "../../microservices/search-profiler/"
-
   publish                = true
   create_package         = false
   local_existing_package = "./misc/init.zip"
+  ignore_source_code_hash = true
+
 
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
@@ -409,6 +426,12 @@ module "search-profiler-lambda" {
   }
 }
 
+module "live-alias-search-profiler" {
+  source = "terraform-aws-modules/lambda/aws//modules/alias"
+
+  name          = "live-service"
+  function_name = module.search-profiler-lambda.lambda_function_name
+}
 
 module "directory-data-relay-lambda" {
   source  = "terraform-aws-modules/lambda/aws"
@@ -419,11 +442,11 @@ module "directory-data-relay-lambda" {
   handler       = "app.lambda_handler"
   runtime       = "python3.9"
 
-  # source_path = "../../microservices/directory-data-relay/"
-
   publish                = true
   create_package         = false
   local_existing_package = "./misc/init.zip"
+  ignore_source_code_hash = true
+
 
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
@@ -433,6 +456,12 @@ module "directory-data-relay-lambda" {
   }
 }
 
+module "live-alias-directory-data-relay" {
+  source = "terraform-aws-modules/lambda/aws//modules/alias"
+
+  name          = "live-service"
+  function_name = module.directory-data-relay-lambda.lambda_function_name
+}
 
 ##########################
 # DynamoDB Tables
