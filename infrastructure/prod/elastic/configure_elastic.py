@@ -37,29 +37,29 @@ def configure_elastic(host, search_arn, relay_arn):
     #     create_user("relay_user", relay_user, relay_arn)
     
 
-    if check_index_exists(index_name) != true:
+    if check_index_exists(index_name) != True:
         create_index(index_name)
 
 
 
-def check_user_exists(name):
-    print(host)
-    url = host + user_path + name
-    r = requests.get(url, auth=awsauth, headers=headers)
-    jsonResponse = r.json()
+# def check_user_exists(name):
+#     print(host)
+#     url = host + user_path + name
+#     r = requests.get(url, auth=awsauth, headers=headers)
+#     jsonResponse = r.json()
 
-    print(jsonResponse)
+#     print(jsonResponse)
 
-    if jsonResponse["status"] == "NOT_FOUND":
-        return false
-    else:
-        return true
+#     if jsonResponse["status"] == "NOT_FOUND":
+#         return False
+#     else:
+#         return True
 
 
 
-def create_user(name, data, arn):
-    url = host + user_path + name
-    r = requests.put(url, auth=awsauth, headers=headers, data=json.dumps(data))
+# def create_user(name, data, arn):
+#     url = host + user_path + name
+#     r = requests.put(url, auth=awsauth, headers=headers, data=json.dumps(data))
 
 
 
@@ -69,9 +69,9 @@ def check_index_exists(index_name):
     jsonResponse = r.json()
 
     if jsonResponse["error"]["type"] == "index_not_found_exception":
-        return false
+        return False
     else:
-        return true
+        return True
 
 
 def create_index(index_name):

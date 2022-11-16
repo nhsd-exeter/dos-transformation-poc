@@ -574,7 +574,7 @@ module "search_step_function" {
 # ##########################
 
 variable "domain" {
-  default = "directory-search2"
+  default = "directory-search3"
 }
 
 variable "index_name" {
