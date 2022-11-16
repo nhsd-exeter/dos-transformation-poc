@@ -13,9 +13,10 @@ headers = { "Content-Type": "application/json" }
 index_name = 'directory-index'
 user_path = "/_plugins/_security/api/internalusers/"
 
+print(host)
 
 def configure_elastic(host, search_arn, relay_arn):
-
+    print(host)
 
     if check_user_exists("search_user") != true:
         search_user = {
@@ -41,7 +42,8 @@ def configure_elastic(host, search_arn, relay_arn):
 
 
 
-def check_user_exists(name):
+def check_user_exists(host, name):
+    print(host)
     url = host + user_path + name
     r = requests.get(url, auth=awsauth, headers=headers)
     jsonResponse = r.json()
