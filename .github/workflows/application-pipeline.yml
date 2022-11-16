@@ -6,6 +6,13 @@ on:
     - master
     - staging   
     - dev
+  workflow_dispatch:
+    inputs:
+      force_rebuild:
+        description: 'Rebuild entire application?'
+        required: true 
+        type: boolean 
+       
 
 jobs:  
   get_updated_microservices:
@@ -33,7 +40,14 @@ jobs:
       - name: Get Affected Services
         id: set-affected
         run: |
-          NX_OUTPUT=$(npx nx print-affected --base="$GITHUB_REF_NAME"~1 --head="$GITHUB_REF_NAME")
+
+          if [ ${{ inputs.force_rebuild }} = true ]
+          then
+            NX_OUTPUT=$(npx nx print-affected --all --plain)
+          else
+            NX_OUTPUT=$(npx nx print-affected --base="$GITHUB_REF_NAME"~1 --head="$GITHUB_REF_NAME")
+          fi
+
           AFFECTED_SERVICES=$(jq -r '.projects' --compact-output <<< "$NX_OUTPUT" )
           echo "affected_services=$AFFECTED_SERVICES" >> $GITHUB_OUTPUT
           

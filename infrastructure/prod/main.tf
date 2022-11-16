@@ -319,10 +319,11 @@ module "directory-search-lambda" {
   handler       = "app.lambda_handler"
   runtime       = "python3.9"
 
-  source_path = "../../microservices/directory-search/"
+  # source_path = "../../microservices/directory-search/"
 
-  publish      = true
-  ignore_source_code_hash = true
+  publish                = true
+  create_package         = false
+  local_existing_package = "./misc/init.zip"
 
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
@@ -342,11 +343,11 @@ module "directory-data-manager-lambda" {
   handler       = "app.lambda_handler"
   runtime       = "python3.9"
 
-  source_path = "../../microservices/directory-data-manager/"
+  # source_path = "../../microservices/directory-data-manager/"
 
-  publish      = true
+  publish                = true
   create_package         = false
-  local_existing_package = "./code.zip"
+  local_existing_package = "./misc/init.zip"
 
   ignore_source_code_hash = true
 
@@ -369,9 +370,13 @@ module "search-profile-manager-lambda" {
 
   source_path = "../../microservices/search-profile-manager/"
 
-  publish      = true
-  ignore_source_code_hash = true
-  recreate_missing_package = false
+  # publish      = true
+  # ignore_source_code_hash = true
+  # recreate_missing_package = false
+
+  publish                = true
+  create_package         = false
+  local_existing_package = "./misc/init.zip"
 
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
@@ -391,11 +396,11 @@ module "search-profiler-lambda" {
   handler       = "app.lambda_handler"
   runtime       = "python3.9"
 
-  source_path = "../../microservices/search-profiler/"
+  # source_path = "../../microservices/search-profiler/"
 
-  publish      = true
-  ignore_source_code_hash = true
-  recreate_missing_package = false
+  publish                = true
+  create_package         = false
+  local_existing_package = "./misc/init.zip"
 
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
@@ -415,11 +420,11 @@ module "directory-data-relay-lambda" {
   handler       = "app.lambda_handler"
   runtime       = "python3.9"
 
-  source_path = "../../microservices/directory-data-relay/"
+  # source_path = "../../microservices/directory-data-relay/"
 
-  publish      = true
-  ignore_source_code_hash = true
-  recreate_missing_package = false
+  publish                = true
+  create_package         = false
+  local_existing_package = "./misc/init.zip"
 
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
