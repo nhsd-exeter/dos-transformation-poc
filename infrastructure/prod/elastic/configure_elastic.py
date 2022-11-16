@@ -18,23 +18,23 @@ print(host)
 def configure_elastic(host, search_arn, relay_arn):
     print(host)
 
-    if check_user_exists("search_user") != true:
-        search_user = {
-            "password": "kirkpass",
-            "opendistro_security_roles": ["readall"],
-            "backend_roles": [search_arn],
-        }
+    # if check_user_exists("search_user") != true:
+    #     search_user = {
+    #         "password": "kirkpass",
+    #         "opendistro_security_roles": ["readall"],
+    #         "backend_roles": [search_arn],
+    #     }
 
-        create_user("search_user", search_user, search_arn)
+    #     create_user("search_user", search_user, search_arn)
 
-    if check_user_exists("relay_user") != true:
-        relay_user = {
-            "password": "kirkpass",
-            "opendistro_security_roles": ["all_access"],
-            "backend_roles": [relay_arn],
-        }
+    # if check_user_exists("relay_user") != true:
+    #     relay_user = {
+    #         "password": "kirkpass",
+    #         "opendistro_security_roles": ["all_access"],
+    #         "backend_roles": [relay_arn],
+    #     }
 
-        create_user("relay_user", relay_user, relay_arn)
+    #     create_user("relay_user", relay_user, relay_arn)
     
 
     if check_index_exists(index_name) != true:

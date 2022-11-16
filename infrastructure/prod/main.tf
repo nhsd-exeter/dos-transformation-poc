@@ -367,7 +367,7 @@ module "search-profile-manager-lambda" {
   handler       = "app.lambda_handler"
   runtime       = "python3.9"
 
-  source_path = "../../microservices/search-profile-manager/"
+  # source_path = "../../microservices/search-profile-manager/"
 
   # publish      = true
   # ignore_source_code_hash = true
@@ -577,6 +577,10 @@ variable "domain" {
   default = "directory-search2"
 }
 
+variable "index_name" {
+  default = "directory-index"
+}
+
 data "aws_caller_identity" "current" {}
 
 resource "aws_elasticsearch_domain" "directory_search" {
@@ -600,13 +604,13 @@ resource "aws_elasticsearch_domain" "directory_search" {
     tls_security_policy = "Policy-Min-TLS-1-0-2019-07"
   }
 
-  advanced_security_options {
-    enabled = true
-    internal_user_database_enabled = false
-    master_user_options {
-      master_user_arn = "arn:aws:iam::202422821117:role/github"
-    }
-  }
+  # advanced_security_options {
+  #   enabled = true
+  #   internal_user_database_enabled = false
+  #   master_user_options {
+  #     master_user_arn = "arn:aws:iam::202422821117:role/github"
+  #   }
+  # }
 
   ebs_options {
     ebs_enabled = true
@@ -618,18 +622,43 @@ resource "aws_elasticsearch_domain" "directory_search" {
   access_policies = jsonencode({
       Version: "2012-10-17",
       Statement: [
-        {
-          Effect: "Allow",
-          Principal: {
-            "AWS": "*"
+          {
+            Effect: "Allow",
+            Principal: {
+              "AWS": "arn:aws:iam::202422821117:role/github"
+            },
+            Action: "es:*",
+            Resource: "arn:aws:es:${var.aws_region}:${data.aws_caller_identity.current.account_id}:domain/${var.domain}/*"
           },
-          Action: "es:*",
-          Resource: "arn:aws:es:${var.aws_region}:${data.aws_caller_identity.current.account_id}:domain/${var.domain}/*"
+          {
+            Effect: "Allow",
+            Principal: {
+              "AWS": "${module.directory-search-lambda.lambda_role_arn}"
+            },
+            Action: [
+                "es:ESHttpGet",
+                "es:ESHttpPost"
+              ]
+            Resource: "arn:aws:es:${var.aws_region}:${data.aws_caller_identity.current.account_id}:domain/${var.domain}/${var.index_name}/_search/*"
+          },
+          {
+            Effect: "Allow",
+            Principal: {
+              "AWS": "${module.directory-data-relay-lambda.lambda_role_arn}"
+            },
+            Action: [
+                "es:ESHttpDelete",
+                "es:ESHttpGet",
+                "es:ESHttpPost",
+                "es:ESHttpPut"
+              ],
+            Resource: "arn:aws:es:${var.aws_region}:${data.aws_caller_identity.current.account_id}:domain/${var.domain}/${var.index_name}/*"
           }
         ]
       }
     )
   }
+
 
 
   resource "null_resource" "elastic_provisioner_script" {
