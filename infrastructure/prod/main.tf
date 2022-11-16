@@ -242,6 +242,8 @@ resource "aws_api_gateway_integration" "services_DELETE_integration" {
 resource "aws_api_gateway_deployment" "main" {
   rest_api_id = aws_api_gateway_rest_api.DoS_REST.id
 
+  #TODO, update to aws_api_gateway_rest_api.DoS_REST
+
   triggers = {
     # NOTE: The configuration below will satisfy ordering considerations,
     #       but not pick up all future REST API changes. More advanced patterns
@@ -260,6 +262,8 @@ resource "aws_api_gateway_deployment" "main" {
   lifecycle {
     create_before_destroy = true
   }
+
+  #TODO, update to aws_api_gateway_rest_api.DoS_REST
 
   depends_on = [
       aws_api_gateway_resource.search,
@@ -282,6 +286,28 @@ resource "aws_api_gateway_authorizer" "DoS_Users" {
   provider_arns          = ["${aws_cognito_user_pool.DoS_Users.arn}"]
 }
 
+
+
+resource "aws_api_gateway_usage_plan" "standard" {
+  name         = "standard"
+  description  = "Standard Usage Plan"
+
+  api_stages {
+    api_id = aws_api_gateway_rest_api.DoS_REST.id
+    stage  = aws_api_gateway_stage.main.main
+  }
+
+  quota_settings {
+    limit  = 20000
+    offset = 2
+    period = "WEEK"
+  }
+
+  throttle_settings {
+    burst_limit = 50
+    rate_limit  = 100
+  }
+}
 
 
 
@@ -338,6 +364,7 @@ module "live-alias-directory-search" {
 
   name          = "live-service"
   function_name = module.directory-search-lambda.lambda_function_name
+  refresh_alias = false
 }
 
 
