@@ -13,53 +13,11 @@ headers = { "Content-Type": "application/json" }
 index_name = 'directory-index'
 user_path = "/_plugins/_security/api/internalusers/"
 
-print(host)
-
 def configure_elastic(host, search_arn, relay_arn):
-    print(host)
-
-    # if check_user_exists("search_user") != true:
-    #     search_user = {
-    #         "password": "kirkpass",
-    #         "opendistro_security_roles": ["readall"],
-    #         "backend_roles": [search_arn],
-    #     }
-
-    #     create_user("search_user", search_user, search_arn)
-
-    # if check_user_exists("relay_user") != true:
-    #     relay_user = {
-    #         "password": "kirkpass",
-    #         "opendistro_security_roles": ["all_access"],
-    #         "backend_roles": [relay_arn],
-    #     }
-
-    #     create_user("relay_user", relay_user, relay_arn)
-    
+   
 
     if check_index_exists(index_name) != True:
         create_index(index_name)
-
-
-
-# def check_user_exists(name):
-#     print(host)
-#     url = host + user_path + name
-#     r = requests.get(url, auth=awsauth, headers=headers)
-#     jsonResponse = r.json()
-
-#     print(jsonResponse)
-
-#     if jsonResponse["status"] == "NOT_FOUND":
-#         return False
-#     else:
-#         return True
-
-
-
-# def create_user(name, data, arn):
-#     url = host + user_path + name
-#     r = requests.put(url, auth=awsauth, headers=headers, data=json.dumps(data))
 
 
 
@@ -68,7 +26,7 @@ def check_index_exists(index_name):
     r = requests.get(url, auth=awsauth, headers=headers)
     jsonResponse = r.json()
 
-    if jsonResponse["error"]["type"] == "index_not_found_exception":
+    if ("error" in jsonResponse) and (jsonResponse["error"]["type"] == "index_not_found_exception"):
         return False
     else:
         return True
