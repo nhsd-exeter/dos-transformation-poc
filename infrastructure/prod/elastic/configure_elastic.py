@@ -42,7 +42,7 @@ def configure_elastic(host, search_arn, relay_arn):
 
 
 
-def check_user_exists(host, name):
+def check_user_exists(name):
     print(host)
     url = host + user_path + name
     r = requests.get(url, auth=awsauth, headers=headers)
