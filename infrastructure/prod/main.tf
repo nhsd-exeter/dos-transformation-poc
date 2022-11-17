@@ -351,9 +351,9 @@ module "directory-search-lambda" {
   ignore_source_code_hash = true
 
   environment_variables = {
-    ES_domain = ${var.domain},
-    ES_region = ${var.aws_region},
-    ES_index = ${var.index_name}
+    ES_domain = var.domain,
+    ES_region = var.aws_region,
+    ES_index  = var.index_name
   }
 
   allowed_triggers = {
@@ -560,9 +560,9 @@ module "directory-data-relay-lambda" {
   ignore_source_code_hash = true
 
   environment_variables = {
-    ES_domain = ${var.domain},
-    ES_region = ${var.aws_region},
-    ES_index = ${var.index_name}
+    ES_domain = var.domain,
+    ES_region = var.aws_region,
+    ES_index  = var.index_name
   }
 
   attach_policy_jsons = true
