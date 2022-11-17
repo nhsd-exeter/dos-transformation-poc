@@ -431,6 +431,7 @@ module "live-alias-directory-data-manager" {
 
   name          = "live-service"
   function_name = module.directory-data-manager-lambda.lambda_function_name
+  refresh_alias = false
 }
 
 module "search-profile-manager-lambda" {
@@ -489,6 +490,7 @@ module "live-alias-search-profile-manager" {
 
   name          = "live-service"
   function_name = module.search-profile-manager-lambda.lambda_function_name
+  refresh_alias = false
 }
 
 
@@ -543,6 +545,7 @@ module "live-alias-search-profiler" {
 
   name          = "live-service"
   function_name = module.search-profiler-lambda.lambda_function_name
+  refresh_alias = false
 }
 
 module "directory-data-relay-lambda" {
@@ -611,6 +614,7 @@ module "live-alias-directory-data-relay" {
 
   name          = "live-service"
   function_name = module.directory-data-relay-lambda.lambda_function_name
+  refresh_alias = false
 }
 
 ##########################

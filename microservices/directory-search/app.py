@@ -1,15 +1,16 @@
 import boto3
+import os
 import json
 import requests
 from requests_aws4auth import AWS4Auth
 
-region = 'eu-west-2' 
+region = os.environ['ES_region'] 
 service = 'es'
 credentials = boto3.Session().get_credentials()
 awsauth = AWS4Auth(credentials.access_key, credentials.secret_key, region, service, session_token=credentials.token)
 
-host = 'https://search-directory-search-5qbxo6fnd5u5d4uyydeudu6hpm.eu-west-2.es.amazonaws.com'
-index = 'directory-index'
+host = os.environ['ES_domain']
+index = os.environ['ES_index']
 url = host + '/' + index + '/_search'
 
 def lambda_handler(event, context):
