@@ -521,7 +521,7 @@ module "search-profiler-lambda" {
                 ],
                 "Resource": [
                     "${module.dynamodb_search_profiles_table.dynamodb_table_arn}",
-                    "${module.dynamodb_search_consumers_table.dynamodb_table_arn}",
+                    "${module.dynamodb_search_consumers_table.dynamodb_table_arn}"
                 ]
             }
         ]
