@@ -350,6 +350,11 @@ module "directory-search-lambda" {
   local_existing_package = "./misc/init.zip"
   ignore_source_code_hash = true
 
+  environment_variables = {
+    ES_domain = ${var.domain},
+    ES_region = ${var.aws_region},
+    ES_index = ${var.index_name}
+  }
 
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
@@ -384,6 +389,35 @@ module "directory-data-manager-lambda" {
   local_existing_package = "./misc/init.zip"
   ignore_source_code_hash = true
 
+  attach_policy_jsons = true
+  policy_jsons = [
+    <<-EOT
+    {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Sid": "VisualEditor0",
+                "Effect": "Allow",
+                "Action": [
+                    "dynamodb:PutItem",
+                    "dynamodb:DeleteItem",
+                    "dynamodb:GetItem",
+                    "dynamodb:Scan",
+                    "dynamodb:Query",
+                    "dynamodb:UpdateItem"
+                ],
+                "Resource": [
+                    "${module.dynamodb_services_table.dynamodb_table_arn}"
+                ]
+            }
+        ]
+    }
+    EOT
+  ]
+  number_of_policy_jsons = 1
+
+
+
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
       service    = "apigateway"
@@ -413,6 +447,34 @@ module "search-profile-manager-lambda" {
   local_existing_package = "./misc/init.zip"
   ignore_source_code_hash = true
 
+
+  attach_policy_jsons = true
+  policy_jsons = [
+    <<-EOT
+    {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Sid": "VisualEditor0",
+                "Effect": "Allow",
+                "Action": [
+                    "dynamodb:PutItem",
+                    "dynamodb:DeleteItem",
+                    "dynamodb:GetItem",
+                    "dynamodb:Scan",
+                    "dynamodb:Query",
+                    "dynamodb:UpdateItem"
+                ],
+                "Resource": [
+                    "${module.dynamodb_search_profiles_table.dynamodb_table_arn}",
+                    "${module.dynamodb_search_consumers_table.dynamodb_table_arn}"
+                ]
+            }
+        ]
+    }
+    EOT
+  ]
+  number_of_policy_jsons = 1
 
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
@@ -444,6 +506,29 @@ module "search-profiler-lambda" {
   local_existing_package = "./misc/init.zip"
   ignore_source_code_hash = true
 
+  attach_policy_jsons = true
+  policy_jsons = [
+    <<-EOT
+    {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Sid": "VisualEditor0",
+                "Effect": "Allow",
+                "Action": [
+                    "dynamodb:GetItem",
+                    "dynamodb:GetRecords"
+                ],
+                "Resource": [
+                    "${module.dynamodb_search_profiles_table.dynamodb_table_arn}",
+                    "${module.dynamodb_search_consumers_table.dynamodb_table_arn}",
+                ]
+            }
+        ]
+    }
+    EOT
+  ]
+  number_of_policy_jsons = 1
 
   allowed_triggers = {
     AllowExecutionFromAPIGateway = {
@@ -473,6 +558,44 @@ module "directory-data-relay-lambda" {
   create_package         = false
   local_existing_package = "./misc/init.zip"
   ignore_source_code_hash = true
+
+  environment_variables = {
+    ES_domain = ${var.domain},
+    ES_region = ${var.aws_region},
+    ES_index = ${var.index_name}
+  }
+
+  attach_policy_jsons = true
+  policy_jsons = [
+    <<-EOT
+    {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Sid": "VisualEditor0",
+                "Effect": "Allow",
+                "Action": [
+                    "dynamodb:GetShardIterator",
+                    "dynamodb:GetItem",
+                    "dynamodb:DescribeStream",
+                    "dynamodb:GetRecords"
+                ],
+                "Resource": [
+                    "${module.dynamodb_services_table.dynamodb_table_arn}/stream/*",
+                    "${module.dynamodb_services_table.dynamodb_table_arn}"
+                ]
+            },
+            {
+                "Sid": "VisualEditor2",
+                "Effect": "Allow",
+                "Action": "dynamodb:ListStreams",
+                "Resource": "*"
+            }
+        ]
+    }
+    EOT
+  ]
+  number_of_policy_jsons = 1
 
 
   allowed_triggers = {
@@ -508,6 +631,7 @@ module "dynamodb_services_table" {
     }
   ]
 }
+
 
 module "dynamodb_search_profiles_table" {
   source   = "terraform-aws-modules/dynamodb-table/aws"
@@ -660,14 +784,6 @@ resource "aws_elasticsearch_domain" "directory_search" {
     tls_security_policy = "Policy-Min-TLS-1-0-2019-07"
   }
 
-  # advanced_security_options {
-  #   enabled = true
-  #   internal_user_database_enabled = false
-  #   master_user_options {
-  #     master_user_arn = "arn:aws:iam::202422821117:role/github"
-  #   }
-  # }
-
   ebs_options {
     ebs_enabled = true
     volume_size = "10"
@@ -763,7 +879,7 @@ resource "aws_iam_role" "APIGatewaytoDoSSearchWorkflow" {
             Effect: "Allow",
             Action: "states:StartSyncExecution",
             Resource: [
-                "arn:aws:states:eu-west-2:202422821117:stateMachine:DoSSearchWorkflow"
+                "${module.search_step_function.state_machine_arn}" 
             ]
         }
     ]
