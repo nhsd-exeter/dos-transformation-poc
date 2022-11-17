@@ -242,8 +242,6 @@ resource "aws_api_gateway_integration" "services_DELETE_integration" {
 resource "aws_api_gateway_deployment" "main" {
   rest_api_id = aws_api_gateway_rest_api.DoS_REST.id
 
-  #TODO, update to aws_api_gateway_rest_api.DoS_REST
-
   triggers = {
     # NOTE: The configuration below will satisfy ordering considerations,
     #       but not pick up all future REST API changes. More advanced patterns
@@ -253,9 +251,7 @@ resource "aws_api_gateway_deployment" "main" {
     #       resources will show a difference after the initial implementation.
     #       It will stabilize to only change when resources change afterwards.
     redeployment = sha1(jsonencode([
-      aws_api_gateway_resource.search.id,
-      aws_api_gateway_method.search_POST.id,
-      aws_api_gateway_integration.search_POST_integration.id,
+      aws_api_gateway_rest_api.DoS_REST
     ]))
   }
 
@@ -557,6 +553,10 @@ module "directory-data-relay-lambda" {
   handler       = "app.lambda_handler"
   runtime       = "python3.9"
 
+  # We want to manage our application code using a dedicated application deployment pipeline.
+  # Therefore we want our infrastructure manifests to just build the lambda and not worry about the code inside.
+  # This block tells terraform to deploy an initial zip package when the lambda is created, 
+  # and then ignore application code on each subsequent apply
   publish                = true
   create_package         = false
   local_existing_package = "./misc/init.zip"
