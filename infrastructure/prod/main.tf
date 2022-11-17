@@ -259,12 +259,8 @@ resource "aws_api_gateway_deployment" "main" {
     create_before_destroy = true
   }
 
-  #TODO, update to aws_api_gateway_rest_api.DoS_REST
-
   depends_on = [
-      aws_api_gateway_resource.search,
-      aws_api_gateway_method.search_POST,
-      aws_api_gateway_integration.search_POST_integration
+    aws_api_gateway_rest_api.DoS_REST
   ]
 }
 
