@@ -347,7 +347,7 @@ module "directory-search-lambda" {
   ignore_source_code_hash = true
 
   environment_variables = {
-    ES_domain = var.domain,
+    ES_domain = aws_elasticsearch_domain.directory_search.endpoint,
     ES_region = var.aws_region,
     ES_index  = var.index_name
   }
@@ -563,7 +563,7 @@ module "directory-data-relay-lambda" {
   ignore_source_code_hash = true
 
   environment_variables = {
-    ES_domain = var.domain,
+    ES_domain = aws_elasticsearch_domain.directory_search.endpoint,
     ES_region = var.aws_region,
     ES_index  = var.index_name
   }
