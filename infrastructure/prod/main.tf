@@ -821,7 +821,7 @@ resource "aws_elasticsearch_domain" "directory_search" {
                 "es:ESHttpGet",
                 "es:ESHttpPost"
               ]
-            Resource: "arn:aws:es:${var.aws_region}:${data.aws_caller_identity.current.account_id}:domain/${var.domain}/${var.index_name}/_search/*"
+            Resource: "arn:aws:es:${var.aws_region}:${data.aws_caller_identity.current.account_id}:domain/${var.domain}/*"
           },
           {
             Effect: "Allow",
@@ -834,7 +834,7 @@ resource "aws_elasticsearch_domain" "directory_search" {
                 "es:ESHttpPost",
                 "es:ESHttpPut"
               ],
-            Resource: "arn:aws:es:${var.aws_region}:${data.aws_caller_identity.current.account_id}:domain/${var.domain}/${var.index_name}/*"
+            Resource: "arn:aws:es:${var.aws_region}:${data.aws_caller_identity.current.account_id}:domain/${var.domain}/*"
           }
         ]
       }
