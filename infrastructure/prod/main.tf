@@ -749,7 +749,7 @@ module "search_step_function" {
     }
 
     lambda = {
-      lambda = ["${module.directory-search-lambda.lambda_function_arn}", "${module.search-profiler-lambda.lambda_function_arn}"]
+      lambda = ["${module.directory-search-lambda.lambda_function_arn}:*", "${module.search-profiler-lambda.lambda_function_arn}:*"]
     }
   }
 }
