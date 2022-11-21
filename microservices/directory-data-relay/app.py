@@ -14,7 +14,7 @@ awsauth = AWS4Auth(credentials.access_key, credentials.secret_key, region, servi
 host = os.environ['ES_domain']
 index = os.environ['ES_index']
 type = '_doc'
-url = host + '/' + index + '/' + type + '/'
+url = 'https://' + host + '/' + index + '/' + type + '/'
 
 headers = { "Content-Type": "application/json" }
 

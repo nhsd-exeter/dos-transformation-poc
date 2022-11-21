@@ -11,7 +11,7 @@ awsauth = AWS4Auth(credentials.access_key, credentials.secret_key, region, servi
 
 host = os.environ['ES_domain']
 index = os.environ['ES_index']
-url = host + '/' + index + '/_search'
+url = 'https://' + host + '/' + index + '/_search'
 
 def lambda_handler(event, context):
 
