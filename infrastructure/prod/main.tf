@@ -51,11 +51,9 @@ resource "aws_api_gateway_integration" "search_POST_integration" {
   request_templates = {
     "application/json" = <<EOF
     {
-    {
       "input": "{\"search_query\":$util.escapeJavaScript($input.json('$.search_query')),\"api_key\":\"$context.identity.apiKey\"}",
       "stateMachineArn": "${module.search_step_function.state_machine_arn}"
     } 
-    }
     EOF
   }
 
