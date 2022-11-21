@@ -815,7 +815,7 @@ resource "aws_elasticsearch_domain" "directory_search" {
           {
             Effect: "Allow",
             Principal: {
-              "AWS": "arn:aws:sts::${data.aws_caller_identity.current.account_id}:assumed-role/${module.directory-search-lambda.function_name}/${module.directory-search-lambda.function_name}"
+              "AWS": "arn:aws:sts::${data.aws_caller_identity.current.account_id}:assumed-role/${module.directory-search-lambda.lambda_function_name}/${module.directory-search-lambda.lambda_function_name}"
             },
             Action: [
                 "es:ESHttpGet",
@@ -826,7 +826,7 @@ resource "aws_elasticsearch_domain" "directory_search" {
           {
             Effect: "Allow",
             Principal: {
-              "AWS": "arn:aws:sts::${data.aws_caller_identity.current.account_id}:assumed-role/${module.directory-data-relay-lambda.function_name}/${module.directory-data-relay-lambda.function_name}"
+              "AWS": "arn:aws:sts::${data.aws_caller_identity.current.account_id}:assumed-role/${module.directory-data-relay-lambda.lambda_function_name}/${module.directory-data-relay-lambda.lambda_function_name}"
             },
             Action: [
                 "es:ESHttpDelete",
