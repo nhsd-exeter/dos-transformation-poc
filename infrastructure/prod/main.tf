@@ -301,7 +301,7 @@ resource "aws_api_gateway_usage_plan" "standard" {
 ########################
 
 resource "aws_cognito_user_pool" "DoS_Users" {
-  name = "user-pool-future-dos2"
+  name = "user-pool-dos"
 }
 
 
@@ -311,7 +311,7 @@ resource "aws_cognito_user_pool" "DoS_Users" {
 
 
 resource "aws_cloudwatch_log_group" "logs" {
-  name = "future-dos2"
+  name = "dos-logging"
 }
 
 
@@ -325,7 +325,7 @@ module "directory-search-lambda" {
   source  = "terraform-aws-modules/lambda/aws"
   version = "~> 2.0"
 
-  function_name = "directory-search2"
+  function_name = "directory-search"
   description   = "Primary DoS search service"
   handler       = "app.lambda_handler"
   runtime       = "python3.9"
@@ -364,7 +364,7 @@ module "directory-data-manager-lambda" {
   source  = "terraform-aws-modules/lambda/aws"
   version = "~> 2.0"
 
-  function_name = "directory-data-manager2"
+  function_name = "directory-data-manager"
   description   = "Microservice for management of DoS data"
   handler       = "app.lambda_handler"
   runtime       = "python3.9"
@@ -423,7 +423,7 @@ module "search-profile-manager-lambda" {
   source  = "terraform-aws-modules/lambda/aws"
   version = "~> 2.0"
 
-  function_name = "search-profile-manager2"
+  function_name = "search-profile-manager"
   description   = "Microservice for search profiles"
   handler       = "app.lambda_handler"
   runtime       = "python3.9"
@@ -483,7 +483,7 @@ module "search-profiler-lambda" {
   source  = "terraform-aws-modules/lambda/aws"
   version = "~> 2.0"
 
-  function_name = "search-profiler2"
+  function_name = "search-profiler"
   description   = "Microservice for filtering searches based on profiles"
   handler       = "app.lambda_handler"
   runtime       = "python3.9"
@@ -537,7 +537,7 @@ module "directory-data-relay-lambda" {
   source  = "terraform-aws-modules/lambda/aws"
   version = "~> 2.0"
 
-  function_name = "directory-data-relay2"
+  function_name = "directory-data-relay"
   description   = "Microservice for populating Opensearch with Dynamo data"
   handler       = "app.lambda_handler"
   runtime       = "python3.9"
@@ -613,7 +613,7 @@ module "live-alias-directory-data-relay" {
 module "dynamodb_services_table" {
   source   = "terraform-aws-modules/dynamodb-table/aws"
 
-  name     = "services2"
+  name     = "services"
   hash_key = "id"
   autoscaling_enabled = true
 
@@ -629,7 +629,7 @@ module "dynamodb_services_table" {
 module "dynamodb_search_profiles_table" {
   source   = "terraform-aws-modules/dynamodb-table/aws"
 
-  name     = "search-profiles2"
+  name     = "search-profiles"
   hash_key = "id"
   autoscaling_enabled = true
 
@@ -644,7 +644,7 @@ module "dynamodb_search_profiles_table" {
 module "dynamodb_search_consumers_table" {
   source   = "terraform-aws-modules/dynamodb-table/aws"
 
-  name     = "search-consumers2"
+  name     = "search-consumers"
   hash_key = "key"
   autoscaling_enabled = true
 
@@ -747,7 +747,7 @@ module "search_step_function" {
 # ##########################
 
 variable "domain" {
-  default = "directory-search3"
+  default = "directory-search"
 }
 
 variable "index_name" {
@@ -847,7 +847,7 @@ resource "aws_elasticsearch_domain" "directory_search" {
 ######
 
 resource "aws_iam_role" "APIGatewaytoDoSSearchWorkflow" {
-  name               = "APIGatewaytoDoSSearchWorkflow2"
+  name               = "APIGatewaytoDoSSearchWorkflow"
   assume_role_policy = jsonencode({
     Version: "2012-10-17",
     Statement: [
