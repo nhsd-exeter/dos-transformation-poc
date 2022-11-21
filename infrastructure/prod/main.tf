@@ -17,8 +17,6 @@ provider "aws" {
 }
 
 
-
-
 ###################
 # API Gateway
 ###################
@@ -67,6 +65,13 @@ resource "aws_api_gateway_integration" "search_POST_integration" {
   passthrough_behavior    = "NEVER"
   uri                     = "arn:aws:apigateway:${var.aws_region}:states:action/StartSyncExecution"
 
+}
+
+resource "aws_api_gateway_method_response" "search_response" {
+  rest_api_id = aws_api_gateway_rest_api.DoS_REST.id
+  resource_id = aws_api_gateway_resource.search.id
+  http_method = aws_api_gateway_method.search_POST.http_method
+  status_code = "200"
 }
 
 //SEARCH PROFILE ENDPOINTS
@@ -720,7 +725,7 @@ locals {
 
 module "search_step_function" {
   source = "terraform-aws-modules/step-functions/aws"
-  name = "DirectorySearchWorkflow2"
+  name = "DirectorySearchWorkflow"
   type = "express"
 
   definition = local.definition_template

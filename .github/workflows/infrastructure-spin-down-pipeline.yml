@@ -1,0 +1,57 @@
+name: Infrastructure Spin Down Pipeline
+
+on: 
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        description: Choose the Environment
+        required: true
+        options:
+        - dev
+        - staging
+        - prod
+      sanity_check:
+        description: 'Are you sure you want to destroy all infrastructure?'
+        required: true 
+        type: boolean 
+
+
+jobs:  
+  run_terraform:
+    runs-on: ubuntu-latest 
+    environment: 
+      name: ${{ inputs.environment }}
+    if: ${{ inputs.sanity_check == true}}
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'   
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Configure AWS Credentials  
+        uses: aws-actions/configure-aws-credentials@v1 
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.ACCOUNT_ID }}:role/github
+          role-session-name: github-pipeline-session
+          aws-region: eu-west-2 
+
+      - name: Run Terraform Destroyer
+        run: |
+          cd ./infrastructure/${{ inputs.environment }}
+          terraform init -input=false 
+          terraform plan -destroy -out=tfplan -input=false 
+          terraform apply -destroy -input=false tfplan
+
+
+
