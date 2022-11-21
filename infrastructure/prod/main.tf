@@ -3,6 +3,8 @@ variable "aws_region" {
   default = "eu-west-2"
 }
 
+data "aws_caller_identity" "current" {}
+
 provider "aws" {
   region = var.aws_region
 
@@ -358,7 +360,38 @@ module "directory-search-lambda" {
       source_arn = "${aws_api_gateway_rest_api.DoS_REST.execution_arn}/*/*"
     }
   }
+
+  attach_policy_jsons = true
+    policy_jsons = [
+      <<-EOT
+      {
+          "Version": "2012-10-17",
+          "Statement": [
+              {
+                  "Sid": "VisualEditor0",
+                  "Effect": "Allow",
+                  "Action": [
+                  "es:ESHttpGet",
+                  "es:ESHttpPost"
+                  ],
+                  "Resource": [
+                      "arn:aws:es:${var.aws_region}:${data.aws_caller_identity.current.account_id}:domain/${var.domain}/${var.index_name}/_search/*"
+                  ]
+              }
+          ]
+      }
+      EOT
+    ]
+    number_of_policy_jsons = 1
+
+
+
 }
+
+  
+
+
+
 
 module "live-alias-directory-search" {
   source = "terraform-aws-modules/lambda/aws//modules/alias"
@@ -764,8 +797,6 @@ variable "domain" {
 variable "index_name" {
   default = "directory-index"
 }
-
-data "aws_caller_identity" "current" {}
 
 resource "aws_elasticsearch_domain" "directory_search" {
   domain_name           = var.domain
