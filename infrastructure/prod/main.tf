@@ -679,8 +679,8 @@ module "dynamodb_search_consumers_table" {
 
 
 resource "aws_dynamodb_table_item" "example_consumer" {
-  table_name = module.dynamodb_search_consumers_table.id
-  hash_key   = module.dynamodb_search_consumers_table.hash_key
+  table_name = module.dynamodb_search_consumers_table.dynamodb_table_id
+  hash_key   = "key"
 
   item = <<ITEM
 {
@@ -693,15 +693,15 @@ ITEM
 
 
 resource "aws_dynamodb_table_item" "example_search_profile" {
-  table_name = module.dynamodb_search_profiles_table.id
-  hash_key   = module.dynamodb_search_profiles_table.hash_key
-
+  table_name = module.dynamodb_search_profiles_table.dynamodb_table_id
+  hash_key   = "id"
+  
   item = <<ITEM
 {
   "id": {"S": "x83nd93y2"},
   "exclusions": {"S": "TEST"},
   "sorters": {"S": "TEST"},
-  "formatters": {"S": "TES"},
+  "formatters": {"S": "TEST"},
   "redactions": {"S": "TEST"}
 }
 ITEM
