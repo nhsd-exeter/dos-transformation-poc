@@ -43,6 +43,7 @@ resource "aws_api_gateway_method" "search_POST" {
   http_method   = "POST"
   resource_id   = aws_api_gateway_resource.search.id
   rest_api_id   = aws_api_gateway_rest_api.DoS_REST.id
+  api_key_required = true
 }
 
 resource "aws_api_gateway_integration" "search_POST_integration" {
@@ -305,6 +306,18 @@ resource "aws_api_gateway_usage_plan" "standard" {
     burst_limit = 50
     rate_limit  = 100
   }
+}
+
+
+resource "aws_api_gateway_api_key" "example_key" {
+  name = "example_key"
+  value = "LyXvMVUd3L9bc5IVhpA4l5efM0jqvLFL535MVHpx"
+}
+
+resource "aws_api_gateway_usage_plan_key" "main" {
+  key_id        = aws_api_gateway_api_key.example_key.id
+  key_type      = "API_KEY"
+  usage_plan_id = aws_api_gateway_usage_plan.standard.id
 }
 
 
