@@ -676,6 +676,39 @@ module "dynamodb_search_consumers_table" {
 
 
 
+
+
+resource "aws_dynamodb_table_item" "example_consumer" {
+  table_name = module.dynamodb_search_consumers_table.id
+  hash_key   = module.dynamodb_search_consumers_table.hash_key
+
+  item = <<ITEM
+{
+  "key": {"S": "LyXvMVUd3L9bc5IVhpA4l5efM0jqvLFL535MVHpx"},
+  "search-profile-id": {"S": "x83nd93y2"},
+  "name": {"S": "111 Test Profile"}
+}
+ITEM
+}
+
+
+resource "aws_dynamodb_table_item" "example_search_profile" {
+  table_name = module.dynamodb_search_profiles_table.id
+  hash_key   = module.dynamodb_search_profiles_table.hash_key
+
+  item = <<ITEM
+{
+  "id": {"S": "x83nd93y2"},
+  "exclusions": {"S": "TEST"},
+  "sorters": {"S": "TEST"},
+  "formatters": {"S": "TES"},
+  "redactions": {"S": "TEST"}
+}
+ITEM
+}
+
+
+
 ##########################
 # Step Function
 ##########################
@@ -895,3 +928,7 @@ resource "aws_iam_role" "APIGatewaytoDoSSearchWorkflow" {
 })
   }
 }
+
+
+
+
