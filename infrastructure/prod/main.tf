@@ -719,7 +719,7 @@ resource "aws_dynamodb_table_item" "example_service" {
   "resourceType": {
     "S": "HealthcareService"
   },
-  "identifier": {
+  "id": {
     "S": "1233123"
   },
   "name": {
