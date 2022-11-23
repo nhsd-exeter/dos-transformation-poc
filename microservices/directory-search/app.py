@@ -22,7 +22,7 @@ def lambda_handler(event, context):
 
 
     # Put the user query into the query DSL for more accurate search results.
-    # Note that certain fields are boosted (^).
+    # Note that certain fields are boosted 
     query = {
         "query" : {
             "match_all" : {}
