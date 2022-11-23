@@ -6,6 +6,6 @@ def test_basic():
     event = {}
     context = None
 
-    assert true
+    assert True
 
 
