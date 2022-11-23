@@ -11,7 +11,6 @@ credentials = boto3.Session().get_credentials()
 awsauth = AWS4Auth(credentials.access_key, credentials.secret_key, region, service, session_token=credentials.token)
 headers = { "Content-Type": "application/json" }
 index_name = 'directory-index'
-user_path = "/_plugins/_security/api/internalusers/"
 
 def configure_elastic(host, search_arn, relay_arn):
    

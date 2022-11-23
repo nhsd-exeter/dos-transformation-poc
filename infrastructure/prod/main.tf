@@ -8,13 +8,11 @@ data "aws_caller_identity" "current" {}
 provider "aws" {
   region = var.aws_region
 
-  # Make it faster by skipping something
   skip_get_ec2_platforms      = true
   skip_metadata_api_check     = true
   skip_region_validation      = true
   skip_credentials_validation = true
 
-  # skip_requesting_account_id should be disabled to generate valid ARN in apigatewayv2_api_execution_arn
   skip_requesting_account_id = false
 }
 
@@ -29,6 +27,7 @@ resource "aws_api_gateway_rest_api" "DoS_REST" {
     types = ["REGIONAL"]
   }
 }
+
 
 //SEARCH ENDPOINTS
 
@@ -92,21 +91,24 @@ resource "aws_api_gateway_resource" "searchprofiles" {
 }
 
 resource "aws_api_gateway_method" "searchprofiles_POST" {
-  authorization = "NONE"
+  authorization = "COGNITO_USER_POOLS"
+  authorizer_id = aws_api_gateway_authorizer.DoS_Users.id
   http_method   = "POST"
   resource_id   = aws_api_gateway_resource.searchprofiles.id
   rest_api_id   = aws_api_gateway_rest_api.DoS_REST.id
 }
 
 resource "aws_api_gateway_method" "searchprofiles_GET" {
-  authorization = "NONE"
+  authorization = "COGNITO_USER_POOLS"
+  authorizer_id = aws_api_gateway_authorizer.DoS_Users.id
   http_method   = "GET"
   resource_id   = aws_api_gateway_resource.searchprofiles.id
   rest_api_id   = aws_api_gateway_rest_api.DoS_REST.id
 }
 
 resource "aws_api_gateway_method" "searchprofiles_DELETE" {
-  authorization = "NONE"
+  authorization = "COGNITO_USER_POOLS"
+  authorizer_id = aws_api_gateway_authorizer.DoS_Users.id
   http_method   = "DELETE"
   resource_id   = aws_api_gateway_resource.searchprofiles.id
   rest_api_id   = aws_api_gateway_rest_api.DoS_REST.id
@@ -149,21 +151,24 @@ resource "aws_api_gateway_resource" "consumers" {
 }
 
 resource "aws_api_gateway_method" "consumers_POST" {
-  authorization = "NONE"
+  authorization = "COGNITO_USER_POOLS"
+  authorizer_id = aws_api_gateway_authorizer.DoS_Users.id
   http_method   = "POST"
   resource_id   = aws_api_gateway_resource.consumers.id
   rest_api_id   = aws_api_gateway_rest_api.DoS_REST.id
 }
 
 resource "aws_api_gateway_method" "consumers_GET" {
-  authorization = "NONE"
+  authorization = "COGNITO_USER_POOLS"
+  authorizer_id = aws_api_gateway_authorizer.DoS_Users.id
   http_method   = "GET"
   resource_id   = aws_api_gateway_resource.consumers.id
   rest_api_id   = aws_api_gateway_rest_api.DoS_REST.id
 }
 
 resource "aws_api_gateway_method" "consumers_DELETE" {
-  authorization = "NONE"
+  authorization = "COGNITO_USER_POOLS"
+  authorizer_id = aws_api_gateway_authorizer.DoS_Users.id
   http_method   = "DELETE"
   resource_id   = aws_api_gateway_resource.consumers.id
   rest_api_id   = aws_api_gateway_rest_api.DoS_REST.id
@@ -205,21 +210,24 @@ resource "aws_api_gateway_resource" "services" {
 }
 
 resource "aws_api_gateway_method" "services_POST" {
-  authorization = "NONE"
+  authorization = "COGNITO_USER_POOLS"
+  authorizer_id = aws_api_gateway_authorizer.DoS_Users.id
   http_method   = "POST"
   resource_id   = aws_api_gateway_resource.services.id
   rest_api_id   = aws_api_gateway_rest_api.DoS_REST.id
 }
 
 resource "aws_api_gateway_method" "services_GET" {
-  authorization = "NONE"
+  authorization = "COGNITO_USER_POOLS"
+  authorizer_id = aws_api_gateway_authorizer.DoS_Users.id
   http_method   = "GET"
   resource_id   = aws_api_gateway_resource.services.id
   rest_api_id   = aws_api_gateway_rest_api.DoS_REST.id
 }
 
 resource "aws_api_gateway_method" "services_DELETE" {
-  authorization = "NONE"
+  authorization = "COGNITO_USER_POOLS"
+  authorizer_id = aws_api_gateway_authorizer.DoS_Users.id
   http_method   = "DELETE"
   resource_id   = aws_api_gateway_resource.services.id
   rest_api_id   = aws_api_gateway_rest_api.DoS_REST.id
