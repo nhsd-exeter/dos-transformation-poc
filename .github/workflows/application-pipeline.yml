@@ -107,7 +107,7 @@ jobs:
 
 
   deploy_microservices:
-    needs: get_updated_microservices
+    needs: [get_updated_microservices, run_unit_tests]
     runs-on: ubuntu-latest
     environment: 
       name: ${{ needs.get_updated_microservices.outputs.environment }}

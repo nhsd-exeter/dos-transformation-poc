@@ -1,8 +1,7 @@
-
 def test_basic():
-    """
-    Testing an empty payload event to the Lambda
-    """
+    # THIS TEST FILE IS A PLACEHOLDER TEMPLATE THAT CAN BE USED TO 
+    # PRODUCE A FULL UNIT TESTING STRATEGY
+    
     event = {}
     context = None
 
