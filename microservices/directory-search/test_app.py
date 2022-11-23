@@ -1,9 +1,12 @@
-import json
+from app import lambda_handler
+
+def test_basic():
+    """
+    Testing an empty payload event to the Lambda
+    """
+    event = {}
+    context = None
+
+    assert payload['statusCode'] == 200
 
 
-def test_index(app, client):
-    del app
-    res = client.get('/')
-    assert res.status_code == 200
-    expected = 'Hello, World! I am the Directory-Search Service!'
-    assert expected == res.get_data(as_text=True)
