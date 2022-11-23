@@ -5,14 +5,13 @@ import requests
 from requests_aws4auth import AWS4Auth
 
 
-
-region = os.environ.get("ES_region", default="eu-west-2")
+region = os.environ['ES_region'] 
 service = 'es'
 credentials = boto3.Session().get_credentials()
 awsauth = AWS4Auth(credentials.access_key, credentials.secret_key, region, service, session_token=credentials.token)
 
-host = os.environ.get("ES_domain", default="elastic_test.com")
-index = os.environ.get("ES_index", default="directory-index")
+host = os.environ['ES_domain']
+index = os.environ['ES_index']
 url = 'https://' + host + '/' + index + '/_search'
 
 def lambda_handler(event, context):
