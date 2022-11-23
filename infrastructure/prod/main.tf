@@ -389,8 +389,6 @@ module "live-alias-directory-search" {
 }
 
 
-
-
 module "directory-data-manager-lambda" {
   source  = "terraform-aws-modules/lambda/aws"
   version = "~> 2.0"
@@ -701,7 +699,7 @@ resource "aws_dynamodb_table_item" "example_consumer" {
 {
   "key": {"S": "LyXvMVUd3L9bc5IVhpA4l5efM0jqvLFL535MVHpx"},
   "search-profile-id": {"S": "x83nd93y2"},
-  "name": {"S": "111 Test Profile"}
+  "name": {"S": "Example Consumer Profile"}
 }
 ITEM
 }
@@ -714,6 +712,7 @@ resource "aws_dynamodb_table_item" "example_search_profile" {
   item = <<ITEM
 {
   "id": {"S": "x83nd93y2"},
+  "name":{"S": "Example search profile"},
   "exclusions": {"S": "TEST"},
   "sorters": {"S": "TEST"},
   "formatters": {"S": "TEST"},
@@ -1654,7 +1653,7 @@ locals {
         "OutputPath": "$.Payload",
         "Parameters": {
           "Payload.$": "$",
-          "FunctionName": "${module.search-profiler-lambda.lambda_function_arn}:$LATEST"
+          "FunctionName": "${module.search-profiler-lambda.lambda_function_arn}:${module.live-alias-search-profiler.lambda_alias_name}"
         },
         "Retry": [
           {
@@ -1676,7 +1675,7 @@ locals {
         "OutputPath": "$.Payload",
         "Parameters": {
           "Payload.$": "$",
-          "FunctionName": "${module.directory-search-lambda.lambda_function_arn}:$LATEST"
+          "FunctionName": "${module.directory-search-lambda.lambda_function_arn}:${module.live-alias-directory-search.lambda_alias_name}"  
         },
         "Retry": [
           {
