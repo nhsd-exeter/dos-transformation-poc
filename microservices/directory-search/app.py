@@ -21,15 +21,6 @@ def lambda_handler(event, context):
 
     query = request["search_query"]
 
-
-    # Put the user query into the query DSL for more accurate search results.
-    # Note that certain fields are boosted 
-    query = {
-        "query" : {
-            "match_all" : {}
-        }
-}
-
     # Elasticsearch 6.x requires an explicit Content-Type header
     headers = { "Content-Type": "application/json" }
 
