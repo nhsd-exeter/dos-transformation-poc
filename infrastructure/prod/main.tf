@@ -631,14 +631,6 @@ module "directory-data-relay-lambda" {
     EOT
   ]
   number_of_policy_jsons = 1
-
-
-  # allowed_triggers = {
-  #   AllowExecutionFromAPIGateway = {
-  #     service    = "apigateway"
-  #     source_arn = "${aws_api_gateway_rest_api.DoS_REST.execution_arn}/*/*"
-  #   }
-  # }
 }
 
 module "live-alias-directory-data-relay" {
@@ -1846,7 +1838,7 @@ resource "aws_elasticsearch_domain" "directory_search" {
 
 
 ######
-# IAM
+# MISCELLANEOUS IAM
 ######
 
 resource "aws_iam_role" "APIGatewaytoDoSSearchWorkflow" {

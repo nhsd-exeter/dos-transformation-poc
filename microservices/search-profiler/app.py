@@ -16,16 +16,22 @@ def lambda_handler(event, context):
     #Determine the consumer by querying the api-key 
     search_consumers_table = dynamodb.Table('search-consumers')      
     
+    
     consumer_resp = search_consumers_table.get_item(
             Key={
                 'key' : api_key,
             }
         )
-                
+  
 
     #locate the appropriate search profile for this consumer
+    if 'Item' in consumer_resp:
+        search_profile_id = consumer_resp['Item'].get("search-profile-id")
+    else:
+        raise ValueError('This API Key is not associated with a valid search profile.')
+ 
 
-    search_profile_id = consumer_resp['Item'].get("search-profile-id")
+
     search_profiles_table = dynamodb.Table('search-profiles')      
     
     search_profile_resp = search_profiles_table.get_item(
@@ -34,9 +40,13 @@ def lambda_handler(event, context):
             }
         )
 
-    
-    search_profile = search_profile_resp['Item']
-    
+
+    if 'Item' in  search_profile_resp
+        search_profile = search_profile_resp['Item']
+    else:
+        raise ValueError('The search profile associated with this API Key cannot be found')
+ 
+        
     
     #perform formatting / tailoring
     
