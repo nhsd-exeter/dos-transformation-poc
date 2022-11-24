@@ -651,7 +651,7 @@ module "live-alias-directory-data-relay" {
 
 resource "aws_lambda_event_source_mapping" "dynamodb_trigger" {
   event_source_arn  = module.dynamodb_services_table.dynamodb_table_stream_arn
-  function_name     = module.directory-search-lambda.lambda_function_name
+  function_name     = module.directory-data-relay-lambda.lambda_function_name
   starting_position = "LATEST"
   filter_criteria {
     filter {
@@ -670,6 +670,8 @@ module "dynamodb_services_table" {
   name     = "services"
   hash_key = "id"
   autoscaling_enabled = true
+  stream_enabled - true
+  stream_view_type - "NEW_AND_OLD_IMAGES"
 
   attributes = [
     {
