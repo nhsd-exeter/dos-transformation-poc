@@ -633,12 +633,12 @@ module "directory-data-relay-lambda" {
   number_of_policy_jsons = 1
 
 
-  allowed_triggers = {
-    AllowExecutionFromAPIGateway = {
-      service    = "apigateway"
-      source_arn = "${aws_api_gateway_rest_api.DoS_REST.execution_arn}/*/*"
-    }
-  }
+  # allowed_triggers = {
+  #   AllowExecutionFromAPIGateway = {
+  #     service    = "apigateway"
+  #     source_arn = "${aws_api_gateway_rest_api.DoS_REST.execution_arn}/*/*"
+  #   }
+  # }
 }
 
 module "live-alias-directory-data-relay" {
@@ -647,6 +647,13 @@ module "live-alias-directory-data-relay" {
   name          = "live-service"
   function_name = module.directory-data-relay-lambda.lambda_function_name
   refresh_alias = false
+}
+
+resource "aws_lambda_event_source_mapping" "dynamodb_trigger" {
+  event_source_arn  = module.dynamodb_services_table.dynamodb_table_stream_arn
+  function_name     = module.directory-search-lambda.lambda_function_name
+  starting_position = "LATEST"
+  filter_criteria = <<-EOT { "eventName": ["INSERT", "MODIFY", "REMOVE" ]} EOT
 }
 
 ##########################
