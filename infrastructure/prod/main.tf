@@ -670,8 +670,8 @@ module "dynamodb_services_table" {
   name     = "services"
   hash_key = "id"
   autoscaling_enabled = true
-  stream_enabled - true
-  stream_view_type - "NEW_AND_OLD_IMAGES"
+  stream_enabled = true
+  stream_view_type = "NEW_AND_OLD_IMAGES"
 
   attributes = [
     {
