@@ -41,7 +41,7 @@ def lambda_handler(event, context):
         )
 
 
-    if 'Item' in  search_profile_resp
+    if 'Item' in  search_profile_resp:
         search_profile = search_profile_resp['Item']
     else:
         raise ValueError('The search profile associated with this API Key cannot be found')
