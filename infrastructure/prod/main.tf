@@ -653,9 +653,11 @@ resource "aws_lambda_event_source_mapping" "dynamodb_trigger" {
   event_source_arn  = module.dynamodb_services_table.dynamodb_table_stream_arn
   function_name     = module.directory-search-lambda.lambda_function_name
   starting_position = "LATEST"
-  filter_criteria = <<-EOT 
-  { "eventName": ["INSERT", "MODIFY", "REMOVE" ]} 
-  EOT
+  filter_criteria {
+    filter {
+      pattern = jsonencode({ "eventName": ["INSERT", "MODIFY", "REMOVE" ]})
+    }
+  }
 }
 
 ##########################
