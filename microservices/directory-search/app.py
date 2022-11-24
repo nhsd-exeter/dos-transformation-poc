@@ -46,7 +46,7 @@ def lambda_handler(event, context):
     }
 
     # Add the search results to the response
-    response['body'] = r.text
+    response['body'] = r.json()
 
     json_response = json.dumps(response)
 
