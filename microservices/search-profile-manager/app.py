@@ -21,7 +21,7 @@ def get_search_profile():
     
     search_profile = search_profile_resp['Item']
 
-    return { "searchprofile": search_profile_resp }
+    return { "searchprofile": search_profile }
 
 
 @app.route("/searchprofiles", methods=['POST'])

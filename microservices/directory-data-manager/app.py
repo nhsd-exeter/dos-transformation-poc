@@ -8,55 +8,50 @@ app = Chalice(app_name="helloworld")
 dynamodb = boto3.resource('dynamodb')
 
 
-@app.route("/searchprofiles", methods=['GET'])
-def get_search_profile():
-    search_profile_id = app.current_request.query_params.get('id')
-    search_profiles_table = dynamodb.Table('search-profiles')      
+@app.route("/services", methods=['GET'])
+def get_service():
+    service_id = app.current_request.query_params.get('id')
+    services_table = dynamodb.Table('services')      
     
-    search_profile_resp = search_profiles_table.get_item(
+    service_resp = services_table.get_item(
             Key={
-                'id' : search_profile_id,
+                'id' : service_id,
             }
         )
     
-    search_profile = search_profile_resp['Item']
+    search = service_resp['Item']
 
-    return { "searchprofile": search_profile_resp }
+    return { "service": service }
 
 
-@app.route("/searchprofiles", methods=['POST'])
-def create_search_profile():
+@app.route("/services", methods=['POST'])
+def create_service():
 
     request = app.current_request.json_body
 
-    search_profiles_table = dynamodb.Table('search-profiles') 
+    services_table = dynamodb.Table('services')      
 
     generated_identifier = uuid.uuid4().hex
-    search_profiles_table.put_item(
+    services_table.put_item(
                 Item={
-                    'id': generated_identifier,
-                    'name': request["name"],
-                    'formatters': request["formatters"],
-                    'redactions': request["redactions"],
-                    'sorters': request["sorters"],
-                    'exclusions': request["exclusions"]
+                    'id': generated_identifier #ADD FULL DATA MODEL
                     })
 
 
     return {"id" : generated_identifier}
 
 
-@app.route("/searchprofiles", methods=['PUT'])
-def update_search_profile():
+@app.route("/services", methods=['PUT'])
+def update_service():
 
-    search_profile_id = app.current_request.query_params.get('id')
+    service_id = app.current_request.query_params.get('id')
 
     request = app.current_request.json_body
 
-    search_profiles_table = dynamodb.Table('search-profiles') 
+    services_table = dynamodb.Table('services')      
 
-    search_profiles_table.update_item(
-                Key={'id': search_profile_id},
+    services_table.update_item(
+                Key={'id': service_id}, #CHANGE TO ADD FULL DATA MODEL
                 UpdateExpression="set name=:n, formatters=:f, redactions=:r, exclusions=:e, sorters=:s",
                 ExpressionAttributeValues={
                     ':n': request["name"], 
@@ -68,19 +63,19 @@ def update_search_profile():
                     },
                 ReturnValues="UPDATED_NEW")
 
-    return {"id" : search_profile_id}
+    return {"id" : service_id}
 
 
-@app.route("/searchprofiles", methods=['DELETE'])
-def delete_search_profile():
-    search_profile_id = app.current_request.query_params.get('id')
+@app.route("/services", methods=['DELETE'])
+def delete_service():
+    service_id = app.current_request.query_params.get('id')
 
-    search_profiles_table = dynamodb.Table('search-profiles') 
+    service_table = dynamodb.Table('services') 
 
-    search_profiles_table.delete_item(
+    services_table.delete_item(
         Key={
-            'id' : search_profile_id,
+            'id' : service_id,
         }
     )
 
-    return {"id" : search_profile_id}
+    return {"id" : service_id}

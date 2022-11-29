@@ -5,14 +5,13 @@
 # Configure the following variables appropriate for your account and github setup
 
 export REPO_NAME="gcowell/mvp-demonstrator"              # The repository name where your code is stored
-export AWS_ACCOUNT="202422821117"               # The account number of the AWS account you intend to deploy into
-export TERRAFORM_BUCKET_NAME="terraform8247829" # A globally unique name for your terraform remote state bucket
-export AWS_REGION="eu-west-2"                   # The AWS region where you intend to deploy the application to (where the bucket will be created)
+export AWS_ACCOUNT="202422821117"                        # The account number of the AWS account you intend to deploy into
+export TERRAFORM_BUCKET_NAME="terraform8247829"          # A globally unique name for your terraform remote state bucket
+export AWS_REGION="eu-west-2"                            # The AWS region where you intend to deploy the application to (where the bucket will be created)
 
 #--------------------------------------------------------
 
 # THE FOLLOWING COMMANDS CONFIGURE THE OIDC IDENTITY PROVIDER FOR GITHUB ACTIONS
-
 
 HOST=$(curl https://token.actions.githubusercontent.com/.well-known/openid-configuration) 
 CERT_URL=$(jq -r '.jwks_uri | split("/")[2]' <<< $HOST)
