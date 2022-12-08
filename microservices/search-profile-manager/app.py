@@ -63,7 +63,7 @@ def update_search_profile():
                     ':f': request["formatters"],
                     ':r': request["redactions"],
                     ':e': request["exclusions"],
-                    ':s': request["sorterss"]
+                    ':s': request["sorters"]
 
                     },
                 ReturnValues="UPDATED_NEW")
