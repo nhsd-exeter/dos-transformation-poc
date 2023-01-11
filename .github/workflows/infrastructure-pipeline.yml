@@ -1,16 +1,12 @@
 name: Infrastructure Pipeline
 
 on: 
-  workflow_dispatch:
-    inputs:
-      environment:
-        type: choice
-        description: Choose the Environment
-        required: true
-        options:
-        - dev
-        - staging
-        - prod
+  push:   
+    branches:  
+    - master
+    - staging   
+    - dev
+
 
 
 jobs:  
