@@ -1,13 +1,16 @@
 name: Infrastructure Pipeline
 
 on: 
-  push:   
-    branches:  
-    - master
-    - staging   
-    - dev
-
-
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        description: Choose the Environment
+        required: true
+        options:
+        - dev
+        - staging
+        - prod
 
 jobs:  
   run_terraform:
