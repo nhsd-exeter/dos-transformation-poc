@@ -2,7 +2,7 @@ terraform {
   required_version = ">= 0.13.1"
   
   backend "s3" {
-    bucket = "terraform251087" # THIS MUST MATCH THE BUCKET NAME PROVIDED IN THE BOOTSTRAPPER
+    bucket = "terraform8247833" # THIS MUST MATCH THE BUCKET NAME PROVIDED IN THE BOOTSTRAPPER
     key    = "state"
     region = "eu-west-2"
   }
