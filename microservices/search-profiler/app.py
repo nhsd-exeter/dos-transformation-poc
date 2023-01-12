@@ -49,6 +49,8 @@ def lambda_handler(event, context):
         
     
     #perform formatting / tailoring
+    #Todo - working example of search profile altering query
+    
     
     
     profiled_query = search_query
