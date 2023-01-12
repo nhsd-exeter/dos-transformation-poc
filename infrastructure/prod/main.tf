@@ -85,6 +85,7 @@ resource "aws_api_gateway_integration_response" "search_integration_response" {
       $parsedPayload
     EOF
   }
+  depends_on = [aws_api_gateway_method_response.search_response]
 
 }
 
@@ -281,7 +282,8 @@ resource "aws_api_gateway_deployment" "main" {
   }
 
   depends_on = [
-    aws_api_gateway_rest_api.DoS_REST
+    aws_api_gateway_rest_api.DoS_REST,
+    aws_api_gateway_method.services_GET
   ]
 }
 
