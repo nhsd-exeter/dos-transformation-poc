@@ -5,8 +5,8 @@
 
 #INPUT ARGUMENTS
 
-SERVICE_NAME=$0
-ENVIRONMENT_NAME=$1
+SERVICE_NAME=$1
+ENVIRONMENT_NAME=$2
 
 pip install -r requirements.txt --target .
 zip -r deploy.zip * 
