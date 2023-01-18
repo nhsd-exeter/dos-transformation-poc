@@ -8,17 +8,25 @@ resource "aws_s3_bucket" "frontend_bucket" {
 
 resource "aws_s3_bucket_acl" "frontend_acl" {
   bucket = aws_s3_bucket.frontend_bucket.id
-  acl    = "public"
+  acl    = "public-read"
 }
 
 locals {
   s3_origin_id = "S3Origin"
 }
 
+resource "aws_cloudfront_origin_access_control" "frontend" {
+  name                              = "frontend"
+  description                       = "Access Policy for the Frontend Bucket"
+  origin_access_control_origin_type = "s3"
+  signing_behavior                  = "always"
+  signing_protocol                  = "sigv4"
+}
+
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
-    domain_name              = aws_s3_bucket.fronted_bucket.bucket_regional_domain_name
-    origin_access_control_id = aws_cloudfront_origin_access_control.default.id
+    domain_name              = aws_s3_bucket.frontend_bucket.bucket_regional_domain_name
+    origin_access_control_id = aws_cloudfront_origin_access_control.frontend.id
     origin_id                = local.s3_origin_id
   }
 
