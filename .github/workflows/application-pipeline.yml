@@ -115,9 +115,6 @@ jobs:
       contents: read
     steps:
 
-      - name: Check Inputs
-        run: echo ${{ needs.get_updated_microservices.outputs.services }}
-
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
@@ -130,23 +127,14 @@ jobs:
           role-session-name: github-pipeline-session
           aws-region: eu-west-2 
 
-      - name: Deploy Lambda
+      - name: Deploy Service
         run: |
-          cd ./microservices/${{ matrix.services }}/
-          pip install -r requirements.txt --target .
-          zip -r deploy.zip * 
-          LAMBDA_OUTPUT=$(aws lambda update-function-code --function-name=${{ matrix.services }} --zip-file=fileb://deploy.zip --publish)
-          LATEST_VERSION=$(jq -r '.Version' --compact-output <<< "$LAMBDA_OUTPUT" )
-          PREVIOUS_VERSION=$(expr $LATEST_VERSION - 1)
-
-          if [ ${{ needs.get_updated_microservices.outputs.environment }} = 'staging' ]
-          then
-            ROUTING_CONFIG=\'{"AdditionalVersionWeights" : {'"$LATEST_VERSION"' : 0.05} }\'       
-            aws lambda update-alias --function-name=${{ matrix.services }} --name live-service --function-version $PREVIOUS_VERSION --routing-config '{"AdditionalVersionWeights" : {$PREVIOUS_VERSION_STRING : 0.05} }'
-          else
-            aws lambda update-alias --function-name=${{ matrix.services }} --name live-service --function-version $LATEST_VERSION  --routing-config '{}'
-          fi          
-
+          SERVICE_NAME=${{ matrix.services }}
+          ENVIRONMENT_NAME=${{ needs.get_updated_microservices.outputs.environment }}
+          cd ./microservices/$SERVICE_NAME/
+          chmod +x ./deploy_service.sh
+          ./deploy_service.sh $SERVICE_NAME $ENVIRONMENT_NAME
+          
 
   perform_integration_tests:
     needs: [get_updated_microservices, deploy_microservices]
