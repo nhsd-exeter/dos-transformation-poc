@@ -33,10 +33,10 @@ resource "aws_api_gateway_integration" "search_POST_integration" {
 
     request_templates = {
         "application/json" = <<EOF
-        {
-        "input": "{\"search_query\":$util.escapeJavaScript($input.json('$.search_query')),\"api_key\":\"$context.identity.apiKey\"}",
-        "stateMachineArn": "${module.search_step_function.state_machine_arn}"
-        } 
+{
+"input": "{\"search_query\":$util.escapeJavaScript($input.json('$.search_query')),\"api_key\":\"$context.identity.apiKey\"}",
+"stateMachineArn": "${module.search_step_function.state_machine_arn}"
+} 
         EOF
     }
 
@@ -62,8 +62,8 @@ resource "aws_api_gateway_integration_response" "search_integration_response" {
     status_code = aws_api_gateway_method_response.search_response.status_code
     response_templates = {
         "application/json" = <<EOF
-        #set ($parsedPayload = $util.parseJson($input.json('$.output')))
-        $parsedPayload
+#set ($parsedPayload = $util.parseJson($input.json('$.output')))
+$parsedPayload
         EOF
     }
     depends_on = [aws_api_gateway_method_response.search_response]

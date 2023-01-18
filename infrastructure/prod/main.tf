@@ -346,14 +346,14 @@ provider "aws" {
 # }
 
 
-##################
-# Extra resources
-##################
+# ##################
+# # Extra resources
+# ##################
 
 
-resource "aws_cloudwatch_log_group" "logs" {
-  name = "dos-logging"
-}
+# resource "aws_cloudwatch_log_group" "logs" {
+#   name = "dos-logging"
+# }
 
 
 # ##################
@@ -653,1228 +653,1228 @@ resource "aws_cloudwatch_log_group" "logs" {
 #   }
 # }
 
-##########################
-# DynamoDB Tables
-##########################
+# ##########################
+# # DynamoDB Tables
+# ##########################
 
-module "dynamodb_services_table" {
-  source   = "terraform-aws-modules/dynamodb-table/aws"
+# module "dynamodb_services_table" {
+#   source   = "terraform-aws-modules/dynamodb-table/aws"
 
-  name     = "services"
-  hash_key = "id"
-  autoscaling_enabled = true
-  stream_enabled = true
-  stream_view_type = "NEW_AND_OLD_IMAGES"
+#   name     = "services"
+#   hash_key = "id"
+#   autoscaling_enabled = true
+#   stream_enabled = true
+#   stream_view_type = "NEW_AND_OLD_IMAGES"
 
-  attributes = [
-    {
-      name = "id"
-      type = "S"
-    }
-  ]
-}
-
-
-module "dynamodb_search_profiles_table" {
-  source   = "terraform-aws-modules/dynamodb-table/aws"
-
-  name     = "search-profiles"
-  hash_key = "id"
-  autoscaling_enabled = true
-
-  attributes = [
-    {
-      name = "id"
-      type = "S"
-    }
-  ]
-}
-
-module "dynamodb_search_consumers_table" {
-  source   = "terraform-aws-modules/dynamodb-table/aws"
-
-  name     = "search-consumers"
-  hash_key = "key"
-  autoscaling_enabled = true
-
-  attributes = [
-    {
-      name = "key"
-      type = "S"
-    }
-  ]
-}
+#   attributes = [
+#     {
+#       name = "id"
+#       type = "S"
+#     }
+#   ]
+# }
 
 
-##########################
-# Example Data 
-##########################
+# module "dynamodb_search_profiles_table" {
+#   source   = "terraform-aws-modules/dynamodb-table/aws"
 
+#   name     = "search-profiles"
+#   hash_key = "id"
+#   autoscaling_enabled = true
 
-resource "aws_dynamodb_table_item" "example_consumer" {
-  table_name = module.dynamodb_search_consumers_table.dynamodb_table_id
-  hash_key   = "key"
+#   attributes = [
+#     {
+#       name = "id"
+#       type = "S"
+#     }
+#   ]
+# }
 
-  item = <<ITEM
-{
-  "key": {"S": "LyXvMVUd3L9bc5IVhpA4l5efM0jqvLFL535MVHpx"},
-  "search-profile-id": {"S": "x83nd93y2"},
-  "name": {"S": "Example Consumer Profile"}
-}
-ITEM
-}
+# module "dynamodb_search_consumers_table" {
+#   source   = "terraform-aws-modules/dynamodb-table/aws"
 
+#   name     = "search-consumers"
+#   hash_key = "key"
+#   autoscaling_enabled = true
 
-resource "aws_dynamodb_table_item" "example_search_profile" {
-  table_name = module.dynamodb_search_profiles_table.dynamodb_table_id
-  hash_key   = "id"
-
-  item = <<ITEM
-{
-  "id": {"S": "x83nd93y2"},
-  "name":{"S": "Example search profile"},
-  "exclusions": {"S": "TEST"},
-  "sorters": {"S": "TEST"},
-  "formatters": {"S": "TEST"},
-  "redactions": {"S": "TEST"}
-}
-ITEM
-}
-
-
-resource "aws_dynamodb_table_item" "example_service" {
-  table_name = module.dynamodb_services_table.dynamodb_table_id
-  hash_key   = "id"
-
-  item = <<ITEM
-{
-  "resourceType": {
-    "S": "HealthcareService"
-  },
-  "id": {
-    "S": "1233123"
-  },
-  "name": {
-    "S": "Emergency Department (ED) - Basildon Hospital, Basildon, Essex"
-  },
-  "active": {
-    "BOOL": true
-  },
-  "providedBy": {
-    "M": {
-      "resourceType": {
-        "S": "Organization"
-      },
-      "identifier": {
-        "S": "M8U3G"
-      },
-      "active": {
-        "BOOL": true
-      },
-      "type": {
-        "L": [
-          {
-            "S": "NHS Trust Site"
-          }
-        ]
-      },
-      "name": {
-        "S": "EMERGENCY DEPARTMENT BH"
-      },
-      "alias": {
-        "L": [
-          {
-            "S": "<string>"
-          }
-        ]
-      },
-      "telecom": {
-        "L": [
-          {
-            "S": "string>"
-          }
-        ]
-      },
-      "address": {
-        "L": [
-          {
-            "S": "NETHERMAYNE"
-          },
-          {
-            "S": "BASILDON"
-          },
-          {
-            "S": "SS16 5NL"
-          }
-        ]
-      },
-      "contact": {
-        "L": [
-          {
-            "M": {
-              "purpose": {
-                "S": "Manager"
-              },
-              "name": {
-                "S": "Richard Dean"
-              },
-              "telecom": {
-                "L": [
-                  {
-                    "S": "+4477723413"
-                  }
-                ]
-              },
-              "address": {
-                "L": [
-                  {
-                    "S": "NETHERMAYNE"
-                  },
-                  {
-                    "S": "BASILDON"
-                  },
-                  {
-                    "S": "SS16 5NL"
-                  }
-                ]
-              }
-            }
-          }
-        ]
-      },
-      "endpoint": {
-        "L": [
-          {
-            "S": "<TBC>"
-          }
-        ]
-      }
-    }
-  },
-  "category": {
-    "L": [
-      {
-        "S": "ED"
-      }
-    ]
-  },
-  "type": {
-    "L": [
-      {
-        "S": "ED"
-      }
-    ]
-  },
-  "specialty": {
-    "L": [
-      {
-        "M": {}
-      }
-    ]
-  },
-  "location": {
-    "L": [
-      {
-        "M": {
-          "resourceType": {
-            "S": "Location"
-          },
-          "identifier": {
-            "S": "12344134"
-          },
-          "status": {
-            "S": "active"
-          },
-          "operationalStatus": {
-            "S": "active"
-          },
-          "name": {
-            "S": "Basildon Hospital"
-          },
-          "alias": {
-            "L": [
-              {
-                "S": "<string>"
-              }
-            ]
-          },
-          "description": {
-            "S": "Basildon Hospital"
-          },
-          "mode": {
-            "S": "instance"
-          },
-          "type": {
-            "L": [
-              {
-                "S": "Hospital"
-              }
-            ]
-          },
-          "telecom": {
-            "L": [
-              {
-                "S": "+4477723413"
-              }
-            ]
-          },
-          "address": {
-            "L": [
-              {
-                "S": "NETHERMAYNE"
-              },
-              {
-                "S": "BASILDON"
-              },
-              {
-                "S": "SS16 5NL"
-              }
-            ]
-          },
-          "physicalType": {
-            "S": "Site"
-          },
-          "position": {
-            "M": {
-              "longitude": {
-                "N": "0.4506672"
-              },
-              "latitude": {
-                "N": "51.557759"
-              },
-              "altitude": {
-                "N": "0"
-              }
-            }
-          },
-          "managingOrganization": {
-            "M": {
-              "resourceType": {
-                "S": "Organization"
-              },
-              "identifier": {
-                "S": "RAJ"
-              },
-              "active": {
-                "BOOL": true
-              },
-              "type": {
-                "L": [
-                  {
-                    "S": "NHS Trust"
-                  }
-                ]
-              },
-              "name": {
-                "S": "MID AND SOUTH ESSEX NHS FOUNDATION TRUST"
-              },
-              "alias": {
-                "L": [
-                  {
-                    "S": "<string>"
-                  }
-                ]
-              },
-              "telecom": {
-                "L": [
-                  {
-                    "S": "string>"
-                  }
-                ]
-              },
-              "address": {
-                "L": [
-                  {
-                    "S": "PRITTLEWELL CHASE"
-                  },
-                  {
-                    "S": "WESTCLIFF-ON-SEA"
-                  },
-                  {
-                    "S": "SS0 0RY"
-                  }
-                ]
-              },
-              "contact": {
-                "L": [
-                  {
-                    "M": {
-                      "purpose": {
-                        "S": "Manager"
-                      },
-                      "name": {
-                        "S": "Richard Dean"
-                      },
-                      "telecom": {
-                        "L": [
-                          {
-                            "S": "+4477723413"
-                          }
-                        ]
-                      },
-                      "address": {
-                        "L": [
-                          {
-                            "S": "NETHERMAYNE"
-                          },
-                          {
-                            "S": "BASILDON"
-                          },
-                          {
-                            "S": "SS16 5NL"
-                          }
-                        ]
-                      }
-                    }
-                  }
-                ]
-              },
-              "endpoint": {
-                "L": [
-                  {
-                    "S": "<TBC>"
-                  }
-                ]
-              }
-            }
-          },
-          "hoursOfOperation": {
-            "L": [
-              {
-                "M": {
-                  "daysOfWeek": {
-                    "L": [
-                      {
-                        "S": "mon | tue | wed | thu | fri | sat | sun"
-                      }
-                    ]
-                  },
-                  "allDay": {
-                    "BOOL": true
-                  },
-                  "openingTime": {
-                    "NULL": true
-                  },
-                  "closingTime": {
-                    "NULL": true
-                  }
-                }
-              }
-            ]
-          },
-          "availabilityExceptions": {
-            "S": "<string>"
-          },
-          "endpoint": {
-            "L": [
-              {
-                "S": "<TBC>"
-              }
-            ]
-          }
-        }
-      }
-    ]
-  },
-  "comment": {
-    "S": "<string>"
-  },
-  "extraDetails": {
-    "S": "<markdown>"
-  },
-  "photo": {
-    "S": "<url>"
-  },
-  "telecom": {
-    "L": [
-      {
-        "S": "+4477723413"
-      }
-    ]
-  },
-  "coverageArea": {
-    "L": [
-      {
-        "M": {
-          "resourceType": {
-            "S": "Location"
-          },
-          "identifier": {
-            "S": "12344134"
-          },
-          "status": {
-            "S": "active"
-          },
-          "operationalStatus": {
-            "S": "active"
-          },
-          "name": {
-            "S": "Basildon Hospital"
-          },
-          "alias": {
-            "L": [
-              {
-                "S": "<string>"
-              }
-            ]
-          },
-          "description": {
-            "S": "Basildon Hospital"
-          },
-          "mode": {
-            "S": "instance"
-          },
-          "type": {
-            "L": [
-              {
-                "S": "Hospital"
-              }
-            ]
-          },
-          "telecom": {
-            "L": [
-              {
-                "S": "+4477723413"
-              }
-            ]
-          },
-          "address": {
-            "L": [
-              {
-                "S": "NETHERMAYNE"
-              },
-              {
-                "S": "BASILDON"
-              },
-              {
-                "S": "SS16 5NL"
-              }
-            ]
-          },
-          "physicalType": {
-            "S": "Site"
-          },
-          "position": {
-            "S": "GEOMETRY(POLYGON)"
-          },
-          "managingOrganization": {
-            "M": {
-              "resourceType": {
-                "S": "Organization"
-              },
-              "identifier": {
-                "S": "RAJ"
-              },
-              "active": {
-                "BOOL": true
-              },
-              "type": {
-                "L": [
-                  {
-                    "S": "NHS Trust"
-                  }
-                ]
-              },
-              "name": {
-                "S": "MID AND SOUTH ESSEX NHS FOUNDATION TRUST"
-              },
-              "alias": {
-                "L": [
-                  {
-                    "S": "<string>"
-                  }
-                ]
-              },
-              "telecom": {
-                "L": [
-                  {
-                    "S": "<string>"
-                  }
-                ]
-              },
-              "address": {
-                "L": [
-                  {
-                    "S": "PRITTLEWELL CHASE"
-                  },
-                  {
-                    "S": "WESTCLIFF-ON-SEA"
-                  },
-                  {
-                    "S": "SS0 0RY"
-                  }
-                ]
-              },
-              "contact": {
-                "L": [
-                  {
-                    "M": {
-                      "purpose": {
-                        "S": "Manager"
-                      },
-                      "name": {
-                        "S": "Richard Dean"
-                      },
-                      "telecom": {
-                        "L": [
-                          {
-                            "S": "+4477723413"
-                          }
-                        ]
-                      },
-                      "address": {
-                        "L": [
-                          {
-                            "S": "NETHERMAYNE"
-                          },
-                          {
-                            "S": "BASILDON"
-                          },
-                          {
-                            "S": "SS16 5NL"
-                          }
-                        ]
-                      }
-                    }
-                  }
-                ]
-              },
-              "endpoint": {
-                "L": [
-                  {
-                    "S": "<TBC>"
-                  }
-                ]
-              }
-            }
-          },
-          "hoursOfOperation": {
-            "L": [
-              {
-                "M": {
-                  "daysOfWeek": {
-                    "L": [
-                      {
-                        "S": "mon | tue | wed | thu | fri | sat | sun"
-                      }
-                    ]
-                  },
-                  "allDay": {
-                    "BOOL": true
-                  },
-                  "openingTime": {
-                    "NULL": true
-                  },
-                  "closingTime": {
-                    "NULL": true
-                  }
-                }
-              }
-            ]
-          },
-          "availabilityExceptions": {
-            "S": "<string>"
-          },
-          "endpoint": {
-            "L": [
-              {
-                "S": "<TBC>"
-              }
-            ]
-          }
-        }
-      }
-    ]
-  },
-  "serviceProvisionCode": {
-    "L": [
-      {
-        "M": {}
-      }
-    ]
-  },
-  "eligibility": {
-    "L": [
-      {
-        "M": {
-          "code": {
-            "M": {}
-          },
-          "comment": {
-            "S": "N/A"
-          }
-        }
-      }
-    ]
-  },
-  "referralProfiles": {
-    "L": [
-      {
-        "M": {
-          "name": {
-            "S": "Emergency Department"
-          },
-          "system": {
-            "S": "SNOMED CT"
-          },
-          "activitiesOffered": {
-            "L": [
-              {
-                "S": "3412412"
-              },
-              {
-                "S": "124523"
-              },
-              {
-                "S": "124123"
-              },
-              {
-                "S": "..."
-              }
-            ]
-          },
-          "acuities": {
-            "L": [
-              {
-                "S": "14144"
-              },
-              {
-                "S": "114134"
-              },
-              {
-                "S": "563567"
-              },
-              {
-                "S": "..."
-              }
-            ]
-          },
-          "referralSpecificProperties": {
-            "L": [
-              {
-                "M": {
-                  "eligibility": {
-                    "L": [
-                      {
-                        "M": {
-                          "code": {
-                            "S": "12312444"
-                          },
-                          "comment": {
-                            "S": "15-129yr Only"
-                          }
-                        }
-                      }
-                    ]
-                  }
-                }
-              }
-            ]
-          }
-        }
-      },
-      {
-        "M": {
-          "name": {
-            "S": "Emergency Department (Children)"
-          },
-          "system": {
-            "S": "SNOMED CT"
-          },
-          "activitiesOffered": {
-            "L": [
-              {
-                "S": "3412412"
-              },
-              {
-                "S": "124523"
-              },
-              {
-                "S": "124123"
-              },
-              {
-                "S": "..."
-              }
-            ]
-          },
-          "acuities": {
-            "L": [
-              {
-                "S": "14144"
-              },
-              {
-                "S": "114134"
-              },
-              {
-                "S": "563567"
-              },
-              {
-                "S": "..."
-              }
-            ]
-          },
-          "referralSpecificProperties": {
-            "L": [
-              {
-                "M": {
-                  "eligibility": {
-                    "L": [
-                      {
-                        "M": {
-                          "code": {
-                            "S": "12312421"
-                          },
-                          "comment": {
-                            "S": "0-15yr Only"
-                          }
-                        }
-                      }
-                    ]
-                  }
-                }
-              },
-              {
-                "M": {
-                  "availableTime": {
-                    "L": [
-                      {
-                        "M": {
-                          "daysOfWeek": {
-                            "L": [
-                              {
-                                "S": "mon | tue | wed | thu | fri | sat | sun"
-                              }
-                            ]
-                          },
-                          "allDay": {
-                            "BOOL": false
-                          },
-                          "openingTime": {
-                            "S": "9:00"
-                          },
-                          "closingTime": {
-                            "S": "5:00"
-                          }
-                        }
-                      }
-                    ]
-                  }
-                }
-              }
-            ]
-          }
-        }
-      },
-      {
-        "M": {
-          "name": {
-            "S": "Emergency Department (Children)"
-          },
-          "system": {
-            "S": "LEGACY SG/SD/DX"
-          },
-          "symptomGroups": {
-            "L": [
-              {
-                "S": "SG1011"
-              },
-              {
-                "S": "SG1010"
-              },
-              {
-                "S": "..."
-              }
-            ]
-          },
-          "symptomDiscriminators": {
-            "L": [
-              {
-                "S": "SD4052"
-              },
-              {
-                "S": "SD4304"
-              },
-              {
-                "S": "..."
-              }
-            ]
-          },
-          "dispositions": {
-            "L": [
-              {
-                "S": "Dx17"
-              },
-              {
-                "S": "Dx13"
-              },
-              {
-                "S": "..."
-              }
-            ]
-          },
-          "referralSpecificProperties": {
-            "L": [
-              {
-                "M": {
-                  "eligibility": {
-                    "L": [
-                      {
-                        "M": {
-                          "code": {
-                            "S": "12312421"
-                          },
-                          "comment": {
-                            "S": "0-15yr Only"
-                          }
-                        }
-                      }
-                    ]
-                  }
-                }
-              },
-              {
-                "M": {
-                  "availableTime": {
-                    "L": [
-                      {
-                        "M": {
-                          "daysOfWeek": {
-                            "L": [
-                              {
-                                "S": "mon | tue | wed | thu | fri | sat | sun"
-                              }
-                            ]
-                          },
-                          "allDay": {
-                            "BOOL": false
-                          },
-                          "openingTime": {
-                            "S": "9:00"
-                          },
-                          "closingTime": {
-                            "S": "5:00"
-                          }
-                        }
-                      }
-                    ]
-                  }
-                }
-              }
-            ]
-          }
-        }
-      }
-    ]
-  },
-  "program": {
-    "L": [
-      {
-        "M": {}
-      }
-    ]
-  },
-  "characteristic": {
-    "L": [
-      {
-        "M": {}
-      }
-    ]
-  },
-  "communication": {
-    "L": [
-      {
-        "S": "EN"
-      },
-      {
-        "S": "FR"
-      },
-      {
-        "S": "DE"
-      }
-    ]
-  },
-  "referralMethod": {
-    "L": [
-      {
-        "S": "phone"
-      },
-      {
-        "S": "mail"
-      }
-    ]
-  },
-  "appointmentRequired": {
-    "BOOL": false
-  },
-  "availableTime": {
-    "L": [
-      {
-        "M": {
-          "daysOfWeek": {
-            "L": [
-              {
-                "S": "mon | tue | wed | thu | fri | sat | sun"
-              }
-            ]
-          },
-          "allDay": {
-            "BOOL": true
-          },
-          "openingTime": {
-            "NULL": true
-          },
-          "closingTime": {
-            "NULL": true
-          }
-        }
-      }
-    ]
-  },
-  "notAvailable": {
-    "L": [
-      {
-        "M": {
-          "description": {
-            "S": "Bank Holidays"
-          },
-          "during": {
-            "M": {}
-          }
-        }
-      }
-    ]
-  },
-  "availabilityExceptions": {
-    "S": "<string>"
-  },
-  "endpoint": {
-    "S": "<TBC>"
-  }
-}
-
-ITEM
-}
-
-
-##########################
-# Step Function
-##########################
-
-
-locals {
-  definition_template = <<EOF
-  {
-    "Comment": "Perform DoS Directory Search",
-    "StartAt": "Search-Profiler",
-    "States": {
-      "Search-Profiler": {
-        "Type": "Task",
-        "Resource": "arn:aws:states:::lambda:invoke",
-        "OutputPath": "$.Payload",
-        "Parameters": {
-          "Payload.$": "$",
-          "FunctionName": "${module.search-profiler-lambda.lambda_function_arn}:${module.live-alias-search-profiler.lambda_alias_name}"
-        },
-        "Retry": [
-          {
-            "ErrorEquals": [
-              "Lambda.ServiceException",
-              "Lambda.AWSLambdaException",
-              "Lambda.SdkClientException"
-            ],
-            "IntervalSeconds": 2,
-            "MaxAttempts": 6,
-            "BackoffRate": 2
-          }
-        ],
-        "Next": "Directory-Search"
-      },
-      "Directory-Search": {
-        "Type": "Task",
-        "Resource": "arn:aws:states:::lambda:invoke",
-        "OutputPath": "$.Payload",
-        "Parameters": {
-          "Payload.$": "$",
-          "FunctionName": "${module.directory-search-lambda.lambda_function_arn}:${module.live-alias-directory-search.lambda_alias_name}"  
-        },
-        "Retry": [
-          {
-            "ErrorEquals": [
-              "Lambda.ServiceException",
-              "Lambda.AWSLambdaException",
-              "Lambda.SdkClientException"
-            ],
-            "IntervalSeconds": 2,
-            "MaxAttempts": 6,
-            "BackoffRate": 2
-          }
-        ],
-        "End": true
-      }
-    }
-  }
-  EOF
-}
-
-module "search_step_function" {
-  source = "terraform-aws-modules/step-functions/aws"
-  name = "DirectorySearchWorkflow"
-  type = "express"
-
-  definition = local.definition_template
-
-  logging_configuration = {
-    include_execution_data = true
-    level                  = "ALL"
-  }
-
-  service_integrations = {
-    xray = {
-      xray = true 
-    }
-
-    lambda = {
-      lambda = ["${module.directory-search-lambda.lambda_function_arn}:*", "${module.search-profiler-lambda.lambda_function_arn}:*"]
-    }
-  }
-}
+#   attributes = [
+#     {
+#       name = "key"
+#       type = "S"
+#     }
+#   ]
+# }
 
 
 # ##########################
-# # Opensearch
+# # Example Data 
 # ##########################
 
-variable "domain" {
-  default = "directory-search"
-}
 
-variable "index_name" {
-  default = "directory-index"
-}
+# resource "aws_dynamodb_table_item" "example_consumer" {
+#   table_name = module.dynamodb_search_consumers_table.dynamodb_table_id
+#   hash_key   = "key"
 
-resource "aws_elasticsearch_domain" "directory_search" {
-  domain_name           = var.domain
-  elasticsearch_version = "7.10"
-
-  cluster_config {
-    instance_type = "t3.small.elasticsearch"
-  }
-
-  node_to_node_encryption {
-    enabled = true
-  }
-
-  encrypt_at_rest {
-    enabled = true
-  }
-
-  domain_endpoint_options {
-    enforce_https = true
-    tls_security_policy = "Policy-Min-TLS-1-0-2019-07"
-  }
-
-  ebs_options {
-    ebs_enabled = true
-    volume_size = "10"
-    iops        = "3000" 
-    volume_type = "gp3"
-  }
+#   item = <<ITEM
+# {
+#   "key": {"S": "LyXvMVUd3L9bc5IVhpA4l5efM0jqvLFL535MVHpx"},
+#   "search-profile-id": {"S": "x83nd93y2"},
+#   "name": {"S": "Example Consumer Profile"}
+# }
+# ITEM
+# }
 
 
-  access_policies = jsonencode({
-      Version: "2012-10-17",
-      Statement: [
-          {
-            Effect: "Allow",
-            Principal: {
-              "AWS": "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/github"
-            },
-            Action: "es:*",
-            Resource: "arn:aws:es:${var.aws_region}:${data.aws_caller_identity.current.account_id}:domain/${var.domain}/*"
-          },
-          {
-            Effect: "Allow",
-            Principal: {
-              "AWS": "arn:aws:sts::${data.aws_caller_identity.current.account_id}:assumed-role/directory-search/directory-search"
-            },
-            Action: [
-                "es:ESHttpGet",
-                "es:ESHttpPost"
-              ]
-            Resource: "arn:aws:es:${var.aws_region}:${data.aws_caller_identity.current.account_id}:domain/${var.domain}/*"
-          },
-          {
-            Effect: "Allow",
-            Principal: {
-              "AWS": "arn:aws:sts::${data.aws_caller_identity.current.account_id}:assumed-role/directory-data-relay/directory-data-relay"
-            },
-            Action: [
-                "es:ESHttpDelete",
-                "es:ESHttpGet",
-                "es:ESHttpPost",
-                "es:ESHttpPut"
-              ],
-            Resource: "arn:aws:es:${var.aws_region}:${data.aws_caller_identity.current.account_id}:domain/${var.domain}/*"
-          }
-        ]
-      }
-    )
-  }
+# resource "aws_dynamodb_table_item" "example_search_profile" {
+#   table_name = module.dynamodb_search_profiles_table.dynamodb_table_id
+#   hash_key   = "id"
+
+#   item = <<ITEM
+# {
+#   "id": {"S": "x83nd93y2"},
+#   "name":{"S": "Example search profile"},
+#   "exclusions": {"S": "TEST"},
+#   "sorters": {"S": "TEST"},
+#   "formatters": {"S": "TEST"},
+#   "redactions": {"S": "TEST"}
+# }
+# ITEM
+# }
+
+
+# resource "aws_dynamodb_table_item" "example_service" {
+#   table_name = module.dynamodb_services_table.dynamodb_table_id
+#   hash_key   = "id"
+
+#   item = <<ITEM
+# {
+#   "resourceType": {
+#     "S": "HealthcareService"
+#   },
+#   "id": {
+#     "S": "1233123"
+#   },
+#   "name": {
+#     "S": "Emergency Department (ED) - Basildon Hospital, Basildon, Essex"
+#   },
+#   "active": {
+#     "BOOL": true
+#   },
+#   "providedBy": {
+#     "M": {
+#       "resourceType": {
+#         "S": "Organization"
+#       },
+#       "identifier": {
+#         "S": "M8U3G"
+#       },
+#       "active": {
+#         "BOOL": true
+#       },
+#       "type": {
+#         "L": [
+#           {
+#             "S": "NHS Trust Site"
+#           }
+#         ]
+#       },
+#       "name": {
+#         "S": "EMERGENCY DEPARTMENT BH"
+#       },
+#       "alias": {
+#         "L": [
+#           {
+#             "S": "<string>"
+#           }
+#         ]
+#       },
+#       "telecom": {
+#         "L": [
+#           {
+#             "S": "string>"
+#           }
+#         ]
+#       },
+#       "address": {
+#         "L": [
+#           {
+#             "S": "NETHERMAYNE"
+#           },
+#           {
+#             "S": "BASILDON"
+#           },
+#           {
+#             "S": "SS16 5NL"
+#           }
+#         ]
+#       },
+#       "contact": {
+#         "L": [
+#           {
+#             "M": {
+#               "purpose": {
+#                 "S": "Manager"
+#               },
+#               "name": {
+#                 "S": "Richard Dean"
+#               },
+#               "telecom": {
+#                 "L": [
+#                   {
+#                     "S": "+4477723413"
+#                   }
+#                 ]
+#               },
+#               "address": {
+#                 "L": [
+#                   {
+#                     "S": "NETHERMAYNE"
+#                   },
+#                   {
+#                     "S": "BASILDON"
+#                   },
+#                   {
+#                     "S": "SS16 5NL"
+#                   }
+#                 ]
+#               }
+#             }
+#           }
+#         ]
+#       },
+#       "endpoint": {
+#         "L": [
+#           {
+#             "S": "<TBC>"
+#           }
+#         ]
+#       }
+#     }
+#   },
+#   "category": {
+#     "L": [
+#       {
+#         "S": "ED"
+#       }
+#     ]
+#   },
+#   "type": {
+#     "L": [
+#       {
+#         "S": "ED"
+#       }
+#     ]
+#   },
+#   "specialty": {
+#     "L": [
+#       {
+#         "M": {}
+#       }
+#     ]
+#   },
+#   "location": {
+#     "L": [
+#       {
+#         "M": {
+#           "resourceType": {
+#             "S": "Location"
+#           },
+#           "identifier": {
+#             "S": "12344134"
+#           },
+#           "status": {
+#             "S": "active"
+#           },
+#           "operationalStatus": {
+#             "S": "active"
+#           },
+#           "name": {
+#             "S": "Basildon Hospital"
+#           },
+#           "alias": {
+#             "L": [
+#               {
+#                 "S": "<string>"
+#               }
+#             ]
+#           },
+#           "description": {
+#             "S": "Basildon Hospital"
+#           },
+#           "mode": {
+#             "S": "instance"
+#           },
+#           "type": {
+#             "L": [
+#               {
+#                 "S": "Hospital"
+#               }
+#             ]
+#           },
+#           "telecom": {
+#             "L": [
+#               {
+#                 "S": "+4477723413"
+#               }
+#             ]
+#           },
+#           "address": {
+#             "L": [
+#               {
+#                 "S": "NETHERMAYNE"
+#               },
+#               {
+#                 "S": "BASILDON"
+#               },
+#               {
+#                 "S": "SS16 5NL"
+#               }
+#             ]
+#           },
+#           "physicalType": {
+#             "S": "Site"
+#           },
+#           "position": {
+#             "M": {
+#               "longitude": {
+#                 "N": "0.4506672"
+#               },
+#               "latitude": {
+#                 "N": "51.557759"
+#               },
+#               "altitude": {
+#                 "N": "0"
+#               }
+#             }
+#           },
+#           "managingOrganization": {
+#             "M": {
+#               "resourceType": {
+#                 "S": "Organization"
+#               },
+#               "identifier": {
+#                 "S": "RAJ"
+#               },
+#               "active": {
+#                 "BOOL": true
+#               },
+#               "type": {
+#                 "L": [
+#                   {
+#                     "S": "NHS Trust"
+#                   }
+#                 ]
+#               },
+#               "name": {
+#                 "S": "MID AND SOUTH ESSEX NHS FOUNDATION TRUST"
+#               },
+#               "alias": {
+#                 "L": [
+#                   {
+#                     "S": "<string>"
+#                   }
+#                 ]
+#               },
+#               "telecom": {
+#                 "L": [
+#                   {
+#                     "S": "string>"
+#                   }
+#                 ]
+#               },
+#               "address": {
+#                 "L": [
+#                   {
+#                     "S": "PRITTLEWELL CHASE"
+#                   },
+#                   {
+#                     "S": "WESTCLIFF-ON-SEA"
+#                   },
+#                   {
+#                     "S": "SS0 0RY"
+#                   }
+#                 ]
+#               },
+#               "contact": {
+#                 "L": [
+#                   {
+#                     "M": {
+#                       "purpose": {
+#                         "S": "Manager"
+#                       },
+#                       "name": {
+#                         "S": "Richard Dean"
+#                       },
+#                       "telecom": {
+#                         "L": [
+#                           {
+#                             "S": "+4477723413"
+#                           }
+#                         ]
+#                       },
+#                       "address": {
+#                         "L": [
+#                           {
+#                             "S": "NETHERMAYNE"
+#                           },
+#                           {
+#                             "S": "BASILDON"
+#                           },
+#                           {
+#                             "S": "SS16 5NL"
+#                           }
+#                         ]
+#                       }
+#                     }
+#                   }
+#                 ]
+#               },
+#               "endpoint": {
+#                 "L": [
+#                   {
+#                     "S": "<TBC>"
+#                   }
+#                 ]
+#               }
+#             }
+#           },
+#           "hoursOfOperation": {
+#             "L": [
+#               {
+#                 "M": {
+#                   "daysOfWeek": {
+#                     "L": [
+#                       {
+#                         "S": "mon | tue | wed | thu | fri | sat | sun"
+#                       }
+#                     ]
+#                   },
+#                   "allDay": {
+#                     "BOOL": true
+#                   },
+#                   "openingTime": {
+#                     "NULL": true
+#                   },
+#                   "closingTime": {
+#                     "NULL": true
+#                   }
+#                 }
+#               }
+#             ]
+#           },
+#           "availabilityExceptions": {
+#             "S": "<string>"
+#           },
+#           "endpoint": {
+#             "L": [
+#               {
+#                 "S": "<TBC>"
+#               }
+#             ]
+#           }
+#         }
+#       }
+#     ]
+#   },
+#   "comment": {
+#     "S": "<string>"
+#   },
+#   "extraDetails": {
+#     "S": "<markdown>"
+#   },
+#   "photo": {
+#     "S": "<url>"
+#   },
+#   "telecom": {
+#     "L": [
+#       {
+#         "S": "+4477723413"
+#       }
+#     ]
+#   },
+#   "coverageArea": {
+#     "L": [
+#       {
+#         "M": {
+#           "resourceType": {
+#             "S": "Location"
+#           },
+#           "identifier": {
+#             "S": "12344134"
+#           },
+#           "status": {
+#             "S": "active"
+#           },
+#           "operationalStatus": {
+#             "S": "active"
+#           },
+#           "name": {
+#             "S": "Basildon Hospital"
+#           },
+#           "alias": {
+#             "L": [
+#               {
+#                 "S": "<string>"
+#               }
+#             ]
+#           },
+#           "description": {
+#             "S": "Basildon Hospital"
+#           },
+#           "mode": {
+#             "S": "instance"
+#           },
+#           "type": {
+#             "L": [
+#               {
+#                 "S": "Hospital"
+#               }
+#             ]
+#           },
+#           "telecom": {
+#             "L": [
+#               {
+#                 "S": "+4477723413"
+#               }
+#             ]
+#           },
+#           "address": {
+#             "L": [
+#               {
+#                 "S": "NETHERMAYNE"
+#               },
+#               {
+#                 "S": "BASILDON"
+#               },
+#               {
+#                 "S": "SS16 5NL"
+#               }
+#             ]
+#           },
+#           "physicalType": {
+#             "S": "Site"
+#           },
+#           "position": {
+#             "S": "GEOMETRY(POLYGON)"
+#           },
+#           "managingOrganization": {
+#             "M": {
+#               "resourceType": {
+#                 "S": "Organization"
+#               },
+#               "identifier": {
+#                 "S": "RAJ"
+#               },
+#               "active": {
+#                 "BOOL": true
+#               },
+#               "type": {
+#                 "L": [
+#                   {
+#                     "S": "NHS Trust"
+#                   }
+#                 ]
+#               },
+#               "name": {
+#                 "S": "MID AND SOUTH ESSEX NHS FOUNDATION TRUST"
+#               },
+#               "alias": {
+#                 "L": [
+#                   {
+#                     "S": "<string>"
+#                   }
+#                 ]
+#               },
+#               "telecom": {
+#                 "L": [
+#                   {
+#                     "S": "<string>"
+#                   }
+#                 ]
+#               },
+#               "address": {
+#                 "L": [
+#                   {
+#                     "S": "PRITTLEWELL CHASE"
+#                   },
+#                   {
+#                     "S": "WESTCLIFF-ON-SEA"
+#                   },
+#                   {
+#                     "S": "SS0 0RY"
+#                   }
+#                 ]
+#               },
+#               "contact": {
+#                 "L": [
+#                   {
+#                     "M": {
+#                       "purpose": {
+#                         "S": "Manager"
+#                       },
+#                       "name": {
+#                         "S": "Richard Dean"
+#                       },
+#                       "telecom": {
+#                         "L": [
+#                           {
+#                             "S": "+4477723413"
+#                           }
+#                         ]
+#                       },
+#                       "address": {
+#                         "L": [
+#                           {
+#                             "S": "NETHERMAYNE"
+#                           },
+#                           {
+#                             "S": "BASILDON"
+#                           },
+#                           {
+#                             "S": "SS16 5NL"
+#                           }
+#                         ]
+#                       }
+#                     }
+#                   }
+#                 ]
+#               },
+#               "endpoint": {
+#                 "L": [
+#                   {
+#                     "S": "<TBC>"
+#                   }
+#                 ]
+#               }
+#             }
+#           },
+#           "hoursOfOperation": {
+#             "L": [
+#               {
+#                 "M": {
+#                   "daysOfWeek": {
+#                     "L": [
+#                       {
+#                         "S": "mon | tue | wed | thu | fri | sat | sun"
+#                       }
+#                     ]
+#                   },
+#                   "allDay": {
+#                     "BOOL": true
+#                   },
+#                   "openingTime": {
+#                     "NULL": true
+#                   },
+#                   "closingTime": {
+#                     "NULL": true
+#                   }
+#                 }
+#               }
+#             ]
+#           },
+#           "availabilityExceptions": {
+#             "S": "<string>"
+#           },
+#           "endpoint": {
+#             "L": [
+#               {
+#                 "S": "<TBC>"
+#               }
+#             ]
+#           }
+#         }
+#       }
+#     ]
+#   },
+#   "serviceProvisionCode": {
+#     "L": [
+#       {
+#         "M": {}
+#       }
+#     ]
+#   },
+#   "eligibility": {
+#     "L": [
+#       {
+#         "M": {
+#           "code": {
+#             "M": {}
+#           },
+#           "comment": {
+#             "S": "N/A"
+#           }
+#         }
+#       }
+#     ]
+#   },
+#   "referralProfiles": {
+#     "L": [
+#       {
+#         "M": {
+#           "name": {
+#             "S": "Emergency Department"
+#           },
+#           "system": {
+#             "S": "SNOMED CT"
+#           },
+#           "activitiesOffered": {
+#             "L": [
+#               {
+#                 "S": "3412412"
+#               },
+#               {
+#                 "S": "124523"
+#               },
+#               {
+#                 "S": "124123"
+#               },
+#               {
+#                 "S": "..."
+#               }
+#             ]
+#           },
+#           "acuities": {
+#             "L": [
+#               {
+#                 "S": "14144"
+#               },
+#               {
+#                 "S": "114134"
+#               },
+#               {
+#                 "S": "563567"
+#               },
+#               {
+#                 "S": "..."
+#               }
+#             ]
+#           },
+#           "referralSpecificProperties": {
+#             "L": [
+#               {
+#                 "M": {
+#                   "eligibility": {
+#                     "L": [
+#                       {
+#                         "M": {
+#                           "code": {
+#                             "S": "12312444"
+#                           },
+#                           "comment": {
+#                             "S": "15-129yr Only"
+#                           }
+#                         }
+#                       }
+#                     ]
+#                   }
+#                 }
+#               }
+#             ]
+#           }
+#         }
+#       },
+#       {
+#         "M": {
+#           "name": {
+#             "S": "Emergency Department (Children)"
+#           },
+#           "system": {
+#             "S": "SNOMED CT"
+#           },
+#           "activitiesOffered": {
+#             "L": [
+#               {
+#                 "S": "3412412"
+#               },
+#               {
+#                 "S": "124523"
+#               },
+#               {
+#                 "S": "124123"
+#               },
+#               {
+#                 "S": "..."
+#               }
+#             ]
+#           },
+#           "acuities": {
+#             "L": [
+#               {
+#                 "S": "14144"
+#               },
+#               {
+#                 "S": "114134"
+#               },
+#               {
+#                 "S": "563567"
+#               },
+#               {
+#                 "S": "..."
+#               }
+#             ]
+#           },
+#           "referralSpecificProperties": {
+#             "L": [
+#               {
+#                 "M": {
+#                   "eligibility": {
+#                     "L": [
+#                       {
+#                         "M": {
+#                           "code": {
+#                             "S": "12312421"
+#                           },
+#                           "comment": {
+#                             "S": "0-15yr Only"
+#                           }
+#                         }
+#                       }
+#                     ]
+#                   }
+#                 }
+#               },
+#               {
+#                 "M": {
+#                   "availableTime": {
+#                     "L": [
+#                       {
+#                         "M": {
+#                           "daysOfWeek": {
+#                             "L": [
+#                               {
+#                                 "S": "mon | tue | wed | thu | fri | sat | sun"
+#                               }
+#                             ]
+#                           },
+#                           "allDay": {
+#                             "BOOL": false
+#                           },
+#                           "openingTime": {
+#                             "S": "9:00"
+#                           },
+#                           "closingTime": {
+#                             "S": "5:00"
+#                           }
+#                         }
+#                       }
+#                     ]
+#                   }
+#                 }
+#               }
+#             ]
+#           }
+#         }
+#       },
+#       {
+#         "M": {
+#           "name": {
+#             "S": "Emergency Department (Children)"
+#           },
+#           "system": {
+#             "S": "LEGACY SG/SD/DX"
+#           },
+#           "symptomGroups": {
+#             "L": [
+#               {
+#                 "S": "SG1011"
+#               },
+#               {
+#                 "S": "SG1010"
+#               },
+#               {
+#                 "S": "..."
+#               }
+#             ]
+#           },
+#           "symptomDiscriminators": {
+#             "L": [
+#               {
+#                 "S": "SD4052"
+#               },
+#               {
+#                 "S": "SD4304"
+#               },
+#               {
+#                 "S": "..."
+#               }
+#             ]
+#           },
+#           "dispositions": {
+#             "L": [
+#               {
+#                 "S": "Dx17"
+#               },
+#               {
+#                 "S": "Dx13"
+#               },
+#               {
+#                 "S": "..."
+#               }
+#             ]
+#           },
+#           "referralSpecificProperties": {
+#             "L": [
+#               {
+#                 "M": {
+#                   "eligibility": {
+#                     "L": [
+#                       {
+#                         "M": {
+#                           "code": {
+#                             "S": "12312421"
+#                           },
+#                           "comment": {
+#                             "S": "0-15yr Only"
+#                           }
+#                         }
+#                       }
+#                     ]
+#                   }
+#                 }
+#               },
+#               {
+#                 "M": {
+#                   "availableTime": {
+#                     "L": [
+#                       {
+#                         "M": {
+#                           "daysOfWeek": {
+#                             "L": [
+#                               {
+#                                 "S": "mon | tue | wed | thu | fri | sat | sun"
+#                               }
+#                             ]
+#                           },
+#                           "allDay": {
+#                             "BOOL": false
+#                           },
+#                           "openingTime": {
+#                             "S": "9:00"
+#                           },
+#                           "closingTime": {
+#                             "S": "5:00"
+#                           }
+#                         }
+#                       }
+#                     ]
+#                   }
+#                 }
+#               }
+#             ]
+#           }
+#         }
+#       }
+#     ]
+#   },
+#   "program": {
+#     "L": [
+#       {
+#         "M": {}
+#       }
+#     ]
+#   },
+#   "characteristic": {
+#     "L": [
+#       {
+#         "M": {}
+#       }
+#     ]
+#   },
+#   "communication": {
+#     "L": [
+#       {
+#         "S": "EN"
+#       },
+#       {
+#         "S": "FR"
+#       },
+#       {
+#         "S": "DE"
+#       }
+#     ]
+#   },
+#   "referralMethod": {
+#     "L": [
+#       {
+#         "S": "phone"
+#       },
+#       {
+#         "S": "mail"
+#       }
+#     ]
+#   },
+#   "appointmentRequired": {
+#     "BOOL": false
+#   },
+#   "availableTime": {
+#     "L": [
+#       {
+#         "M": {
+#           "daysOfWeek": {
+#             "L": [
+#               {
+#                 "S": "mon | tue | wed | thu | fri | sat | sun"
+#               }
+#             ]
+#           },
+#           "allDay": {
+#             "BOOL": true
+#           },
+#           "openingTime": {
+#             "NULL": true
+#           },
+#           "closingTime": {
+#             "NULL": true
+#           }
+#         }
+#       }
+#     ]
+#   },
+#   "notAvailable": {
+#     "L": [
+#       {
+#         "M": {
+#           "description": {
+#             "S": "Bank Holidays"
+#           },
+#           "during": {
+#             "M": {}
+#           }
+#         }
+#       }
+#     ]
+#   },
+#   "availabilityExceptions": {
+#     "S": "<string>"
+#   },
+#   "endpoint": {
+#     "S": "<TBC>"
+#   }
+# }
+
+# ITEM
+# }
+
+
+# ##########################
+# # Step Function
+# ##########################
+
+
+# locals {
+#   definition_template = <<EOF
+#   {
+#     "Comment": "Perform DoS Directory Search",
+#     "StartAt": "Search-Profiler",
+#     "States": {
+#       "Search-Profiler": {
+#         "Type": "Task",
+#         "Resource": "arn:aws:states:::lambda:invoke",
+#         "OutputPath": "$.Payload",
+#         "Parameters": {
+#           "Payload.$": "$",
+#           "FunctionName": "${module.search-profiler-lambda.lambda_function_arn}:${module.live-alias-search-profiler.lambda_alias_name}"
+#         },
+#         "Retry": [
+#           {
+#             "ErrorEquals": [
+#               "Lambda.ServiceException",
+#               "Lambda.AWSLambdaException",
+#               "Lambda.SdkClientException"
+#             ],
+#             "IntervalSeconds": 2,
+#             "MaxAttempts": 6,
+#             "BackoffRate": 2
+#           }
+#         ],
+#         "Next": "Directory-Search"
+#       },
+#       "Directory-Search": {
+#         "Type": "Task",
+#         "Resource": "arn:aws:states:::lambda:invoke",
+#         "OutputPath": "$.Payload",
+#         "Parameters": {
+#           "Payload.$": "$",
+#           "FunctionName": "${module.directory-search-lambda.lambda_function_arn}:${module.live-alias-directory-search.lambda_alias_name}"  
+#         },
+#         "Retry": [
+#           {
+#             "ErrorEquals": [
+#               "Lambda.ServiceException",
+#               "Lambda.AWSLambdaException",
+#               "Lambda.SdkClientException"
+#             ],
+#             "IntervalSeconds": 2,
+#             "MaxAttempts": 6,
+#             "BackoffRate": 2
+#           }
+#         ],
+#         "End": true
+#       }
+#     }
+#   }
+#   EOF
+# }
+
+# module "search_step_function" {
+#   source = "terraform-aws-modules/step-functions/aws"
+#   name = "DirectorySearchWorkflow"
+#   type = "express"
+
+#   definition = local.definition_template
+
+#   logging_configuration = {
+#     include_execution_data = true
+#     level                  = "ALL"
+#   }
+
+#   service_integrations = {
+#     xray = {
+#       xray = true 
+#     }
+
+#     lambda = {
+#       lambda = ["${module.directory-search-lambda.lambda_function_arn}:*", "${module.search-profiler-lambda.lambda_function_arn}:*"]
+#     }
+#   }
+# }
+
+
+# # ##########################
+# # # Opensearch
+# # ##########################
+
+# variable "domain" {
+#   default = "directory-search"
+# }
+
+# variable "index_name" {
+#   default = "directory-index"
+# }
+
+# resource "aws_elasticsearch_domain" "directory_search" {
+#   domain_name           = var.domain
+#   elasticsearch_version = "7.10"
+
+#   cluster_config {
+#     instance_type = "t3.small.elasticsearch"
+#   }
+
+#   node_to_node_encryption {
+#     enabled = true
+#   }
+
+#   encrypt_at_rest {
+#     enabled = true
+#   }
+
+#   domain_endpoint_options {
+#     enforce_https = true
+#     tls_security_policy = "Policy-Min-TLS-1-0-2019-07"
+#   }
+
+#   ebs_options {
+#     ebs_enabled = true
+#     volume_size = "10"
+#     iops        = "3000" 
+#     volume_type = "gp3"
+#   }
+
+
+#   access_policies = jsonencode({
+#       Version: "2012-10-17",
+#       Statement: [
+#           {
+#             Effect: "Allow",
+#             Principal: {
+#               "AWS": "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/github"
+#             },
+#             Action: "es:*",
+#             Resource: "arn:aws:es:${var.aws_region}:${data.aws_caller_identity.current.account_id}:domain/${var.domain}/*"
+#           },
+#           {
+#             Effect: "Allow",
+#             Principal: {
+#               "AWS": "arn:aws:sts::${data.aws_caller_identity.current.account_id}:assumed-role/directory-search/directory-search"
+#             },
+#             Action: [
+#                 "es:ESHttpGet",
+#                 "es:ESHttpPost"
+#               ]
+#             Resource: "arn:aws:es:${var.aws_region}:${data.aws_caller_identity.current.account_id}:domain/${var.domain}/*"
+#           },
+#           {
+#             Effect: "Allow",
+#             Principal: {
+#               "AWS": "arn:aws:sts::${data.aws_caller_identity.current.account_id}:assumed-role/directory-data-relay/directory-data-relay"
+#             },
+#             Action: [
+#                 "es:ESHttpDelete",
+#                 "es:ESHttpGet",
+#                 "es:ESHttpPost",
+#                 "es:ESHttpPut"
+#               ],
+#             Resource: "arn:aws:es:${var.aws_region}:${data.aws_caller_identity.current.account_id}:domain/${var.domain}/*"
+#           }
+#         ]
+#       }
+#     )
+#   }
 
 
 
-  resource "null_resource" "elastic_provisioner_script" {
-    provisioner "local-exec" {
-      command = <<EOT
-        cd ./elastic
-        pip install -r requirements.txt --target .
-        python3 configure_elastic.py ${var.aws_region} ${aws_elasticsearch_domain.directory_search.endpoint} ${module.directory-search-lambda.lambda_function_arn} ${module.directory-data-relay-lambda.lambda_function_arn}
-      EOT
-      }
+#   resource "null_resource" "elastic_provisioner_script" {
+#     provisioner "local-exec" {
+#       command = <<EOT
+#         cd ./elastic
+#         pip install -r requirements.txt --target .
+#         python3 configure_elastic.py ${var.aws_region} ${aws_elasticsearch_domain.directory_search.endpoint} ${module.directory-search-lambda.lambda_function_arn} ${module.directory-data-relay-lambda.lambda_function_arn}
+#       EOT
+#       }
       
-      triggers = {
-          always_run = timestamp()
-      }
-  }
+#       triggers = {
+#           always_run = timestamp()
+#       }
+#   }
 
 
-######
-# MISCELLANEOUS IAM
-######
+# ######
+# # MISCELLANEOUS IAM
+# ######
 
-resource "aws_iam_role" "APIGatewaytoDoSSearchWorkflow" {
-  name               = "APIGatewaytoDoSSearchWorkflow"
-  assume_role_policy = jsonencode({
-    Version: "2012-10-17",
-    Statement: [
-        {
-            Effect: "Allow",
-            Principal: {
-                Service: "apigateway.amazonaws.com"
-            },
-            Action: "sts:AssumeRole"
-        }
-    ]
-})
+# resource "aws_iam_role" "APIGatewaytoDoSSearchWorkflow" {
+#   name               = "APIGatewaytoDoSSearchWorkflow"
+#   assume_role_policy = jsonencode({
+#     Version: "2012-10-17",
+#     Statement: [
+#         {
+#             Effect: "Allow",
+#             Principal: {
+#                 Service: "apigateway.amazonaws.com"
+#             },
+#             Action: "sts:AssumeRole"
+#         }
+#     ]
+# })
 
-  inline_policy {
-    name = "APIGatewaytoStepFunction"
+#   inline_policy {
+#     name = "APIGatewaytoStepFunction"
 
-    policy = jsonencode({
-    Version: "2012-10-17",
-    Statement: [
-        {
-            Sid: "ExecuteStateMachine",
-            Effect: "Allow",
-            Action: "states:StartSyncExecution",
-            Resource: [
-                "${module.search_step_function.state_machine_arn}" 
-            ]
-        }
-    ]
-})
-  }
-}
+#     policy = jsonencode({
+#     Version: "2012-10-17",
+#     Statement: [
+#         {
+#             Sid: "ExecuteStateMachine",
+#             Effect: "Allow",
+#             Action: "states:StartSyncExecution",
+#             Resource: [
+#                 "${module.search_step_function.state_machine_arn}" 
+#             ]
+#         }
+#     ]
+# })
+#   }
+# }
 
 
 
