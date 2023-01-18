@@ -11,6 +11,14 @@ resource "aws_s3_bucket_acl" "frontend_acl" {
   acl    = "private"
 }
 
+resource "aws_s3_bucket_versioning" "versioning" {
+  bucket = aws_s3_bucket.frontend_bucket.id
+
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
 resource "aws_s3_bucket_policy" "allow_access_from_cloudfront" {
   bucket = aws_s3_bucket.frontend_bucket.id
   policy = <<EOF
