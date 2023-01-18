@@ -94,16 +94,16 @@ jobs:
       with:
         python-version: 3.8
 
-    - name: Install Dependencies
-      run: |
-        cd ./microservices/${{ matrix.services }}
-        python3 -m pip install --upgrade pip
-        pip install -r requirements.txt
+    # - name: Install Dependencies
+    #   run: |
+    #     cd ./microservices/${{ matrix.services }}
+    #     python3 -m pip install --upgrade pip
+    #     pip install -r requirements.txt
 
     - name: Run Tests
       run: |
         cd ./microservices/${{ matrix.services }}
-        python3 -m pytest
+        ./run_unit_tests.sh
 
 
   deploy_microservices:
