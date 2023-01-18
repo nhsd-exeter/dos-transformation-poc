@@ -11,4 +11,4 @@ ENVIRONMENT_NAME=$2
 npm install
 npm run build
 cd ./build
-aws s3 cp . s3://frontend-bucket1801011 --recursive
+aws s3 cp . s3://frontend-bucket180122022 --recursive
