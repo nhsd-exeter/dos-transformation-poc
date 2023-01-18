@@ -8,8 +8,41 @@ resource "aws_s3_bucket" "frontend_bucket" {
 
 resource "aws_s3_bucket_acl" "frontend_acl" {
   bucket = aws_s3_bucket.frontend_bucket.id
-  acl    = "public-read"
+  acl    = "private"
 }
+
+resource "aws_s3_bucket_policy" "allow_access_from_cloudfront" {
+  bucket = aws_s3_bucket.frontend_bucket.id
+  policy = <<EOF
+
+{
+        "Version": "2008-10-17",
+        "Id": "PolicyForCloudFrontPrivateContent",
+        "Statement": [
+            {
+                "Sid": "AllowCloudFrontServicePrincipal",
+                "Effect": "Allow",
+                "Principal": {
+                    "Service": "cloudfront.amazonaws.com"
+                },
+                "Action": "s3:GetObject",
+                "Resource": "${aws_s3_bucket.frontend_bucket.arn}/*",
+                "Condition": {
+                    "StringEquals": {
+                      "AWS:SourceArn": "${aws_cloudfront_distribution.s3_distribution.arn}"
+                    }
+                }
+            }
+        ]
+      }
+
+  EOF
+      depends_on = [
+        aws_cloudfront_distribution.s3_distribution,
+        aws_s3_bucket.frontend_bucket
+    ]
+}
+
 
 locals {
   s3_origin_id = "S3Origin"
@@ -32,16 +65,9 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 
   enabled             = true
   is_ipv6_enabled     = true
-#   comment             = "Some comment"
   default_root_object = "index.html"
 
-#   logging_config {
-#     include_cookies = false
-#     bucket          = "mylogs.s3.amazonaws.com"
-#     prefix          = "myprefix"
-#   }
 
-#   aliases = ["mysite.example.com", "yoursite.example.com"]
 
   default_cache_behavior {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
@@ -61,53 +87,6 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     default_ttl            = 3600
     max_ttl                = 86400
   }
-
-#   # Cache behavior with precedence 0
-#   ordered_cache_behavior {
-#     path_pattern     = "/content/immutable/*"
-#     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
-#     cached_methods   = ["GET", "HEAD", "OPTIONS"]
-#     target_origin_id = local.s3_origin_id
-
-#     forwarded_values {
-#       query_string = false
-#       headers      = ["Origin"]
-
-#       cookies {
-#         forward = "none"
-#       }
-#     }
-
-#     min_ttl                = 0
-#     default_ttl            = 86400
-#     max_ttl                = 31536000
-#     compress               = true
-#     viewer_protocol_policy = "redirect-to-https"
-#   }
-
-  # Cache behavior with precedence 1
-#   ordered_cache_behavior {
-#     path_pattern     = "/content/*"
-#     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
-#     cached_methods   = ["GET", "HEAD"]
-#     target_origin_id = local.s3_origin_id
-
-#     forwarded_values {
-#       query_string = false
-
-#       cookies {
-#         forward = "none"
-#       }
-#     }
-
-#     min_ttl                = 0
-#     default_ttl            = 3600
-#     max_ttl                = 86400
-#     compress               = true
-#     viewer_protocol_policy = "redirect-to-https"
-#   }
-
-#   price_class = "PriceClass_200"
 
   restrictions {
     geo_restriction {
