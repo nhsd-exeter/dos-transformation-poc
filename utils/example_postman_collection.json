@@ -1,0 +1,163 @@
+{
+	"info": {
+		"_postman_id": "e5773368-66d1-4760-b145-3f8865dc5b52",
+		"name": "Future DoS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24189656"
+	},
+	"item": [
+		{
+			"name": "Search",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"search_query\": {\r\n        \"query\" : {\r\n            \"match_all\" : {}\r\n        }\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://ar7kwintik.execute-api.eu-west-2.amazonaws.com/main/search",
+					"protocol": "https",
+					"host": [
+						"ar7kwintik",
+						"execute-api",
+						"eu-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"main",
+						"search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SearchProfiles",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://727xj7nifj.execute-api.eu-west-2.amazonaws.com/Main/searchprofiles?id=xc2a2jq96a",
+					"protocol": "https",
+					"host": [
+						"727xj7nifj",
+						"execute-api",
+						"eu-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"Main",
+						"searchprofiles"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "xc2a2jq96a"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SearchProfiles",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"name\":\"Test name\",\r\n   \"formatters\":[\r\n      \"format1\",\r\n      \"format2\"\r\n   ],\r\n   \"redactions\":[\r\n      \"redaction1\",\r\n      \"redaction2\"\r\n   ],\r\n   \"sorters\":[\r\n      \"sorter1\"\r\n   ],\r\n   \"exclusions\":[\r\n      \"Exclusion1\"\r\n   ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://727xj7nifj.execute-api.eu-west-2.amazonaws.com/Main/searchprofiles",
+					"protocol": "https",
+					"host": [
+						"727xj7nifj",
+						"execute-api",
+						"eu-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"Main",
+						"searchprofiles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Elastic Index",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic YWRtaW46em1qOFVLRUBndW02cWJmMXhuYw==",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://search-directory-search-5qbxo6fnd5u5d4uyydeudu6hpm.eu-west-2.es.amazonaws.com",
+					"protocol": "https",
+					"host": [
+						"search-directory-search-5qbxo6fnd5u5d4uyydeudu6hpm",
+						"eu-west-2",
+						"es",
+						"amazonaws",
+						"com"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "LyXvMVUd3L9bc5IVhpA4l5efM0jqvLFL535MVHpx",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "x-api-key",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
