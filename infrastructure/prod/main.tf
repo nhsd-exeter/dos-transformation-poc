@@ -356,302 +356,302 @@ resource "aws_cloudwatch_log_group" "logs" {
 }
 
 
-##################
-# Lambda Functions
-##################
+# ##################
+# # Lambda Functions
+# ##################
 
 
 
-module "directory-search-lambda" {
-  source  = "terraform-aws-modules/lambda/aws"
-  version = "~> 2.0"
+# module "directory-search-lambda" {
+#   source  = "terraform-aws-modules/lambda/aws"
+#   version = "~> 2.0"
 
-  function_name = "directory-search"
-  description   = "Primary DoS search service"
-  handler       = "app.lambda_handler"
-  runtime       = "python3.9"
+#   function_name = "directory-search"
+#   description   = "Primary DoS search service"
+#   handler       = "app.lambda_handler"
+#   runtime       = "python3.9"
 
-  publish                = true
-  create_package         = false
-  local_existing_package = "./misc/init.zip"
-  ignore_source_code_hash = true
+#   publish                = true
+#   create_package         = false
+#   local_existing_package = "./misc/init.zip"
+#   ignore_source_code_hash = true
 
-  environment_variables = {
-    ES_domain = aws_elasticsearch_domain.directory_search.endpoint,
-    ES_region = var.aws_region,
-    ES_index  = var.index_name
-  }
+#   environment_variables = {
+#     ES_domain = aws_elasticsearch_domain.directory_search.endpoint,
+#     ES_region = var.aws_region,
+#     ES_index  = var.index_name
+#   }
 
-  allowed_triggers = {
-    AllowExecutionFromAPIGateway = {
-      service    = "apigateway"
-      source_arn = "${aws_api_gateway_rest_api.DoS_REST.execution_arn}/*/*"
-    }
-  }
-}
+#   allowed_triggers = {
+#     AllowExecutionFromAPIGateway = {
+#       service    = "apigateway"
+#       source_arn = "${aws_api_gateway_rest_api.DoS_REST.execution_arn}/*/*"
+#     }
+#   }
+# }
 
   
 
 
 
 
-module "live-alias-directory-search" {
-  source = "terraform-aws-modules/lambda/aws//modules/alias"
+# module "live-alias-directory-search" {
+#   source = "terraform-aws-modules/lambda/aws//modules/alias"
 
-  name          = "live-service"
-  function_name = module.directory-search-lambda.lambda_function_name
-  refresh_alias = false
-}
-
-
-module "directory-data-manager-lambda" {
-  source  = "terraform-aws-modules/lambda/aws"
-  version = "~> 2.0"
-
-  function_name = "directory-data-manager"
-  description   = "Microservice for management of DoS data"
-  handler       = "app.lambda_handler"
-  runtime       = "python3.9"
-
-  publish                = true
-  create_package         = false
-  local_existing_package = "./misc/init.zip"
-  ignore_source_code_hash = true
-
-  attach_policy_jsons = true
-  policy_jsons = [
-    <<-EOT
-    {
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-                "Sid": "VisualEditor0",
-                "Effect": "Allow",
-                "Action": [
-                    "dynamodb:PutItem",
-                    "dynamodb:DeleteItem",
-                    "dynamodb:GetItem",
-                    "dynamodb:Scan",
-                    "dynamodb:Query",
-                    "dynamodb:UpdateItem"
-                ],
-                "Resource": [
-                    "${module.dynamodb_services_table.dynamodb_table_arn}"
-                ]
-            }
-        ]
-    }
-    EOT
-  ]
-  number_of_policy_jsons = 1
+#   name          = "live-service"
+#   function_name = module.directory-search-lambda.lambda_function_name
+#   refresh_alias = false
+# }
 
 
+# module "directory-data-manager-lambda" {
+#   source  = "terraform-aws-modules/lambda/aws"
+#   version = "~> 2.0"
 
-  allowed_triggers = {
-    AllowExecutionFromAPIGateway = {
-      service    = "apigateway"
-      source_arn = "${aws_api_gateway_rest_api.DoS_REST.execution_arn}/*/*"
-    }
-  }
-}
+#   function_name = "directory-data-manager"
+#   description   = "Microservice for management of DoS data"
+#   handler       = "app.lambda_handler"
+#   runtime       = "python3.9"
 
-module "live-alias-directory-data-manager" {
-  source = "terraform-aws-modules/lambda/aws//modules/alias"
+#   publish                = true
+#   create_package         = false
+#   local_existing_package = "./misc/init.zip"
+#   ignore_source_code_hash = true
 
-  name          = "live-service"
-  function_name = module.directory-data-manager-lambda.lambda_function_name
-  refresh_alias = false
-}
-
-module "search-profile-manager-lambda" {
-  source  = "terraform-aws-modules/lambda/aws"
-  version = "~> 2.0"
-
-  function_name = "search-profile-manager"
-  description   = "Microservice for search profiles"
-  handler       = "app.lambda_handler"
-  runtime       = "python3.9"
-
-  publish                = true
-  create_package         = false
-  local_existing_package = "./misc/init.zip"
-  ignore_source_code_hash = true
-
-
-  attach_policy_jsons = true
-  policy_jsons = [
-    <<-EOT
-    {
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-                "Sid": "VisualEditor0",
-                "Effect": "Allow",
-                "Action": [
-                    "dynamodb:PutItem",
-                    "dynamodb:DeleteItem",
-                    "dynamodb:GetItem",
-                    "dynamodb:Scan",
-                    "dynamodb:Query",
-                    "dynamodb:UpdateItem"
-                ],
-                "Resource": [
-                    "${module.dynamodb_search_profiles_table.dynamodb_table_arn}",
-                    "${module.dynamodb_search_consumers_table.dynamodb_table_arn}"
-                ]
-            }
-        ]
-    }
-    EOT
-  ]
-  number_of_policy_jsons = 1
-
-  allowed_triggers = {
-    AllowExecutionFromAPIGateway = {
-      service    = "apigateway"
-      source_arn = "${aws_api_gateway_rest_api.DoS_REST.execution_arn}/*/*"
-    }
-  }
-}
-
-module "live-alias-search-profile-manager" {
-  source = "terraform-aws-modules/lambda/aws//modules/alias"
-
-  name          = "live-service"
-  function_name = module.search-profile-manager-lambda.lambda_function_name
-  refresh_alias = false
-}
+#   attach_policy_jsons = true
+#   policy_jsons = [
+#     <<-EOT
+#     {
+#         "Version": "2012-10-17",
+#         "Statement": [
+#             {
+#                 "Sid": "VisualEditor0",
+#                 "Effect": "Allow",
+#                 "Action": [
+#                     "dynamodb:PutItem",
+#                     "dynamodb:DeleteItem",
+#                     "dynamodb:GetItem",
+#                     "dynamodb:Scan",
+#                     "dynamodb:Query",
+#                     "dynamodb:UpdateItem"
+#                 ],
+#                 "Resource": [
+#                     "${module.dynamodb_services_table.dynamodb_table_arn}"
+#                 ]
+#             }
+#         ]
+#     }
+#     EOT
+#   ]
+#   number_of_policy_jsons = 1
 
 
-module "search-profiler-lambda" {
-  source  = "terraform-aws-modules/lambda/aws"
-  version = "~> 2.0"
 
-  function_name = "search-profiler"
-  description   = "Microservice for filtering searches based on profiles"
-  handler       = "app.lambda_handler"
-  runtime       = "python3.9"
+#   allowed_triggers = {
+#     AllowExecutionFromAPIGateway = {
+#       service    = "apigateway"
+#       source_arn = "${aws_api_gateway_rest_api.DoS_REST.execution_arn}/*/*"
+#     }
+#   }
+# }
 
-  publish                = true
-  create_package         = false
-  local_existing_package = "./misc/init.zip"
-  ignore_source_code_hash = true
+# module "live-alias-directory-data-manager" {
+#   source = "terraform-aws-modules/lambda/aws//modules/alias"
 
-  attach_policy_jsons = true
-  policy_jsons = [
-    <<-EOT
-    {
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-                "Sid": "VisualEditor0",
-                "Effect": "Allow",
-                "Action": [
-                    "dynamodb:GetItem",
-                    "dynamodb:GetRecords"
-                ],
-                "Resource": [
-                    "${module.dynamodb_search_profiles_table.dynamodb_table_arn}",
-                    "${module.dynamodb_search_consumers_table.dynamodb_table_arn}"
-                ]
-            }
-        ]
-    }
-    EOT
-  ]
-  number_of_policy_jsons = 1
+#   name          = "live-service"
+#   function_name = module.directory-data-manager-lambda.lambda_function_name
+#   refresh_alias = false
+# }
 
-  allowed_triggers = {
-    AllowExecutionFromAPIGateway = {
-      service    = "apigateway"
-      source_arn = "${aws_api_gateway_rest_api.DoS_REST.execution_arn}/*/*"
-    }
-  }
-}
+# module "search-profile-manager-lambda" {
+#   source  = "terraform-aws-modules/lambda/aws"
+#   version = "~> 2.0"
 
-module "live-alias-search-profiler" {
-  source = "terraform-aws-modules/lambda/aws//modules/alias"
+#   function_name = "search-profile-manager"
+#   description   = "Microservice for search profiles"
+#   handler       = "app.lambda_handler"
+#   runtime       = "python3.9"
 
-  name          = "live-service"
-  function_name = module.search-profiler-lambda.lambda_function_name
-  refresh_alias = false
-}
+#   publish                = true
+#   create_package         = false
+#   local_existing_package = "./misc/init.zip"
+#   ignore_source_code_hash = true
 
-module "directory-data-relay-lambda" {
-  source  = "terraform-aws-modules/lambda/aws"
-  version = "~> 2.0"
 
-  function_name = "directory-data-relay"
-  description   = "Microservice for populating Opensearch with Dynamo data"
-  handler       = "app.lambda_handler"
-  runtime       = "python3.9"
+#   attach_policy_jsons = true
+#   policy_jsons = [
+#     <<-EOT
+#     {
+#         "Version": "2012-10-17",
+#         "Statement": [
+#             {
+#                 "Sid": "VisualEditor0",
+#                 "Effect": "Allow",
+#                 "Action": [
+#                     "dynamodb:PutItem",
+#                     "dynamodb:DeleteItem",
+#                     "dynamodb:GetItem",
+#                     "dynamodb:Scan",
+#                     "dynamodb:Query",
+#                     "dynamodb:UpdateItem"
+#                 ],
+#                 "Resource": [
+#                     "${module.dynamodb_search_profiles_table.dynamodb_table_arn}",
+#                     "${module.dynamodb_search_consumers_table.dynamodb_table_arn}"
+#                 ]
+#             }
+#         ]
+#     }
+#     EOT
+#   ]
+#   number_of_policy_jsons = 1
 
-  # We want to manage our application code using a dedicated application deployment pipeline.
-  # Therefore we want our infrastructure manifests to just build the lambda and not worry about the code inside.
-  # This block tells terraform to deploy an initial zip package when the lambda is created, 
-  # and then ignore application code on each subsequent apply
-  publish                = true
-  create_package         = false
-  local_existing_package = "./misc/init.zip"
-  ignore_source_code_hash = true
+#   allowed_triggers = {
+#     AllowExecutionFromAPIGateway = {
+#       service    = "apigateway"
+#       source_arn = "${aws_api_gateway_rest_api.DoS_REST.execution_arn}/*/*"
+#     }
+#   }
+# }
 
-  environment_variables = {
-    ES_domain = aws_elasticsearch_domain.directory_search.endpoint,
-    ES_region = var.aws_region,
-    ES_index  = var.index_name
-  }
+# module "live-alias-search-profile-manager" {
+#   source = "terraform-aws-modules/lambda/aws//modules/alias"
 
-  attach_policy_jsons = true
-  policy_jsons = [
-    <<-EOT
-    {
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-                "Sid": "VisualEditor0",
-                "Effect": "Allow",
-                "Action": [
-                    "dynamodb:GetShardIterator",
-                    "dynamodb:GetItem",
-                    "dynamodb:DescribeStream",
-                    "dynamodb:GetRecords"
-                ],
-                "Resource": [
-                    "${module.dynamodb_services_table.dynamodb_table_arn}/stream/*",
-                    "${module.dynamodb_services_table.dynamodb_table_arn}"
-                ]
-            },
-            {
-                "Sid": "VisualEditor2",
-                "Effect": "Allow",
-                "Action": "dynamodb:ListStreams",
-                "Resource": "*"
-            }
-        ]
-    }
-    EOT
-  ]
-  number_of_policy_jsons = 1
-}
+#   name          = "live-service"
+#   function_name = module.search-profile-manager-lambda.lambda_function_name
+#   refresh_alias = false
+# }
 
-module "live-alias-directory-data-relay" {
-  source = "terraform-aws-modules/lambda/aws//modules/alias"
 
-  name          = "live-service"
-  function_name = module.directory-data-relay-lambda.lambda_function_name
-  refresh_alias = false
-}
+# module "search-profiler-lambda" {
+#   source  = "terraform-aws-modules/lambda/aws"
+#   version = "~> 2.0"
 
-resource "aws_lambda_event_source_mapping" "dynamodb_trigger" {
-  event_source_arn  = module.dynamodb_services_table.dynamodb_table_stream_arn
-  function_name     = module.directory-data-relay-lambda.lambda_function_name
-  starting_position = "LATEST"
-  filter_criteria {
-    filter {
-      pattern = jsonencode({ "eventName": ["INSERT", "MODIFY", "REMOVE" ]})
-    }
-  }
-}
+#   function_name = "search-profiler"
+#   description   = "Microservice for filtering searches based on profiles"
+#   handler       = "app.lambda_handler"
+#   runtime       = "python3.9"
+
+#   publish                = true
+#   create_package         = false
+#   local_existing_package = "./misc/init.zip"
+#   ignore_source_code_hash = true
+
+#   attach_policy_jsons = true
+#   policy_jsons = [
+#     <<-EOT
+#     {
+#         "Version": "2012-10-17",
+#         "Statement": [
+#             {
+#                 "Sid": "VisualEditor0",
+#                 "Effect": "Allow",
+#                 "Action": [
+#                     "dynamodb:GetItem",
+#                     "dynamodb:GetRecords"
+#                 ],
+#                 "Resource": [
+#                     "${module.dynamodb_search_profiles_table.dynamodb_table_arn}",
+#                     "${module.dynamodb_search_consumers_table.dynamodb_table_arn}"
+#                 ]
+#             }
+#         ]
+#     }
+#     EOT
+#   ]
+#   number_of_policy_jsons = 1
+
+#   allowed_triggers = {
+#     AllowExecutionFromAPIGateway = {
+#       service    = "apigateway"
+#       source_arn = "${aws_api_gateway_rest_api.DoS_REST.execution_arn}/*/*"
+#     }
+#   }
+# }
+
+# module "live-alias-search-profiler" {
+#   source = "terraform-aws-modules/lambda/aws//modules/alias"
+
+#   name          = "live-service"
+#   function_name = module.search-profiler-lambda.lambda_function_name
+#   refresh_alias = false
+# }
+
+# module "directory-data-relay-lambda" {
+#   source  = "terraform-aws-modules/lambda/aws"
+#   version = "~> 2.0"
+
+#   function_name = "directory-data-relay"
+#   description   = "Microservice for populating Opensearch with Dynamo data"
+#   handler       = "app.lambda_handler"
+#   runtime       = "python3.9"
+
+#   # We want to manage our application code using a dedicated application deployment pipeline.
+#   # Therefore we want our infrastructure manifests to just build the lambda and not worry about the code inside.
+#   # This block tells terraform to deploy an initial zip package when the lambda is created, 
+#   # and then ignore application code on each subsequent apply
+#   publish                = true
+#   create_package         = false
+#   local_existing_package = "./misc/init.zip"
+#   ignore_source_code_hash = true
+
+#   environment_variables = {
+#     ES_domain = aws_elasticsearch_domain.directory_search.endpoint,
+#     ES_region = var.aws_region,
+#     ES_index  = var.index_name
+#   }
+
+#   attach_policy_jsons = true
+#   policy_jsons = [
+#     <<-EOT
+#     {
+#         "Version": "2012-10-17",
+#         "Statement": [
+#             {
+#                 "Sid": "VisualEditor0",
+#                 "Effect": "Allow",
+#                 "Action": [
+#                     "dynamodb:GetShardIterator",
+#                     "dynamodb:GetItem",
+#                     "dynamodb:DescribeStream",
+#                     "dynamodb:GetRecords"
+#                 ],
+#                 "Resource": [
+#                     "${module.dynamodb_services_table.dynamodb_table_arn}/stream/*",
+#                     "${module.dynamodb_services_table.dynamodb_table_arn}"
+#                 ]
+#             },
+#             {
+#                 "Sid": "VisualEditor2",
+#                 "Effect": "Allow",
+#                 "Action": "dynamodb:ListStreams",
+#                 "Resource": "*"
+#             }
+#         ]
+#     }
+#     EOT
+#   ]
+#   number_of_policy_jsons = 1
+# }
+
+# module "live-alias-directory-data-relay" {
+#   source = "terraform-aws-modules/lambda/aws//modules/alias"
+
+#   name          = "live-service"
+#   function_name = module.directory-data-relay-lambda.lambda_function_name
+#   refresh_alias = false
+# }
+
+# resource "aws_lambda_event_source_mapping" "dynamodb_trigger" {
+#   event_source_arn  = module.dynamodb_services_table.dynamodb_table_stream_arn
+#   function_name     = module.directory-data-relay-lambda.lambda_function_name
+#   starting_position = "LATEST"
+#   filter_criteria {
+#     filter {
+#       pattern = jsonencode({ "eventName": ["INSERT", "MODIFY", "REMOVE" ]})
+#     }
+#   }
+# }
 
 ##########################
 # DynamoDB Tables
