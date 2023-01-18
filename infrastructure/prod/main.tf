@@ -338,13 +338,13 @@ resource "aws_api_gateway_usage_plan_key" "main" {
 
 
 
-########################
-# AWS Cognito User Pool
-########################
+# ########################
+# # AWS Cognito User Pool
+# ########################
 
-resource "aws_cognito_user_pool" "DoS_Users" {
-  name = "user-pool-dos"
-}
+# resource "aws_cognito_user_pool" "DoS_Users" {
+#   name = "user-pool-dos"
+# }
 
 
 ##################
