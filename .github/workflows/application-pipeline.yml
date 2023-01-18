@@ -103,6 +103,7 @@ jobs:
     - name: Run Tests
       run: |
         cd ./microservices/${{ matrix.services }}
+        chmod +x ./run_unit_tests.sh
         ./run_unit_tests.sh
 
 
