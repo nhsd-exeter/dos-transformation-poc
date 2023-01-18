@@ -3,7 +3,7 @@
 ########################
 
 resource "aws_s3_bucket" "frontend_bucket" {
-  bucket = "frontend_bucket"
+  bucket = "frontend-bucket180122022"
 }
 
 resource "aws_s3_bucket_acl" "frontend_acl" {
