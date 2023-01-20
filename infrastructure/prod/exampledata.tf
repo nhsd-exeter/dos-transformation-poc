@@ -25,10 +25,10 @@ resource "aws_dynamodb_table_item" "example_search_profile" {
 {
   "id": {"S": "x83nd93y2"},
   "name":{"S": "Example search profile"},
-  "exclusions": {"S": "TEST"},
-  "sorters": {"S": "TEST"},
-  "formatters": {"S": "TEST"},
-  "redactions": {"S": "TEST"}
+  "exclusions": {"L" : [ "S" : "{"category": "ED"}" ],
+  "sorters": {"L" : [ "S" : "{ "name" : "desc" }" ],
+  "formatters": {"L": []},
+  "redactions": {"L" : ["referralProfiles"] }
 }
 ITEM
 }

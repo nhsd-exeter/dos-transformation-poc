@@ -1,0 +1,92 @@
+{
+  "resourceType" : "CarePlan",
+  "identifier" : "1234567",
+  "instantiatesCanonical" : null, 
+  "instantiatesUri" : null,
+  "basedOn" : null,
+  "replaces" : null,
+  "partOf" : null,
+  "status" : "active",
+  "intent" : "proposal",
+  "category" : null,
+  "title" : "Example",
+  "description" : "Example FHIR Careplan",
+  "subject" : {
+        "resourceType" : "Patient",
+        "identifier" : "123412343",
+        "active" : true,
+        "name" : "John Doe",
+        "telecom" : null,
+        "gender" : "male",
+        "birthDate" : "1905-08-23",
+        "deceasedBoolean" : false,
+        "deceasedDateTime" : null,
+        "address" : { "postalCode" : "SS11 7AR" },
+        "maritalStatus" : null,
+        "multipleBirthBoolean" : null,
+        "multipleBirthInteger" : null,
+        "photo" : null,
+        "contact" : [{ 
+            "relationship" : null,
+            "name" : null,
+            "telecom" : null,
+            "address" : null,
+            "gender" : null,
+            "organization" : null,
+            "period" : null
+        }],
+        "communication" : [{ 
+            "language" : null,
+            "preferred" :null
+        }],
+        "generalPractitioner" : null,
+        "managingOrganization" : null,
+        "link" : [{ 
+            "other" : null,
+            "type" : null
+        }]
+    },
+  "encounter" : null,
+  "period" : null,
+  "created" : null,
+  "author" : null,
+  "contributor" : null,
+  "careTeam" : null,
+  "addresses" : {"code" : "123456"}, 
+  "supportingInfo" : null,
+  "goal" : null,
+  "activity" : [{ 
+    "outcomeCodeableConcept" : null,
+    "outcomeReference" : null,
+    "progress" : null,
+    "reference" : null,
+    "detail" : { 
+      "kind" : "ServiceRequest", 
+      "instantiatesCanonical" : null,
+      "instantiatesUri" : null,
+      "code" : { "code" : "123456" }, 
+      "reasonCode" : null,
+      "reasonReference" : null,
+      "goal" : null,
+      "status" : "not-started",
+      "statusReason" : null,
+      "doNotPerform" : null,
+      "scheduledTiming" : null,
+      "scheduledPeriod" : { "acuity": "12345" },
+      "scheduledString" : null,
+      "location" : { 
+            "position" : { 
+                "longitude" : 51.57611 , 
+                "latitude" : 0.48861
+            }
+        }, 
+      "performer" : null,
+      "productCodeableConcept" : null,
+      "productReference" : null,
+      "dailyAmount" : null,
+      "quantity" : null,
+      "description" : null
+    }
+  }],
+  "note" : null
+}
