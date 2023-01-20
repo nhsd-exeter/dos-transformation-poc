@@ -114,8 +114,8 @@ def construct_base_query(careplan_query):
                                 {
                                     "must": 
                                         [
-                                            { "referralProfiles.referralSpecificProperties.availableTime": { "openingTime": { "gte": 0, "lte": query_time } } },
-                                            { "referralProfiles.referralSpecificProperties.availableTime": { "closingTime": { "gte": query_time, "lte": 0 } } }
+                                            {"range" : { "referralProfiles.referralSpecificProperties.availableTime": { "openingTime": { "gte": 0, "lte": query_time } } }},
+                                            {"range" : { "referralProfiles.referralSpecificProperties.availableTime": { "closingTime": { "gte": query_time, "lte": 0 } } }}
                                         ]
                                     
                                 }
