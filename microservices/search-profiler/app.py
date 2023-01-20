@@ -4,8 +4,6 @@ import datetime
 from boto3.dynamodb.conditions import Key
 from boto3.dynamodb.types import TypeDeserializer
 
-print(deserialized_document)
-
 def lambda_handler(event, context):
     
     parsed_json = json.dumps(event)
