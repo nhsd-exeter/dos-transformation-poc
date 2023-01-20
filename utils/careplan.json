@@ -55,7 +55,7 @@
   "addresses" : {"code" : "123456"}, 
   "supportingInfo" : null,
   "goal" : null,
-  "activity" : [{ 
+  "activity" : { 
     "outcomeCodeableConcept" : null,
     "outcomeReference" : null,
     "progress" : null,
@@ -87,6 +87,6 @@
       "quantity" : null,
       "description" : null
     }
-  }],
+  },
   "note" : null
 }

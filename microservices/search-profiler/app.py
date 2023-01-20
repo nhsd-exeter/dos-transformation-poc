@@ -83,7 +83,7 @@ def construct_base_query(careplan_query):
     #FOR NOW, ITS HARD CODED HERE:
 
     requested_activity = careplan_query['activity']['detail']['code']['code']
-    chief_complaint = careplan_query['activity']['detail']['reasonCode']['code']
+    chief_complaint = careplan_query['addresses']['code']
     requested_acuity = careplan_query['activity']['detail']['scheduledPeriod']['acuity']
     requested_location = careplan_query['activity']['detail']['location']['position']
 
