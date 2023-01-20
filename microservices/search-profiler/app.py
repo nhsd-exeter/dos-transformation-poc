@@ -148,7 +148,7 @@ def profile_query(base_query, search_profile):
             profiled_query['sort'].append(sorter)
 
     if search_profile['redactions']:
-        profiled_query['_source']['excludes'] = []
+        profiled_query['_source'] = {'excludes' : [] }
         for redaction in search_profile['redactions']:
             profiled_query['_source']['excludes'].append(redaction)
 
