@@ -52,7 +52,7 @@ def lambda_handler(event, context):
     else:
         raise ValueError('The search profile associated with this API Key cannot be found')
  
-        
+    print(search_profile)    
     
     base_query = construct_base_query(search_query)
 
