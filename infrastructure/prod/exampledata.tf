@@ -23,12 +23,40 @@ resource "aws_dynamodb_table_item" "example_search_profile" {
 
   item = <<ITEM
 {
-  "id": {"S": "x83nd93y2"},
-  "name":{"S": "Example search profile"},
-  "exclusions": {"L" : [ "S" : "{"category": "ED"}" ],
-  "sorters": {"L" : [ "S" : "{ "name" : "desc" }" ],
-  "formatters": {"L": []},
-  "redactions": {"L" : ["referralProfiles"] }
+  "id": {
+    "S": "x83nd93y2"
+  },
+  "exclusions": {
+    "L": [
+      {
+        "S": "{\"category\": \"ED\"}"
+      }
+    ]
+  },
+  "formatters": {
+    "L": [
+      {
+        "L": []
+      }
+    ]
+  },
+  "name": {
+    "S": "Example search profile"
+  },
+  "redactions": {
+    "L": [
+      {
+        "S": "referralProfiles"
+      }
+    ]
+  },
+  "sorters": {
+    "L": [
+      {
+        "S": "{ \"name\" : \"desc\" }"
+      }
+    ]
+  }
 }
 ITEM
 }
