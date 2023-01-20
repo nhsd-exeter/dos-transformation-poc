@@ -98,36 +98,33 @@ def construct_base_query(careplan_query):
     #BUILD THE BASIC ELASTIC QUERY
     base_query = {"query": {
         "bool" : {
-            "must": {
+            "must": 
                 [
-                    #THE RETURNED SERVICE MUST HAVE A REFERAL PROFILE WITH CODES MATCHING THE REQUESTED ACTIVITY/ACUITY
                     {"match": {"referralProfiles.activitiesOffered": requested_activity}},
                     {"match": {"referralProfiles.acuities": requested_acuity}},
                     {"match": {"referralProfiles.referralSpecificProperties.eligibility.gender": patient_gender}},
                     {"match" : {"referralProfiles.referralSpecificProperties.eligibility.ageRange": patient_age_range}},
                     {"match" : {"referralProfiles.referralSpecificProperties.availableTime.daysOfWeek": query_day}},
                     {"bool": {
-                        "should": {
+                        "should": 
                             [
                                 {
                                     "must": {"match" : {"referralProfiles.referralSpecificProperties.availableTime.allDay": True}}
                                 },
                                 {
-                                    "must": {
+                                    "must": 
                                         [
                                             { "referralProfiles.referralSpecificProperties.availableTime": { "openingTime": { "gte": 0, "lte": query_time } } },
                                             { "referralProfiles.referralSpecificProperties.availableTime": { "closingTime": { "gte": query_time, "lte": 0 } } }
                                         ]
-                                    }
+                                    
                                 }
 
                             ]
+                        
                         }
-                    }}
-
-
+                    }
                 ]
-            }
         }
     }}
 
