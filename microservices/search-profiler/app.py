@@ -109,15 +109,12 @@ def construct_base_query(careplan_query):
                     {"bool": {
                         "should": {
                             [
-                                #ADDITIONALLY, THE RETURNED SERVICE MUST HAVE EITHER... 
                                 {
-                                    #AVAILABILITY ALL DAY
                                     "must": {"match" : {"referralProfiles.referralSpecificProperties.availableTime.allDay": True}}
                                 },
                                 {
                                     "must": {
                                         [
-                                            #THE AVAILABILITY TIMES THAT ARE SUITABLE FOR THE CURRENT SEARCH TIME
                                             { "referralProfiles.referralSpecificProperties.availableTime": { "openingTime": { "gte": 0, "lte": query_time } } },
                                             { "referralProfiles.referralSpecificProperties.availableTime": { "closingTime": { "gte": query_time, "lte": 0 } } }
                                         ]
