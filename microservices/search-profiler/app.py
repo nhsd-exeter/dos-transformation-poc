@@ -134,25 +134,22 @@ def construct_base_query(careplan_query):
 
 def profile_query(base_query, search_profile):
 
-    deserializer = TypeDeserializer()
-    deserialized_search_profile = {k: deserializer.deserialize(v) for k, v in search_profile}
-
     profiled_query = base_query
 
 
-    if deserialized_search_profile['exclusions']:
+    if search_profile['exclusions']:
         profiled_query['query']['bool']['must_not'] = []
-        for exclusion in deserialized_search_profile['exclusions']:
+        for exclusion in search_profile['exclusions']:
             profiled_query['query']['bool']['must_not'].append(exclusion)
 
-    if deserialized_search_profile['sorters']:
+    if search_profile['sorters']:
         profiled_query['query']['bool']['sort'] = []
-        for sorter in deserialized_search_profile['sorters']:
+        for sorter in search_profile['sorters']:
             profiled_query['sort'].append(sorter)
 
-    if deserialized_search_profile['redactions']:
+    if search_profile['redactions']:
         profiled_query['_soure']['excludes'] = []
-        for redaction in deserialized_search_profile['redactions']:
+        for redaction in search_profile['redactions']:
             profiled_query['_soure']['excludes'].append(redaction)
 
     #TBC IF WE HAVE A USE CASE FOR FORMATTERS, AS THIS MIGHT NOT BE NEEDED

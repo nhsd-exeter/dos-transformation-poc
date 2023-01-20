@@ -19,6 +19,11 @@ headers = { "Content-Type": "application/json" }
 
 def lambda_handler(event, context):
 
+    #FOR LATER, APPLY DESERIALISAION:
+
+    # deserializer = TypeDeserializer()
+    # deserialized_search_profile = {k: deserializer.deserialize(v) for k, v in document}
+
     count = 0
     for record in event['Records']:
         id = record['dynamodb']['Keys']['id']['S']
