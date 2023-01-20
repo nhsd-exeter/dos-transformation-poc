@@ -92,7 +92,7 @@ def construct_base_query(careplan_query):
 
     query_datetime = datetime.datetime.now()
     query_day = query_datetime.strftime("%a")
-    query_time = datetime.time.now()
+    query_time = query_datetime.strftime("%H:%M:%S")
 
  
     #BUILD THE BASIC ELASTIC QUERY
