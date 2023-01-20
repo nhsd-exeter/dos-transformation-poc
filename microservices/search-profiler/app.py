@@ -87,8 +87,8 @@ def construct_base_query(careplan_query):
     requested_acuity = careplan_query['activity']['detail']['scheduledPeriod']['acuity']
     requested_location = careplan_query['activity']['detail']['location']['position']
 
-    patient_gender = careplan_query['subject']['birthDate']
-    patient_age_range = careplan_query['subject']['gender']
+    patient_age_range= careplan_query['subject']['birthDate']
+    patient_gender = careplan_query['subject']['gender']
 
     query_datetime = datetime.datetime.now()
     query_day = query_datetime.strftime("%a")
@@ -135,7 +135,7 @@ def construct_base_query(careplan_query):
 def profile_query(base_query, search_profile):
 
     deserializer = TypeDeserializer()
-    deserialized_search_profile = {k: deserializer.deserialize(v) for k, v in search_profile.items()}
+    deserialized_search_profile = {k: deserializer.deserialize(v) for k, v in search_profile}
 
     profiled_query = base_query
 
