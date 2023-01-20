@@ -143,14 +143,14 @@ def profile_query(base_query, search_profile):
             profiled_query['query']['bool']['must_not'].append(exclusion)
 
     if search_profile['sorters']:
-        profiled_query['query']['bool']['sort'] = []
+        profiled_query['sort'] = []
         for sorter in search_profile['sorters']:
             profiled_query['sort'].append(sorter)
 
     if search_profile['redactions']:
-        profiled_query['_soure']['excludes'] = []
+        profiled_query['_source']['excludes'] = []
         for redaction in search_profile['redactions']:
-            profiled_query['_soure']['excludes'].append(redaction)
+            profiled_query['_source']['excludes'].append(redaction)
 
     #TBC IF WE HAVE A USE CASE FOR FORMATTERS, AS THIS MIGHT NOT BE NEEDED
 
