@@ -111,12 +111,8 @@ def construct_base_query(careplan_query):
                             [
                                 #ADDITIONALLY, THE RETURNED SERVICE MUST HAVE EITHER... 
                                 {
-                                    "must": {
-                                        [
-                                            #AVAILABILITY ALL DAY
-                                            {"match" : {"referralProfiles.referralSpecificProperties.availableTime.allDay": True}},
-                                        ]
-                                    }
+                                    #AVAILABILITY ALL DAY
+                                    "must": {"match" : {"referralProfiles.referralSpecificProperties.availableTime.allDay": True}}
                                 },
                                 {
                                     "must": {
