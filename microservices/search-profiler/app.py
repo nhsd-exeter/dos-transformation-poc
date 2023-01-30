@@ -149,7 +149,7 @@ def profile_query(base_query, search_profile):
     if search_profile['exclusions']:
         profiled_query['query']['bool']['must_not'] = []
         for exclusion in search_profile['exclusions']:
-            profiled_query['query']['bool']['must_not'].append(exclusion.decode('string_escape'))
+            profiled_query['query']['bool']['must_not'].append(exclusion.encode().decode('string_escape'))
 
     if search_profile['sorters']:
         profiled_query['sort'] = []
