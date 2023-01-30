@@ -154,7 +154,7 @@ def profile_query(base_query, search_profile):
     if search_profile['sorters']:
         profiled_query['sort'] = []
         for sorter in search_profile['sorters']:
-            profiled_query['sort'].append(sorter)
+            profiled_query['sort'].append(json.loads(sorter))
 
     if search_profile['redactions']:
         profiled_query['_source'] = {'excludes' : [] }
