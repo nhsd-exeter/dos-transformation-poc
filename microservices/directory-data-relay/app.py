@@ -33,6 +33,8 @@ def lambda_handler(event, context):
             r = requests.delete(url + id, auth=awsauth)
         else:
             document = record['dynamodb']['NewImage']
-            r = requests.put(url + id, auth=awsauth, json=document, headers=headers)
+            deserializer = TypeDeserializer()
+            deserialized_search_profile = {k: deserializer.deserialize(v) for k, v in document}
+            r = requests.put(url + id, auth=awsauth, json=deserialized_search_profile, headers=headers)
         count += 1
     return str(count) + ' records processed.'
