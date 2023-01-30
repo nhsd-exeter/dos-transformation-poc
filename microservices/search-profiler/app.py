@@ -149,11 +149,15 @@ def profile_query(base_query, search_profile):
     if search_profile['exclusions']:
         profiled_query['query']['bool']['must_not'] = []
         for exclusion in search_profile['exclusions']:
+            if not exclusion:
+                continue
             profiled_query['query']['bool']['must_not'].append(json.loads(exclusion))
 
     if search_profile['sorters']:
         profiled_query['sort'] = []
         for sorter in search_profile['sorters']:
+            if not sorter:
+                continue
             profiled_query['sort'].append(json.loads(sorter))
 
     if search_profile['redactions']:
