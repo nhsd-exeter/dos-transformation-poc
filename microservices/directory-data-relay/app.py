@@ -28,9 +28,16 @@ def lambda_handler(event, context):
         if record['eventName'] == 'REMOVE':
             r = requests.delete(url + id, auth=awsauth)
         else:
-            document = record['dynamodb']['NewImage']
-            deserializer = TypeDeserializer()
-            deserialized_search_profile = {k: deserializer.deserialize(v) for k, v in document}
-            r = requests.put(url + id, auth=awsauth, json=deserialized_search_profile, headers=headers)
+            document = ddb_deserialize(record['dynamodb']['NewImage'])
+            print(document)
+            r = requests.put(url + id, auth=awsauth, json=document, headers=headers)
         count += 1
     return str(count) + ' records processed.'
+
+
+
+def ddb_deserialize(r, type_deserializer = TypeDeserializer()):
+    return type_deserializer.deserialize({"M": r})
+
+def propagate_to_referral_profiles(document):
+    return True
