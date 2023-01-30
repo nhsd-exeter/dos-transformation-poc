@@ -29,7 +29,7 @@ resource "aws_dynamodb_table_item" "example_search_profile" {
   "exclusions": {
     "L": [
       {
-        "S": "{\"category\": \"ED\"}"
+        "S": "{\"match\": {\"category\": \"ED\"}}"
       }
     ]
   },

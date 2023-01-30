@@ -108,20 +108,17 @@ def construct_base_query(careplan_query):
                     {"bool": {
                         "should": 
                             [
-                                {
-                                    "must": {"match" : {"referralProfiles.referralSpecificProperties.availableTime.allDay": True}}
-                                },
-                                {
-                                    "must": 
-                                        [
-                                            {"range" : { "referralProfiles.referralSpecificProperties.availableTime": { "openingTime": { "gte": 0, "lte": query_time } } }},
-                                            {"range" : { "referralProfiles.referralSpecificProperties.availableTime": { "closingTime": { "gte": query_time, "lte": 0 } } }}
-                                        ]
-                                    
+                                {"match" : {"referralProfiles.referralSpecificProperties.availableTime.allDay": True}},
+                                {"bool":
+                                    {
+                                        "must": 
+                                            [
+                                                {"range" : { "referralProfiles.referralSpecificProperties.availableTime": { "openingTime": { "gte": 0, "lte": query_time } } }},
+                                                {"range" : { "referralProfiles.referralSpecificProperties.availableTime": { "closingTime": { "gte": query_time, "lte": 0 } } }}
+                                            ]
+                                    }
                                 }
-
                             ]
-                        
                         }
                     }
                 ]
