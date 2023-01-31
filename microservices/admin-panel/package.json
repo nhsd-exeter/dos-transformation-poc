@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "aws-amplify": "^5.0.12",
     "@aws-amplify/auth": "^4.3.12",
     "@picocss/pico": "^1.4.1",
     "@testing-library/jest-dom": "^5.15.0",
