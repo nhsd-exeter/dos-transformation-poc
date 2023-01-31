@@ -8,7 +8,7 @@ import useAsyncEffect from 'use-async-effect';
 
 CognitoAuth.configure({
   aws_project_region: "eu-west-2",
-  userPoolId: "eu-west-2_KPwuBPgHI",
+  userPoolId: "KPwuBPgHI",
   userPoolWebClientId: "18csisad7okih7mdovl0fmhcl7",
 });
 
