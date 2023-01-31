@@ -1,3 +1,4 @@
+import {Amplify} from 'aws-amplify';
 import {Auth as CognitoAuth} from '@aws-amplify/auth';
 import {Hub, HubCallback} from '@aws-amplify/core';
 import {CognitoUser} from 'amazon-cognito-identity-js';
@@ -5,6 +6,10 @@ import {createContext, ReactNode, useContext, useState} from 'react';
 import useAsyncEffect from 'use-async-effect';
 
 //TODO - IDEALLY THESE IDENTITY POOL REFERENCES SHOULD BE MOVED TO A SECRETS MANAGER
+
+Amplify.configure({
+  aws_cognito_region: 'eu-west-2'
+});
 
 CognitoAuth.configure({
   aws_project_region: "eu-west-2",
