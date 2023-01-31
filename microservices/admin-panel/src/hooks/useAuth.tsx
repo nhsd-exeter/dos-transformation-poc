@@ -1,4 +1,4 @@
-import {Amplify} from 'aws-amplify';
+import {Amplify} from '@aws-amplify';
 import {Auth as CognitoAuth} from '@aws-amplify/auth';
 import {Hub, HubCallback} from '@aws-amplify/core';
 import {CognitoUser} from 'amazon-cognito-identity-js';
