@@ -4,10 +4,12 @@ import {CognitoUser} from 'amazon-cognito-identity-js';
 import {createContext, ReactNode, useContext, useState} from 'react';
 import useAsyncEffect from 'use-async-effect';
 
+//TODO - IDEALLY THESE IDENTITY POOL REFERENCES SHOULD BE MOVED TO A SECRETS MANAGER
+
 CognitoAuth.configure({
-  aws_project_region: process.env.REACT_APP_AWS_COGNITO_REGION,
-  userPoolId: process.env.REACT_APP_AWS_COGNITO_USER_POOL_ID,
-  userPoolWebClientId: process.env.REACT_APP_AWS_COGNITO_USER_POOL_WEB_CLIENT_ID,
+  aws_project_region: "eu-west-2",
+  userPoolId: "eu-west-2_KPwuBPgHI",
+  userPoolWebClientId: "18csisad7okih7mdovl0fmhcl7",
 });
 
 /**
