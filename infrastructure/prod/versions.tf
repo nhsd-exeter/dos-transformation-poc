@@ -1,3 +1,7 @@
+locals {
+  terraform-git-repo = "nhd-exeter/dos-transformation-poc"
+}
+
 terraform {
   required_version = ">= 0.13.1"
   
@@ -11,6 +15,13 @@ terraform {
     aws = {
       source  = "hashicorp/aws"
       version = ">= 4.0"
+      default_tags = {
+      tags = {
+          owner    = "DoS UEC"	
+          project  = "DoS Transformation"
+          terraform-base-path = replace(path.cwd,"/^.*?(${local.terraform-git-repo}\\/)/", "$1")
+      }
+  }
     }
     null = {
       source  = "hashicorp/null"

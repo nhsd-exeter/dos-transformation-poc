@@ -61,11 +61,8 @@ def lambda_handler(event, context):
     profiled_query = profile_query(base_query, search_profile)
 
     print(profiled_query)
-    
-    
-    
-    # profiled_query = search_query
-    
+        
+   
     resp = {
         "search_query": profiled_query,
     }
@@ -145,7 +142,6 @@ def profile_query(base_query, search_profile):
 
     profiled_query = base_query
 
-
     if search_profile['exclusions']:
         profiled_query['query']['bool']['must_not'] = []
         for exclusion in search_profile['exclusions']:
@@ -163,6 +159,8 @@ def profile_query(base_query, search_profile):
     if search_profile['redactions']:
         profiled_query['_source'] = {'excludes' : [] }
         for redaction in search_profile['redactions']:
+            if not redaction:
+                continue
             profiled_query['_source']['excludes'].append(redaction)
 
     #TBC IF WE HAVE A USE CASE FOR FORMATTERS, AS THIS MIGHT NOT BE NEEDED
