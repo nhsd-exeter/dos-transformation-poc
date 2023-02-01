@@ -26,8 +26,6 @@ type User = {
   name: string;
 
   email: string;
-
-  country: string;
 }
 
 /**
@@ -44,8 +42,7 @@ async function cognitoUserToUser(cognitoUser: CognitoUser): Promise<User> {
   return {
     id: cognitoUser.getUsername(),
     name: attrs.name,
-    email: attrs.email,
-    country: attrs['custom:country'],
+    email: attrs.email
   };
 }
 
@@ -130,7 +127,7 @@ function useProvideAuth() {
   }
 
   /**
-   * Sign-up using email, password, name and country.
+   * Sign-up using email, password, name, etc..
    *
    * If we get back a confirmed user then we return a {@link User}, `null` otherwise.
    */
@@ -138,17 +135,13 @@ function useProvideAuth() {
       {
         email,
         password,
-        name,
-        country,
+        name
+        
       }: Credentials & Exclude<User, 'id'>
   ): Promise<User | null> {
     const result = await CognitoAuth.signUp({
       username: email,
-      password,
-      attributes: {
-        name,
-        'custom:country': country,
-      },
+      password
     });
     if (result.user != null && result.userConfirmed) {
       setUser(await cognitoUserToUser(result.user));
