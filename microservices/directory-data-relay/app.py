@@ -5,8 +5,6 @@ from boto3.dynamodb.types import TypeDeserializer
 import requests
 from requests_aws4auth import AWS4Auth
 
-#test
-
 region = os.environ['ES_region'] 
 service = 'es'
 credentials = boto3.Session().get_credentials()
