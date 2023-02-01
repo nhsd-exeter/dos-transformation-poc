@@ -15,9 +15,7 @@ def lambda_handler(event, context):
     dynamodb = boto3.resource('dynamodb')
 
     patient_postcode = search_query['subject']['address']['postalCode']
-    #THIS POSTCODE CAN BE USED TO SELECT AN APPROPRIATE GEO-PROFILE FOR RANKING STRATEGY
-    
-    
+    #THIS POSTCODE CAN BE USED TO SELECT AN APPROPRIATE GEO-PROFILE FOR RANKING STRATEGY  
     
     #Determine the consumer by querying the api-key 
     search_consumers_table = dynamodb.Table('search-consumers')      

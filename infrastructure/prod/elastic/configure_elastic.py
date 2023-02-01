@@ -12,7 +12,7 @@ awsauth = AWS4Auth(credentials.access_key, credentials.secret_key, region, servi
 headers = { "Content-Type": "application/json" }
 index_name = 'directory-index'
 
-def configure_elastic(host, search_arn, relay_arn):
+def configure_elastic():
    
 
     if check_index_exists(index_name) != True:
@@ -38,4 +38,4 @@ def create_index(index_name):
 
 
 if __name__== "__main__":
-   configure_elastic(host, sys.argv[3], sys.argv[4])
+   configure_elastic()
