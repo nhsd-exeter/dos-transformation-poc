@@ -56,6 +56,23 @@ locals {
   s3_origin_id = "S3Origin"
 }
 
+resource "aws_cloudfront_function" "spa_router" {
+  name    = "SPA-router"
+  runtime = "cloudfront-js-1.0"
+  comment = "A function to allow routing within the single page app"
+  publish = true
+  code    = <<EOF function handler(event) {
+  var request = event.request;
+
+  if (!request.uri.includes('.')) {
+    request.uri = "/index.html";
+    request.querystring = {}
+  }
+
+  return request;
+} EOF
+}
+
 resource "aws_cloudfront_origin_access_control" "frontend" {
   name                              = "frontend"
   description                       = "Access Policy for the Frontend Bucket"
@@ -106,4 +123,10 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   viewer_certificate {
     cloudfront_default_certificate = true
   }
+
+  function_association {
+      event_type   = "viewer-request"
+      function_arn = aws_cloudfront_function.spa_router.arn
+  }
+
 }
