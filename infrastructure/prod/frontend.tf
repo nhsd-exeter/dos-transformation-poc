@@ -61,16 +61,7 @@ resource "aws_cloudfront_function" "spa_router" {
   runtime = "cloudfront-js-1.0"
   comment = "A function to allow routing within the single page app"
   publish = true
-  code    = <<EOF function handler(event) {
-  var request = event.request;
-
-  if (!request.uri.includes('.')) {
-    request.uri = "/index.html";
-    request.querystring = {}
-  }
-
-  return request;
-} EOF
+  code    = file("${path.cwd}/misc/SPA_router.js")
 }
 
 resource "aws_cloudfront_origin_access_control" "frontend" {
