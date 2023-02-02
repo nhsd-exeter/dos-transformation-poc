@@ -13,5 +13,13 @@ provider "aws" {
   skip_credentials_validation = true
 
   skip_requesting_account_id = false
+
+  default_tags {
+  tags = {
+      owner    = "DoS UEC"	
+      project  = "DoS Transformation"
+      terraform-base-path = replace(path.cwd,"/^.*?(${local.terraform-git-repo}\\/)/", "$1")
+    }
+  }
 }
 

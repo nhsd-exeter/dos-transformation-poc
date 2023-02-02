@@ -22,13 +22,3 @@ terraform {
       }
     }
 }
-
-provider "aws" {
-        default_tags {
-          tags = {
-              owner    = "DoS UEC"	
-              project  = "DoS Transformation"
-              terraform-base-path = replace(path.cwd,"/^.*?(${local.terraform-git-repo}\\/)/", "$1")
-            }
-        }
-      }
