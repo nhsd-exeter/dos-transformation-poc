@@ -98,6 +98,11 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
       }
     }
 
+    function_association {
+      event_type   = "viewer-request"
+      function_arn = aws_cloudfront_function.spa_router.arn
+    }
+
     viewer_protocol_policy = "redirect-to-https"
     min_ttl                = 0
     default_ttl            = 3600
@@ -113,11 +118,6 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 
   viewer_certificate {
     cloudfront_default_certificate = true
-  }
-
-  function_association {
-      event_type   = "viewer-request"
-      function_arn = aws_cloudfront_function.spa_router.arn
   }
 
 }
