@@ -124,11 +124,11 @@
 
 # }
 
-# resource "aws_db_parameter_group" "aurora_instance_parameter_group" {
-#   name = "uec-core-dos-prod-aurora-instance-pg-14"
-#   family      = "aurora-postgresql14"
-#   description = "Aurora instance stub parameter group"
-# }
+resource "aws_db_parameter_group" "aurora_instance_parameter_group" {
+  name = "uec-core-dos-prod-aurora-instance-pg-14"
+  family      = "aurora-postgresql14"
+  description = "Aurora instance stub parameter group"
+}
 
 resource "aws_security_group" "aurora_stub_sg" {
   name        = "uec-core-dos-prod-aurora-stub-sg"
