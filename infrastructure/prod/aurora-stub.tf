@@ -1,62 +1,62 @@
 
-# module "cluster" {
-#   source = "terraform-aws-modules/rds-aurora/aws"
-#     version = "6.2.0"
+module "cluster" {
+  source = "terraform-aws-modules/rds-aurora/aws"
+    version = "6.2.0"
 
-#   name           = "uec-core-dos-prod-aurora-stub"
-#   engine         = "postgres"
-#   engine_version = "14.5"
-#   instance_class = "db.t3.medium"
-#   instances = {
-#     one = {
-#       preferred_maintenance_window = "Mon:01:00-Mon:03:00"
-#     },
-#     two = {
-#       preferred_maintenance_window = "Tue:01:00-Tue:03:00"
-#     }
-#   }
+  name           = "uec-core-dos-prod-aurora-stub"
+  engine         = "postgres"
+  engine_version = "14.5"
+  instance_class = "db.t3.medium"
+  instances = {
+    one = {
+      preferred_maintenance_window = "Mon:01:00-Mon:03:00"
+    },
+    two = {
+      preferred_maintenance_window = "Tue:01:00-Tue:03:00"
+    }
+  }
 
-#   iam_role_name                = "core-dos-prod-monitoring"
-#   iam_role_use_name_prefix     = true
-#   preferred_backup_window      = "00:00-01:00"
-#   preferred_maintenance_window = "Wed:01:00-Wed:03:00"
-#   auto_minor_version_upgrade   = false
+  iam_role_name                = "core-dos-prod-monitoring"
+  iam_role_use_name_prefix     = true
+  preferred_backup_window      = "00:00-01:00"
+  preferred_maintenance_window = "Wed:01:00-Wed:03:00"
+  auto_minor_version_upgrade   = false
 
-#   # Autoscaling policies
-#   autoscaling_enabled             = true
-#   autoscaling_min_capacity        = 1
-#   autoscaling_max_capacity        = 3
-#   autoscaling_target_cpu          = 40
-#   autoscaling_scale_in_cooldown   = 300
-#   autoscaling_scale_out_cooldown  = 120
+  # Autoscaling policies
+  autoscaling_enabled             = true
+  autoscaling_min_capacity        = 1
+  autoscaling_max_capacity        = 3
+  autoscaling_target_cpu          = 40
+  autoscaling_scale_in_cooldown   = 300
+  autoscaling_scale_out_cooldown  = 120
 
-#   # vpc_id  = "default"
-#   # subnets = data.terraform_remote_state.vpc.outputs.private_subnets  (CREATE)
+  # vpc_id  = "default"
+  # subnets = data.terraform_remote_state.vpc.outputs.private_subnets  (CREATE)
 
-#   create_security_group  = false
-#   vpc_security_group_ids = [aws_security_group.aurora_stub_sg.id]
+  create_security_group  = false
+  vpc_security_group_ids = [aws_security_group.aurora_stub_sg.id]
 
-#   deletion_protection = false
-#   master_username     = "postgres"
+  deletion_protection = false
+  master_username     = "postgres"
 
-#   # if specifying a value here, 'create_random_password' should be set to `false`
-#   master_password                  = "test123"
-#   create_random_password           = false
-#   storage_encrypted                = true
-#   apply_immediately                = true
-#   monitoring_interval              = 10
-#   copy_tags_to_snapshot            = false
-#   skip_final_snapshot              = true
-#   final_snapshot_identifier_prefix = "final-snapshot"
+  # if specifying a value here, 'create_random_password' should be set to `false`
+  master_password                  = "test123"
+  create_random_password           = false
+  storage_encrypted                = true
+  apply_immediately                = true
+  monitoring_interval              = 10
+  copy_tags_to_snapshot            = false
+  skip_final_snapshot              = true
+  final_snapshot_identifier_prefix = "final-snapshot"
 
-#   db_cluster_parameter_group_name = aws_db_parameter_group.aurora_cluster_parameter_group.name
-#   db_parameter_group_name         = aws_db_parameter_group.aurora_instance_parameter_group.name
+  db_cluster_parameter_group_name = aws_db_parameter_group.aurora_cluster_parameter_group.name
+  db_parameter_group_name         = aws_db_parameter_group.aurora_instance_parameter_group.name
 
-#   create_db_subnet_group          = true
-#   db_subnet_group_name            = "uec-core-dos-prod-aurora-stub-subnet"
-#   performance_insights_enabled    = false
-#   enabled_cloudwatch_logs_exports = ["postgresql"]
-# }
+  create_db_subnet_group          = true
+  db_subnet_group_name            = "uec-core-dos-prod-aurora-stub-subnet"
+  performance_insights_enabled    = false
+  enabled_cloudwatch_logs_exports = ["postgresql"]
+}
 
 resource "aws_rds_cluster_parameter_group" "aurora_cluster_parameter_group" {
   name        = "uec-core-dos-prod-aurora-cluster-pg-14"
