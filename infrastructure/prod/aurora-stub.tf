@@ -58,71 +58,71 @@
 #   enabled_cloudwatch_logs_exports = ["postgresql"]
 # }
 
-# resource "aws_rds_cluster_parameter_group" "aurora_cluster_parameter_group" {
-#   name        = "uec-core-dos-prod-aurora-cluster-pg-14"
-#   family      = "aurora-postgresql14"
-#   description = "Aurora instance stub parameter group"
+resource "aws_rds_cluster_parameter_group" "aurora_cluster_parameter_group" {
+  name        = "uec-core-dos-prod-aurora-cluster-pg-14"
+  family      = "aurora-postgresql14"
+  description = "Aurora instance stub parameter group"
 
-#   parameter {
-#     name         = "max_connections"
-#     value        = "100"
-#     apply_method = "pending-reboot"
-#   }
+  parameter {
+    name         = "max_connections"
+    value        = "100"
+    apply_method = "pending-reboot"
+  }
 
-#   parameter {
-#     name  = "rds.force_ssl"
-#     value = "1"
-#   }
+  parameter {
+    name  = "rds.force_ssl"
+    value = "1"
+  }
 
 
-#   parameter {
-#     name         = "timezone"
-#     value        = "GB"
-#   }
+  parameter {
+    name         = "timezone"
+    value        = "GB"
+  }
 
-#   parameter {
-#     name         = "rds.logical_replication"
-#     value        = "1"
-#     apply_method = "pending-reboot"
-#   }
+  parameter {
+    name         = "rds.logical_replication"
+    value        = "1"
+    apply_method = "pending-reboot"
+  }
 
-#   parameter {
-#     name  = "wal_sender_timeout"
-#     value = "0"
-#   }
+  parameter {
+    name  = "wal_sender_timeout"
+    value = "0"
+  }
 
-#   parameter {
-#     name  = "log_lock_waits"
-#     value = "0"
-#   }
+  parameter {
+    name  = "log_lock_waits"
+    value = "0"
+  }
 
-#   parameter {
-#     name  = "log_min_duration_statement"
-#     value = "-1"
-#   }
+  parameter {
+    name  = "log_min_duration_statement"
+    value = "-1"
+  }
 
-#   parameter {
-#     name  = "shared_preload_libraries"
-#     value = "pg_stat_statements,pg_hint_plan"
-#     apply_method = "pending-reboot"
-#   }
+  parameter {
+    name  = "shared_preload_libraries"
+    value = "pg_stat_statements,pg_hint_plan"
+    apply_method = "pending-reboot"
+  }
 
-#   parameter {
-#     name  = "default_statistics_target"
-#     value = "256"
-#   }
+  parameter {
+    name  = "default_statistics_target"
+    value = "256"
+  }
 
-#   parameter {
-#     name = "random_page_cost"
-#     value = "1"
-#   }
+  parameter {
+    name = "random_page_cost"
+    value = "1"
+  }
 
-#   parameter {
-#     name = "apg_enable_remove_redundant_inner_joins"
-#     value = "1"
-#   }
+  parameter {
+    name = "apg_enable_remove_redundant_inner_joins"
+    value = "1"
+  }
 
-# }
+}
 
 resource "aws_db_parameter_group" "aurora_instance_parameter_group" {
   name = "uec-core-dos-prod-aurora-instance-pg-14"
