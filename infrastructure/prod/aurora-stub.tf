@@ -49,7 +49,7 @@ module "cluster" {
   skip_final_snapshot              = true
   final_snapshot_identifier_prefix = "final-snapshot"
 
-  db_cluster_parameter_group_name = aws_db_parameter_group.aurora_cluster_parameter_group.name
+  db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.aurora_cluster_parameter_group.name
   db_parameter_group_name         = aws_db_parameter_group.aurora_instance_parameter_group.name
 
   create_db_subnet_group          = true
