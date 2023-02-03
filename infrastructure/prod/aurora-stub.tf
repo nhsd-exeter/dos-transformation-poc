@@ -52,8 +52,8 @@ module "cluster" {
   db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.aurora_cluster_parameter_group.name
   db_parameter_group_name         = aws_db_parameter_group.aurora_instance_parameter_group.name
 
-  create_db_subnet_group          = true
-  db_subnet_group_name            = "uec-core-dos-prod-aurora-stub-subnet"
+  create_db_subnet_group          = false
+  db_subnet_group_name            = "subnet-1c3e8c50"
   performance_insights_enabled    = false
   enabled_cloudwatch_logs_exports = ["postgresql"]
 }
