@@ -1,7 +1,7 @@
 
 module "cluster" {
   source = "terraform-aws-modules/rds-aurora/aws"
-    version = "6.2.0"
+    version = "7.6.0"
 
   name           = "uec-core-dos-prod-aurora-stub"
   engine         = "postgres"
