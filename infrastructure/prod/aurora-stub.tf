@@ -42,6 +42,7 @@ module "cluster" {
   # if specifying a value here, 'create_random_password' should be set to `false`
   master_password                  = "test123"
   create_random_password           = false
+  allocated_storage                = 300
   storage_encrypted                = true
   apply_immediately                = true
   monitoring_interval              = 10
