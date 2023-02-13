@@ -45,7 +45,7 @@ def check_mapping_exists(index_name):
     print(jsonResponse[index_name]["mappings"])
 
 
-    if jsonResponse[index_name]["mappings"] != True:
+    if not jsonResponse[index_name]["mappings"]:
         return False
     else:
         return True
@@ -67,8 +67,8 @@ def create_mapping(index_name):
         mapping = {
             "mappings": {
                 "properties": {
-                "geographic_boundary": {
-                    "type": "geo_shape"
+                    "geographic_boundary": {
+                        "type": "geo_shape"
                     }
                 }
             }
@@ -79,13 +79,14 @@ def create_mapping(index_name):
         mapping = {
             "mappings": {
                 "properties": {
-                "name": {"type": "keyword"},
-                "category": {"type": "keyword"},
+                    "name": {"type": "keyword"},
+                    "category": {"type": "keyword"},
                 }
             }
         }
     
     mapping_json = json.dumps(mapping)
+    print(mapping_json)
 
     try:
         r = requests.put(url, auth=awsauth, data=mapping_json, headers=headers)
