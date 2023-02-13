@@ -49,9 +49,11 @@ def lambda_handler(event, context):
     else:
         raise ValueError('The search profile associated with this API Key cannot be found')
 
+    escaped_profile = json.loads(search_profile)
+
 
     resp = {
-        "search_profile": search_profile
+        "search_profile": escaped_profile
     }
  
     json_response = json.dumps(resp)
