@@ -85,9 +85,14 @@ def create_mapping(index_name):
             }
         }
     
-    print(requests.put(url, auth=awsauth, data=mapping, headers=headers))
 
-    r = requests.put(url, auth=awsauth, data=mapping, headers=headers)
+    try:
+        r = requests.put(url, auth=awsauth, data=mapping, headers=headers)
+        r.raise_for_status()
+    except requests.exceptions.HTTPError as e:
+        print (e.response.text)
+
+    # r = requests.put(url, auth=awsauth, data=mapping, headers=headers)
     return
 
 
