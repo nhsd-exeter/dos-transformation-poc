@@ -11,6 +11,11 @@ locals {
   "States": {
     "Parallel": {
       "Type": "Parallel",
+      "ResultPath": "$.query_modifiers",
+      "ResultSelector": {
+        "search_profile.$": "$[0].search_profile",
+        "geo_profiles.$": "$[1].body.hits.hits"
+      },
       "Next": "Query-Builder",
       "Branches": [
         {
@@ -22,7 +27,7 @@ locals {
               "OutputPath": "$.Payload",
               "Parameters": {
                 "Payload.$": "$",
-                "FunctionName": "arn:aws:lambda:eu-west-2:087035809690:function:search-profiler:live-service"
+                "FunctionName": "${module.search-profiler-lambda.lambda_function_arn}:${module.live-alias-search-profiler.lambda_alias_name}"
               },
               "Retry": [
                 {
@@ -36,7 +41,10 @@ locals {
                   "BackoffRate": 2
                 }
               ],
-              "End": true
+              "End": true,
+              "ResultSelector": {
+                "Payload.$": "States.StringToJson($.Payload)"
+              }
             }
           }
         },
@@ -49,7 +57,7 @@ locals {
               "OutputPath": "$.Payload",
               "Parameters": {
                 "Payload.$": "$",
-                "FunctionName": "arn:aws:lambda:eu-west-2:087035809690:function:geo-profiler:live-service"
+                "FunctionName": "${module.geo-profiler-lambda.lambda_function_arn}:${module.live-alias-geo-profiler.lambda_alias_name}"
               },
               "Retry": [
                 {
@@ -72,7 +80,7 @@ locals {
               "OutputPath": "$.Payload",
               "Parameters": {
                 "Payload.$": "$",
-                "FunctionName": "arn:aws:lambda:eu-west-2:087035809690:function:elastic-search:$LATEST"
+                "FunctionName": "${module.elastic-search-lambda.lambda_function_arn}:${module.live-alias-elastic-search.lambda_alias_name}"
               },
               "Retry": [
                 {
@@ -99,7 +107,7 @@ locals {
       "OutputPath": "$.Payload",
       "Parameters": {
         "Payload.$": "$",
-        "FunctionName": "arn:aws:lambda:eu-west-2:087035809690:function:query-builder:live-service"
+        "FunctionName": "${module.query-builder-lambda.lambda_function_arn}:${module.live-alias-query-builder.lambda_alias_name}"
       },
       "Retry": [
         {
@@ -122,7 +130,7 @@ locals {
       "OutputPath": "$.Payload",
       "Parameters": {
         "Payload.$": "$",
-        "FunctionName": "arn:aws:lambda:eu-west-2:087035809690:function:elastic-search:live-service"
+        "FunctionName": "${module.elastic-search-lambda.lambda_function_arn}:${module.live-alias-elastic-search.lambda_alias_name}"
       },
       "Retry": [
         {
