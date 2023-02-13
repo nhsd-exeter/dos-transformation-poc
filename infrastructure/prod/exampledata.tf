@@ -25,7 +25,7 @@ resource "aws_dynamodb_table_item" "example_geo_profile" {
 {
   "id": {"S": "h42o423h2"},
   "type": {"S": "LAD"},
-  "name": {"S": "Example Local Area Definition"}
+  "name": {"S": "Example Local Area Definition"},
   "geographic_boundary": {
     "M": {
       "coordinates": {
