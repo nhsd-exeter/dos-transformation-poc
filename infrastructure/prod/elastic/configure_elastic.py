@@ -85,10 +85,10 @@ def create_mapping(index_name):
             }
         }
     
-    json = mapping.json()
+    mapping_json = json.dumps(mapping)
 
     try:
-        r = requests.put(url, auth=awsauth, data=json, headers=headers)
+        r = requests.put(url, auth=awsauth, data=mapping_json, headers=headers)
         r.raise_for_status()
     except requests.exceptions.HTTPError as e:
         print (e.response.text)
