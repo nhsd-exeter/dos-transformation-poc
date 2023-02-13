@@ -11,7 +11,7 @@ credentials = boto3.Session().get_credentials()
 awsauth = AWS4Auth(credentials.access_key, credentials.secret_key, region, service, session_token=credentials.token)
 
 host = os.environ['ES_domain']
-index = os.environ['ES_index']
+index = 'geo-profiles-index'
 type = '_doc'
 url = 'https://' + host + '/' + index + '/' + type + '/'
 
@@ -37,5 +37,4 @@ def lambda_handler(event, context):
 def ddb_deserialize(r, type_deserializer = TypeDeserializer()):
     return type_deserializer.deserialize({"M": r})
 
-def propagate_to_referral_profiles(document):
-    return True
+
