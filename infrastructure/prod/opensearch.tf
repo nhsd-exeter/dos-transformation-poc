@@ -86,7 +86,7 @@ resource "aws_elasticsearch_domain" "directory_search" {
       command = <<EOT
         cd ./elastic
         pip install -r requirements.txt --target .
-        python3 configure_elastic.py ${var.aws_region} ${aws_elasticsearch_domain.directory_search.endpoint} ${module.directory-search-lambda.lambda_function_arn} ${module.directory-data-relay-lambda.lambda_function_arn}
+        python3 configure_elastic.py ${var.aws_region} ${aws_elasticsearch_domain.directory_search.endpoint} 
       EOT
       }
       
