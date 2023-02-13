@@ -48,9 +48,13 @@ def lambda_handler(event, context):
         search_profile = search_profile_resp['Item']
     else:
         raise ValueError('The search profile associated with this API Key cannot be found')
- 
-    print(search_profile)   
 
-    return search_profile 
-    
+
+    resp = {
+        "search_profile": search_profile
+    }
+ 
+    json_response = json.dumps(resp)
+
+    return json_response
     

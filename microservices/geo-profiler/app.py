@@ -38,13 +38,6 @@ def lambda_handler(event, context):
         }
     }
 
-    # geo_query = {
-    #     "query": {
-    #         "match_all": {}
-    #     }
-    # }
-
-
     resp = {
         "search_index": 'geo-profiles-index',
         "search_query": geo_query
