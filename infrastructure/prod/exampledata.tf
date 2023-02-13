@@ -157,7 +157,7 @@ resource "aws_dynamodb_table_item" "example_geo_profile" {
         ]
       },
       "type": {
-        "S": "polygon"
+        "S": "Polygon"
       }
     }
   }
