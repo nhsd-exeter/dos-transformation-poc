@@ -8,15 +8,15 @@ def lambda_handler(event, context):
     parsed_json = json.dumps(event)
     input = json.loads(parsed_json)
     
-    consumer_query = input['consumer_query']
-    search_profile = input['search_profile']
-    geo_profile = input['geo_profile']
+    search_query = input['search_query']
+    search_profile = input['query_modifiers']['search_profile']
+    geo_profiles = input['query_modifiers']['geo_profiles']
 
-    base_query = construct_base_query(consumer_query)
+    base_query = construct_base_query(search_query)
 
     print(base_query)
 
-    profiled_query = profile_query(base_query, search_profile)
+    profiled_query = profile_query(base_query, search_profile, geo_profiles)
 
     print(profiled_query)
         
@@ -97,9 +97,17 @@ def construct_base_query(consumer_query):
 
 
 
-def profile_query(base_query, search_profile):
+def profile_query(base_query, search_profile, geo_profiles):
 
     profiled_query = base_query
+
+    if not geo_profiles:
+        print('No relevant geo-sorting strategy is associated with this postcode.')
+    else:
+        for geo_profile in geo_profiles:
+            print('Selecting highest priority geo-profile')
+            #PERFORM SEQUENTIAL SELECTION THROUGH LADS, LDAS, ETC.
+
 
     if search_profile['exclusions']:
         profiled_query['query']['bool']['must_not'] = []
