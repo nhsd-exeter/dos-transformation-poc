@@ -394,7 +394,7 @@ module "live-alias-directory-data-relay" {
   refresh_alias = false
 }
 
-resource "aws_lambda_event_source_mapping" "dynamodb_trigger" {
+resource "aws_lambda_event_source_mapping" "directory_trigger" {
   event_source_arn  = module.dynamodb_services_table.dynamodb_table_stream_arn
   function_name     = module.directory-data-relay-lambda.lambda_function_name
   starting_position = "LATEST"
@@ -447,8 +447,8 @@ module "geo-data-relay-lambda" {
                         "dynamodb:GetRecords"
                     ],
                     "Resource": [
-                        "${module.dynamodb_services_table.dynamodb_table_arn}/stream/*",
-                        "${module.dynamodb_services_table.dynamodb_table_arn}"
+                        "${module.dynamodb_geo_profiles_table.dynamodb_table_arn}/stream/*",
+                        "${module.dynamodb_geo_profiles_table.dynamodb_table_arn}"
                     ]
                 },
                 {
@@ -472,9 +472,9 @@ module "live-alias-geo-data-relay" {
   refresh_alias = false
 }
 
-resource "aws_lambda_event_source_mapping" "dynamodb_trigger" {
-  event_source_arn  = module.dynamodb_services_table.dynamodb_table_stream_arn
-  function_name     = module.directory-data-relay-lambda.lambda_function_name
+resource "aws_lambda_event_source_mapping" "geo_trigger" {
+  event_source_arn  = module.dynamodb_geo_profiles_table.dynamodb_table_stream_arn
+  function_name     = module.geo-data-relay-lambda.lambda_function_name
   starting_position = "LATEST"
   filter_criteria {
     filter {
