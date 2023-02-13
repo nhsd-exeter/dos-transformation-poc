@@ -1,6 +1,6 @@
 {
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
-    "sourceRoot": "microservices/directory-search/",
+    "sourceRoot": "microservices/geo-data-relay/",
     "projectType": "application",
     "generators": {},
     "targets": {}

@@ -10,14 +10,16 @@ service = 'es'
 credentials = boto3.Session().get_credentials()
 awsauth = AWS4Auth(credentials.access_key, credentials.secret_key, region, service, session_token=credentials.token)
 headers = { "Content-Type": "application/json" }
-index_name = 'directory-index'
+index_names = ['directory-index', 'geo-profiles-index']
 
 def configure_elastic():
    
-
-    if check_index_exists(index_name) != True:
-        create_index(index_name)
-
+    for index in index_names:
+        if check_index_exists(index) != True:
+            create_index(index)
+        if check_mapping_exists(index) != True:
+            create_mapping(index)
+    return
 
 
 def check_index_exists(index_name):
@@ -30,10 +32,47 @@ def check_index_exists(index_name):
     else:
         return True
 
+def check_mapping_exists(index_name):
+    url = host + "/" + index_name + "/_mapping" 
+    r = requests.get(url, auth=awsauth, headers=headers)
+    jsonResponse = r.json()
+
+    print(jsonResponse)
+
 
 def create_index(index_name):
     url = host + "/" + index_name
     r = requests.put(url, auth=awsauth, headers=headers)
+    return
+
+def create_mapping(index_name):
+
+    url = host + "/" + index_name
+
+    if index_name == 'geo-profiles-index':
+        mapping = {
+            "mappings": {
+                "properties": {
+                "polygon": {
+                    "type": "geo_shape"
+                    }
+                }
+            }
+        }
+
+    #NEED TO UPDATE TO CREATE A HUGE MAPPING FOR SERVICE OBJECT
+    if index_name == 'directory-index':
+        mapping = {
+            "mappings": {
+                "properties": {
+                "name": {"type": "keyword"},
+                "category": {"type": "keyword"},
+                }
+            }
+        }
+    
+    r = requests.put(url, auth=awsauth, data=mapping, headers=headers)
+    return
 
 
 

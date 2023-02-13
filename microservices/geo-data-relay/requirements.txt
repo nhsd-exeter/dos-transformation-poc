@@ -1,0 +1,4 @@
+requests-aws4auth
+requests
+boto3
+pytest==5.4.1

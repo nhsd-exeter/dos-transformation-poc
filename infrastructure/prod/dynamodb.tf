@@ -49,3 +49,20 @@ module "dynamodb_search_consumers_table" {
     }
   ]
 }
+
+module "dynamodb_geo_profiles_table" {
+  source   = "terraform-aws-modules/dynamodb-table/aws"
+
+  name     = "geo-profiles"
+  hash_key = "id"
+  autoscaling_enabled = true
+  stream_enabled = true
+  stream_view_type = "NEW_AND_OLD_IMAGES"
+
+  attributes = [
+    {
+      name = "id"
+      type = "S"
+    }
+  ]
+}

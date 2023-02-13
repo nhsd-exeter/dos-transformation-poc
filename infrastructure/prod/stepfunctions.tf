@@ -37,7 +37,7 @@ locals {
         "OutputPath": "$.Payload",
         "Parameters": {
           "Payload.$": "$",
-          "FunctionName": "${module.directory-search-lambda.lambda_function_arn}:${module.live-alias-directory-search.lambda_alias_name}"  
+          "FunctionName": "${module.elastic-search-lambda.lambda_function_arn}:${module.live-alias-elastic-search.lambda_alias_name}"  
         },
         "Retry": [
           {
@@ -76,7 +76,7 @@ module "search_step_function" {
     }
 
     lambda = {
-      lambda = ["${module.directory-search-lambda.lambda_function_arn}:*", "${module.search-profiler-lambda.lambda_function_arn}:*"]
+      lambda = ["${module.elastic-search-lambda.lambda_function_arn}:*", "${module.search-profiler-lambda.lambda_function_arn}:*"]
     }
   }
 }

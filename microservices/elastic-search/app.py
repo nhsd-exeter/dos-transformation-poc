@@ -4,8 +4,6 @@ import json
 import requests
 from requests_aws4auth import AWS4Auth
 
-#comment
-
 region = os.environ['ES_region'] 
 service = 'es'
 credentials = boto3.Session().get_credentials()
@@ -22,7 +20,7 @@ def lambda_handler(event, context):
 
     query = request["search_query"]
 
-    # Elasticsearch 6.x requires an explicit Content-Type header
+    # Elasticsearch requires an explicit Content-Type header
     headers = { "Content-Type": "application/json" }
 
     # Make the signed HTTP request
