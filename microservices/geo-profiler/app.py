@@ -11,8 +11,8 @@ def lambda_handler(event, context):
     
     dynamodb = boto3.resource('dynamodb')
 
-    patient_postcode_lat = search_query['subject']['address']['position']['latitiude']
-    patient_postcode_lng = search_query['subject']['address']['position']['longitiude']
+    patient_postcode_lat = search_query['subject']['address']['position']['latitude']
+    patient_postcode_lng = search_query['subject']['address']['position']['longitude']
     
     geo_query = {
         "query": {
