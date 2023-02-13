@@ -46,7 +46,6 @@ def check_mapping_exists(index_name):
 
 
     if jsonResponse[index_name]["mappings"] != True:
-        print('Adding mapping...')
         return False
     else:
         return True
@@ -64,6 +63,7 @@ def create_mapping(index_name):
     url = host + "/" + index_name
 
     if index_name == 'geo-profiles-index':
+        print('Adding mapping...' + index_name)
         mapping = {
             "mappings": {
                 "properties": {
