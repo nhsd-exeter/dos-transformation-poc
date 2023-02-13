@@ -53,7 +53,7 @@ resource "aws_elasticsearch_domain" "directory_search" {
           {
             Effect: "Allow",
             Principal: {
-              "AWS": "arn:aws:sts::${data.aws_caller_identity.current.account_id}:assumed-role/directory-search/directory-search"
+              "AWS": "arn:aws:sts::${data.aws_caller_identity.current.account_id}:assumed-role/elastic-search/elastic-search"
             },
             Action: [
                 "es:ESHttpGet",
@@ -65,6 +65,19 @@ resource "aws_elasticsearch_domain" "directory_search" {
             Effect: "Allow",
             Principal: {
               "AWS": "arn:aws:sts::${data.aws_caller_identity.current.account_id}:assumed-role/directory-data-relay/directory-data-relay"
+            },
+            Action: [
+                "es:ESHttpDelete",
+                "es:ESHttpGet",
+                "es:ESHttpPost",
+                "es:ESHttpPut"
+              ],
+            Resource: "arn:aws:es:${var.aws_region}:${data.aws_caller_identity.current.account_id}:domain/${var.domain}/*"
+          },
+                    {
+            Effect: "Allow",
+            Principal: {
+              "AWS": "arn:aws:sts::${data.aws_caller_identity.current.account_id}:assumed-role/geo-data-relay/geo-data-relay"
             },
             Action: [
                 "es:ESHttpDelete",
