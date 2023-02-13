@@ -60,17 +60,15 @@ def create_index(index_name):
 
 def create_mapping(index_name):
 
-    url = host + "/" + index_name
+    url = host + "/" + index_name + "/_mapping"
 
     if index_name == 'geo-profiles-index':
         print('Adding mapping...' + index_name)
         mapping = {
-            "mappings": {
-                "properties": {
+                 "properties": {
                     "geographic_boundary": {
                         "type": "geo_shape"
                     }
-                }
             }
         }
 
