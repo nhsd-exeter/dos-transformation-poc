@@ -22,7 +22,7 @@ def lambda_handler(event, context):
         
    
     resp = {
-        "search_index": 'diretory-index',
+        "search_index": 'directory-index',
         "search_query": profiled_query
     }
     
