@@ -85,6 +85,8 @@ def create_mapping(index_name):
             }
         }
     
+    print(requests.put(url, auth=awsauth, data=mapping, headers=headers))
+
     r = requests.put(url, auth=awsauth, data=mapping, headers=headers)
     return
 
