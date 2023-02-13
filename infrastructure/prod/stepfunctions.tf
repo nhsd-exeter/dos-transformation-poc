@@ -72,7 +72,7 @@ locals {
               "OutputPath": "$.Payload",
               "Parameters": {
                 "Payload.$": "$",
-                "FunctionName": "arn:aws:lambda:eu-west-2:087035809690:function:geo-profiler:live-service"
+                "FunctionName": "arn:aws:lambda:eu-west-2:087035809690:function:elastic-search:$LATEST"
               },
               "Retry": [
                 {

@@ -21,7 +21,9 @@
         "birthDate" : "1905-08-23",
         "deceasedBoolean" : false,
         "deceasedDateTime" : null,
-        "address" : { "postalCode" : "SS11 7AR", "latitude" :  51.572376, "longitude" : 0.470009 },
+        "address" : { "postalCode" : "SS11 7AR",
+                      "position" : { "latitude" :  51.572376, "longitude" : 0.470009 }
+                    },
         "maritalStatus" : null,
         "multipleBirthBoolean" : null,
         "multipleBirthInteger" : null,

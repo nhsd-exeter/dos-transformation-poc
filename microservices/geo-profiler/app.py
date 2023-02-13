@@ -22,7 +22,7 @@ def lambda_handler(event, context):
             },
             "filter": {
                 "geo_shape": {
-                "location": {
+                "geographic_boundary": {
                     "relation": "intersects",
                     "shape": {
                     "coordinates": [

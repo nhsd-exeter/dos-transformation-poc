@@ -32,18 +32,24 @@ def check_index_exists(index_name):
     else:
         return True
 
+
 def check_mapping_exists(index_name):
     url = host + "/" + index_name + "/_mapping" 
     r = requests.get(url, auth=awsauth, headers=headers)
     jsonResponse = r.json()
 
-    print(jsonResponse)
+    if jsonResponse[index_name]["mappings"] != True:
+        return False
+    else:
+        return True
+
 
 
 def create_index(index_name):
     url = host + "/" + index_name
     r = requests.put(url, auth=awsauth, headers=headers)
     return
+
 
 def create_mapping(index_name):
 
@@ -53,7 +59,7 @@ def create_mapping(index_name):
         mapping = {
             "mappings": {
                 "properties": {
-                "polygon": {
+                "geographic_boundary": {
                     "type": "geo_shape"
                     }
                 }
