@@ -35,7 +35,7 @@ module "elastic-search-lambda" {
 
 
 
-module "live-alias-elasic-search" {
+module "live-alias-elastic-search" {
     source = "terraform-aws-modules/lambda/aws//modules/alias"
 
     name          = "live-service"
