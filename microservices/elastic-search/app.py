@@ -11,14 +11,15 @@ awsauth = AWS4Auth(credentials.access_key, credentials.secret_key, region, servi
 
 host = os.environ['ES_domain']
 index = os.environ['ES_index']
-url = 'https://' + host + '/' + index + '/_search'
 
 def lambda_handler(event, context):
 
     parsed_json = json.dumps(event)
     request = json.loads(parsed_json)
-
+    index = request["search_index"]
     query = request["search_query"]
+
+    url = 'https://' + host + '/' + index + '/_search'
 
     # Elasticsearch requires an explicit Content-Type header
     headers = { "Content-Type": "application/json" }

@@ -2,57 +2,17 @@ import json
 import boto3
 import datetime
 from boto3.dynamodb.conditions import Key
-from boto3.dynamodb.types import TypeDeserializer
 
 def lambda_handler(event, context):
     
     parsed_json = json.dumps(event)
-    input_terms = json.loads(parsed_json)
+    input = json.loads(parsed_json)
     
-    search_query = input_terms["search_query"]
-    api_key = input_terms["api_key"]
-    
-    dynamodb = boto3.resource('dynamodb')
+    consumer_query = input['consumer_query']
+    search_profile = input['search_profile']
+    geo_profile = input['geo_profile']
 
-    patient_postcode = search_query['subject']['address']['postalCode']
-    #THIS POSTCODE CAN BE USED TO SELECT AN APPROPRIATE GEO-PROFILE FOR RANKING STRATEGY  
-    
-    #Determine the consumer by querying the api-key 
-    search_consumers_table = dynamodb.Table('search-consumers')      
-    
-    
-    consumer_resp = search_consumers_table.get_item(
-            Key={
-                'key' : api_key,
-            }
-        )
-  
-
-    #locate the appropriate search profile for this consumer
-    if 'Item' in consumer_resp:
-        search_profile_id = consumer_resp['Item'].get("search-profile-id")
-    else:
-        raise ValueError('This API Key is not associated with a valid search profile.')
- 
-
-
-    search_profiles_table = dynamodb.Table('search-profiles')      
-    
-    search_profile_resp = search_profiles_table.get_item(
-            Key={
-                'id' : search_profile_id,
-            }
-        )
-
-
-    if 'Item' in  search_profile_resp:
-        search_profile = search_profile_resp['Item']
-    else:
-        raise ValueError('The search profile associated with this API Key cannot be found')
- 
-    print(search_profile)    
-    
-    base_query = construct_base_query(search_query)
+    base_query = construct_base_query(consumer_query)
 
     print(base_query)
 
@@ -62,7 +22,8 @@ def lambda_handler(event, context):
         
    
     resp = {
-        "search_query": profiled_query,
+        "search_index": 'diretory-index',
+        "search_query": profiled_query
     }
     
     json_response = json.dumps(resp)
@@ -71,19 +32,19 @@ def lambda_handler(event, context):
 
 
 
-def construct_base_query(careplan_query):
+def construct_base_query(consumer_query):
 
     #PLEASE CONSIDER: IN FUTURE THE MAPPING OF THE VARIABLES NEEDED FOR THE DOS SEARCH
     #COULD BE ABSTRACTED AWAY INTO A SEARCH PROFILE TO ADD FLEXIBILITY TO THE INPUT
     #FOR NOW, ITS HARD CODED HERE:
 
-    requested_activity = careplan_query['activity']['detail']['code']['code']
-    chief_complaint = careplan_query['addresses']['code']
-    requested_acuity = careplan_query['activity']['detail']['scheduledPeriod']['acuity']
-    requested_location = careplan_query['activity']['detail']['location']['position']
+    requested_activity = consumer_query['activity']['detail']['code']['code']
+    chief_complaint = consumer_query['addresses']['code']
+    requested_acuity = consumer_query['activity']['detail']['scheduledPeriod']['acuity']
+    requested_location = consumer_query['activity']['detail']['location']['position']
 
-    patient_age_range= careplan_query['subject']['birthDate']
-    patient_gender = careplan_query['subject']['gender']
+    patient_age_range= consumer_query['subject']['birthDate']
+    patient_gender = consumer_query['subject']['gender']
 
     query_datetime = datetime.datetime.now()
     query_day = query_datetime.strftime("%a")
