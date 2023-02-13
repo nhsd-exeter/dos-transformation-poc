@@ -14,8 +14,8 @@ index_names = ['directory-index', 'geo-profiles-index']
 
 def configure_elastic():
    
-    url = host + "/geo-profiles-index"
-    r = requests.delete(url, auth=awsauth, headers=headers)
+    # url = host + "/geo-profiles-index"
+    # r = requests.delete(url, auth=awsauth, headers=headers)
 
     for index in index_names:
         if check_index_exists(index) != True:
@@ -60,31 +60,30 @@ def create_index(index_name):
 
 def create_mapping(index_name):
 
+    print('Adding mapping to: ' + index_name)
+
     url = host + "/" + index_name + "/_mapping"
 
     if index_name == 'geo-profiles-index':
-        print('Adding mapping...' + index_name)
         mapping = {
                  "properties": {
                     "geographic_boundary": {
                         "type": "geo_shape"
                     }
+                }
             }
-        }
 
     #NEED TO UPDATE TO CREATE A HUGE MAPPING FOR SERVICE OBJECT
     if index_name == 'directory-index':
         mapping = {
-            "mappings": {
                 "properties": {
                     "name": {"type": "keyword"},
                     "category": {"type": "keyword"},
                 }
             }
-        }
     
     mapping_json = json.dumps(mapping)
-    print(mapping_json)
+
 
     try:
         r = requests.put(url, auth=awsauth, data=mapping_json, headers=headers)
@@ -92,7 +91,6 @@ def create_mapping(index_name):
     except requests.exceptions.HTTPError as e:
         print (e.response.text)
 
-    # r = requests.put(url, auth=awsauth, data=mapping, headers=headers)
     return
 
 
