@@ -38,6 +38,8 @@ def check_mapping_exists(index_name):
     r = requests.get(url, auth=awsauth, headers=headers)
     jsonResponse = r.json()
 
+    print(jsonResponse)
+
     if jsonResponse[index_name]["mappings"] != True:
         return False
     else:
