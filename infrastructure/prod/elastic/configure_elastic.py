@@ -14,8 +14,8 @@ index_names = ['directory-index', 'geo-profiles-index']
 
 def configure_elastic():
    
-    url = host + "/geo-profiles-index"
-    r = requests.delete(url, auth=awsauth, headers=headers)
+    # url = host + "/geo-profiles-index"
+    # r = requests.delete(url, auth=awsauth, headers=headers)
 
     for index in index_names:
         if check_index_exists(index) != True:
