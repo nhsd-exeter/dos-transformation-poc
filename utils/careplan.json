@@ -22,7 +22,7 @@
         "deceasedBoolean" : false,
         "deceasedDateTime" : null,
         "address" : { "postalCode" : "SS11 7AR",
-                      "position" : { "latitude" :  42.530037916636, "longitude" : 2.9209712722105 }
+                      "position" : { "latitude" :  42.5484013, "longitude" : 2.9182434 }
                     },
         "maritalStatus" : null,
         "multipleBirthBoolean" : null,

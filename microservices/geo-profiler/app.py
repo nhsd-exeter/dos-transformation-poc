@@ -26,8 +26,8 @@ def lambda_handler(event, context):
                     "relation": "intersects",
                     "shape": {
                     "coordinates": [
-                        patient_postcode_lat,
-                        patient_postcode_lng
+                        patient_postcode_lng,
+                        patient_postcode_lat
                     ],
                     "type": "point"
                     }

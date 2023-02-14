@@ -23,9 +23,9 @@ resource "aws_dynamodb_table_item" "example_geo_profile" {
 
   item = <<ITEM
 {
-  "id": {"S": "h42o423h2"},
-  "type": {"S": "LAD"},
-  "name": {"S": "Example Local Area Definition"},
+  "id": {
+    "S": "h42o423h2"
+  },
   "geographic_boundary": {
     "M": {
       "coordinates": {
@@ -160,6 +160,18 @@ resource "aws_dynamodb_table_item" "example_geo_profile" {
         "S": "Polygon"
       }
     }
+  },
+  "managing_org_id": {
+    "S": "13422341"
+  },
+  "name": {
+    "S": "Example Local Area Definition"
+  },
+  "ranking_strategy": {
+    "S": "{ \"_script\": { \"type\": \"number\", \"script\": { \"inline\" : \"params.sortOrder.indexOf(doc['category'].value)\", \"params\": { \"sortOrder\": [ \"GP\", \"Pharmacy\", \"Walk in\" ] } }, \"order\": \"asc\" } }"
+  },
+  "type": {
+    "S": "LAD"
   }
 }
 ITEM
