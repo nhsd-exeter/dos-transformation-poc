@@ -3,6 +3,11 @@ import boto3
 import datetime
 from boto3.dynamodb.conditions import Key
 
+dynamodb = boto3.resource('dynamodb')
+search_consumers_table = dynamodb.Table('search-consumers')    
+search_profiles_table = dynamodb.Table('search-profiles') 
+
+
 def lambda_handler(event, context):
     
     parsed_json = json.dumps(event)
@@ -11,13 +16,13 @@ def lambda_handler(event, context):
     search_query = input_terms["search_query"]
     api_key = input_terms["api_key"]
     
-    dynamodb = boto3.resource('dynamodb')
+   # dynamodb = boto3.resource('dynamodb')
 
     patient_postcode = search_query['subject']['address']['postalCode']
     #THIS POSTCODE CAN BE USED TO SELECT AN APPROPRIATE GEO-PROFILE FOR RANKING STRATEGY  
     
     #Determine the consumer by querying the api-key 
-    search_consumers_table = dynamodb.Table('search-consumers')      
+    #search_consumers_table = dynamodb.Table('search-consumers')      
     
     
     consumer_resp = search_consumers_table.get_item(
@@ -35,7 +40,7 @@ def lambda_handler(event, context):
  
 
 
-    search_profiles_table = dynamodb.Table('search-profiles')      
+    # search_profiles_table = dynamodb.Table('search-profiles')      
     
     search_profile_resp = search_profiles_table.get_item(
             Key={
