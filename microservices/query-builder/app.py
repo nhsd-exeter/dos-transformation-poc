@@ -101,23 +101,21 @@ def profile_query(base_query, search_profile, geo_profiles):
 
     profiled_query = base_query
 
+    # GEO-PROFILE BASED LOGIC
     if not geo_profiles:
         print('No relevant geo-sorting strategy is associated with this postcode.')
     else:
         print('Selecting highest priority geo-profile')
         #PERFORM SEQUENTIAL SELECTION THROUGH LADS, LDAS, ETC.
-        if any(geo_profile['_source']['type'] == 'LAD' for geo_profile in geo_profiles):
-            ranking_strategy = geo_profile['_source']['ranking_strategy']
-        elif any(geo_profile['_source']['type'] == 'LDA' for geo_profile in geo_profiles):
-            ranking_strategy = geo_profile['_source']['ranking_strategy']
-        elif any(geo_profile['_source']['type'] == 'CCG' for geo_profile in geo_profiles):           
-            ranking_strategy = geo_profile['_source']['ranking_strategy']
-        else:
-            ranking_strategy = False
 
-    
+        ranking_strategy = determine_ranking_strategy(geo_profiles, "LAD")
+        if not ranking_strategy:
+            ranking_strategy = determine_ranking_strategy(geo_profiles, "LDA")
+        if not ranking_strategy:
+            ranking_strategy = determine_ranking_strategy(geo_profiles, "CCG")
 
 
+    # SEARCH PROFILE BASED LOGIC
     if search_profile['exclusions']:
         profiled_query['query']['bool']['must_not'] = []
         for exclusion in search_profile['exclusions']:
@@ -148,3 +146,12 @@ def profile_query(base_query, search_profile, geo_profiles):
 
 def calculate_patient_age_range(date):
     return "0-129yrs"
+
+
+def determine_ranking_strategy(geo_profiles, profile_type):
+    highest_priority_geo_profile = next((geo_profile for geo_profile in geo_profiles if geo_profile['_source']['type'] == profile_type), None)
+
+    if not highest_priority_geo_profile:
+        return False
+    else:
+        return highest_priority_geo_profile['_source']['ranking_strategy']
