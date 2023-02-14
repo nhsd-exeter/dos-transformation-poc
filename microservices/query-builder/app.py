@@ -104,9 +104,18 @@ def profile_query(base_query, search_profile, geo_profiles):
     if not geo_profiles:
         print('No relevant geo-sorting strategy is associated with this postcode.')
     else:
-        for geo_profile in geo_profiles:
-            print('Selecting highest priority geo-profile')
-            #PERFORM SEQUENTIAL SELECTION THROUGH LADS, LDAS, ETC.
+        print('Selecting highest priority geo-profile')
+        #PERFORM SEQUENTIAL SELECTION THROUGH LADS, LDAS, ETC.
+        if any(geo_profile['_source']['type'] == 'LAD' for geo_profile in geo_profiles):
+            ranking_strategy = geo_profile['_source']['ranking_strategy']
+        elif any(geo_profile['_source']['type'] == 'LDA' for geo_profile in geo_profiles):
+            ranking_strategy = geo_profile['_source']['ranking_strategy']
+        elif any(geo_profile['_source']['type'] == 'CCG' for geo_profile in geo_profiles):           
+            ranking_strategy = geo_profile['_source']['ranking_strategy']
+        else:
+            ranking_strategy = False
+
+    
 
 
     if search_profile['exclusions']:
@@ -116,12 +125,14 @@ def profile_query(base_query, search_profile, geo_profiles):
                 continue
             profiled_query['query']['bool']['must_not'].append(json.loads(exclusion))
 
-    if search_profile['sorters']:
+    if search_profile['sorters'] or ranking_strategy:
         profiled_query['sort'] = []
         for sorter in search_profile['sorters']:
             if not sorter:
                 continue
             profiled_query['sort'].append(json.loads(sorter))
+        if ranking_strategy:
+            profiled_query['sort'].append(json.loads(ranking_strategy))  
 
     if search_profile['redactions']:
         profiled_query['_source'] = {'excludes' : [] }
