@@ -2,6 +2,8 @@ import json
 import boto3
 import datetime
 
+index = os.environ['ES_index']
+
 def lambda_handler(event, context):
     
     parsed_json = json.dumps(event)
@@ -39,7 +41,7 @@ def lambda_handler(event, context):
     }
 
     resp = {
-        "search_index": 'geo-profiles-index',
+        "search_index": index,
         "search_query": geo_query
     }
     

@@ -21,7 +21,6 @@ module "elastic-search-lambda" {
     environment_variables = {
         ES_domain = aws_elasticsearch_domain.directory_search.endpoint,
         ES_region = var.aws_region,
-        ES_index  = var.index_name
     }
 
     allowed_triggers = {
@@ -232,6 +231,10 @@ module "query-builder-lambda" {
     local_existing_package = "./misc/init.zip"
     ignore_source_code_hash = true
 
+    environment_variables = {
+        ES_index  = var.directory_index_name
+    }
+
     attach_policy_jsons = true
     policy_jsons = [
         <<-EOT
@@ -287,6 +290,10 @@ module "live-alias-query-builder" {
     create_package         = false
     local_existing_package = "./misc/init.zip"
     ignore_source_code_hash = true
+
+    environment_variables = {
+        ES_index  = var.geo_profiles_index_name
+    }
 
     attach_policy_jsons = true
     policy_jsons = [
@@ -350,7 +357,7 @@ module "directory-data-relay-lambda" {
     environment_variables = {
         ES_domain = aws_elasticsearch_domain.directory_search.endpoint,
         ES_region = var.aws_region,
-        ES_index  = var.index_name
+        ES_index  = var.directory_index_name
     }
 
     attach_policy_jsons = true
@@ -428,7 +435,7 @@ module "geo-data-relay-lambda" {
     environment_variables = {
         ES_domain = aws_elasticsearch_domain.directory_search.endpoint,
         ES_region = var.aws_region,
-        ES_index  = var.index_name
+        ES_index  = var.geo_profiles_index_name
     }
 
     attach_policy_jsons = true

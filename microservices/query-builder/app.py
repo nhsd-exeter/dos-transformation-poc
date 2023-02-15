@@ -3,6 +3,8 @@ import boto3
 import datetime
 from boto3.dynamodb.conditions import Key
 
+index = os.environ['ES_index']
+
 def lambda_handler(event, context):
     
     parsed_json = json.dumps(event)
@@ -22,7 +24,7 @@ def lambda_handler(event, context):
         
    
     resp = {
-        "search_index": 'directory-index',
+        "search_index": index,
         "search_query": profiled_query
     }
     

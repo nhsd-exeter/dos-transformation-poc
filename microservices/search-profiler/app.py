@@ -16,15 +16,10 @@ def lambda_handler(event, context):
     search_query = input_terms["search_query"]
     api_key = input_terms["api_key"]
     
-   # dynamodb = boto3.resource('dynamodb')
-
     patient_postcode = search_query['subject']['address']['postalCode']
     #THIS POSTCODE CAN BE USED TO SELECT AN APPROPRIATE GEO-PROFILE FOR RANKING STRATEGY  
     
     #Determine the consumer by querying the api-key 
-    #search_consumers_table = dynamodb.Table('search-consumers')      
-    
-    
     consumer_resp = search_consumers_table.get_item(
             Key={
                 'key' : api_key,
@@ -40,8 +35,6 @@ def lambda_handler(event, context):
  
 
 
-    # search_profiles_table = dynamodb.Table('search-profiles')      
-    
     search_profile_resp = search_profiles_table.get_item(
             Key={
                 'id' : search_profile_id,

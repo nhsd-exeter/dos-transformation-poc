@@ -6,9 +6,14 @@ variable "domain" {
   default = "directory-search"
 }
 
-variable "index_name" {
+variable "directory_index_name" {
   default = "directory-index"
 }
+
+variable "geo_profiles_index_name" {
+  default = "geo-profiles-index"
+}
+
 
 resource "aws_elasticsearch_domain" "directory_search" {
   domain_name           = var.domain
@@ -99,7 +104,7 @@ resource "aws_elasticsearch_domain" "directory_search" {
       command = <<EOT
         cd ./elastic
         pip install -r requirements.txt --target .
-        python3 configure_elastic.py ${var.aws_region} ${aws_elasticsearch_domain.directory_search.endpoint} 
+        python3 configure_elastic.py ${var.aws_region} ${aws_elasticsearch_domain.directory_search.endpoint} ${var.directory_index_name} ${var.geo_profiles_index_name}
       EOT
       }
       

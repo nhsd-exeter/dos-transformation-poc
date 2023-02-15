@@ -26,9 +26,15 @@ def lambda_handler(event, context):
         if record['eventName'] == 'REMOVE':
             r = requests.delete(url + id, auth=awsauth)
         else:
-            document = ddb_deserialize(record['dynamodb']['NewImage'])
-            print(document)
-            r = requests.put(url + id, auth=awsauth, json=document, headers=headers)
+            service = ddb_deserialize(record['dynamodb']['NewImage'])
+            print(service)
+
+            # IN ORDER TO SIMPLIFY SEARCHABIITY, WE NEED TO POPULATE THE DEFAULT PARENT SERVICE DATA ONTO EACH REFERRAL 
+            # PROFILE FOR ANY DATA THAT WE MIGHT WANT TO VARY INDEPENDENTLY
+            formatted_service = propagate_params_to_referral_profiles(service)
+            print(formatted_service)
+
+            r = requests.put(url + id, auth=awsauth, json=formatted_service, headers=headers)
         count += 1
     return str(count) + ' records processed.'
 
@@ -37,5 +43,23 @@ def lambda_handler(event, context):
 def ddb_deserialize(r, type_deserializer = TypeDeserializer()):
     return type_deserializer.deserialize({"M": r})
 
-def propagate_to_referral_profiles(document):
-    return True
+
+def propagate_params_to_referral_profiles(service):
+
+    formatted_service = service
+
+    list_of_referral_specific_properties = [
+        'availableTime',
+        'availabilityExceptions',
+        'endpoint',
+        'extraDetails',
+        'notAvailable',
+        'eligibility'
+        ]
+
+    for referral_profile in formatted_service['referral_profiles']:
+        for property_name in list_of_referral_specific_properties:
+            if not referral_profile['referralSpecificProperties'][property_name]:
+                formatted_service['referral_profiles']['referralSpecificProperties'][property_name] = service[property_name]
+
+    return formatted_service

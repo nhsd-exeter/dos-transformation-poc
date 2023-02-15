@@ -11,7 +11,7 @@ credentials = boto3.Session().get_credentials()
 awsauth = AWS4Auth(credentials.access_key, credentials.secret_key, region, service, session_token=credentials.token)
 
 host = os.environ['ES_domain']
-index = 'geo-profiles-index'
+index = os.environ['ES_index']
 type = '_doc'
 url = 'https://' + host + '/' + index + '/' + type + '/'
 
