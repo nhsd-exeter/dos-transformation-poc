@@ -56,6 +56,8 @@ def propagate_params_to_referral_profiles(service):
         'notAvailable',
         'eligibility'
         ]
+    
+    # PROPAGATE PARENT PROPERTIES ONTO EACH REFERRAL PROFILE
 
     for i in range(len(formatted_service['referralProfiles'])):
         for property_name in list_of_referral_specific_properties:
