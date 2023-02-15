@@ -229,108 +229,41 @@ resource "aws_dynamodb_table_item" "example_service" {
 
   item = <<ITEM
 {
-  "resourceType": {
-    "S": "HealthcareService"
-  },
   "id": {
     "S": "1233123"
-  },
-  "name": {
-    "S": "Emergency Department (ED) - Basildon Hospital, Basildon, Essex"
   },
   "active": {
     "BOOL": true
   },
-  "providedBy": {
-    "M": {
-      "resourceType": {
-        "S": "Organization"
-      },
-      "identifier": {
-        "S": "M8U3G"
-      },
-      "active": {
-        "BOOL": true
-      },
-      "type": {
-        "L": [
-          {
-            "S": "NHS Trust Site"
-          }
-        ]
-      },
-      "name": {
-        "S": "EMERGENCY DEPARTMENT BH"
-      },
-      "alias": {
-        "L": [
-          {
-            "S": "<string>"
-          }
-        ]
-      },
-      "telecom": {
-        "L": [
-          {
-            "S": "string>"
-          }
-        ]
-      },
-      "address": {
-        "L": [
-          {
-            "S": "NETHERMAYNE"
+  "appointmentRequired": {
+    "BOOL": false
+  },
+  "availabilityExceptions": {
+    "S": "example"
+  },
+  "availableTime": {
+    "L": [
+      {
+        "M": {
+          "allDay": {
+            "BOOL": true
           },
-          {
-            "S": "BASILDON"
+          "closingTime": {
+            "NULL": true
           },
-          {
-            "S": "SS16 5NL"
-          }
-        ]
-      },
-      "contact": {
-        "L": [
-          {
-            "M": {
-              "purpose": {
-                "S": "Manager"
-              },
-              "name": {
-                "S": "Richard Dean"
-              },
-              "telecom": {
-                "L": [
-                  {
-                    "S": "+4477723413"
-                  }
-                ]
-              },
-              "address": {
-                "L": [
-                  {
-                    "S": "NETHERMAYNE"
-                  },
-                  {
-                    "S": "BASILDON"
-                  },
-                  {
-                    "S": "SS16 5NL"
-                  }
-                ]
+          "daysOfWeek": {
+            "L": [
+              {
+                "S": "mon | tue | wed | thu | fri | sat | sun"
               }
-            }
+            ]
+          },
+          "openingTime": {
+            "NULL": true
           }
-        ]
-      },
-      "endpoint": {
-        "L": [
-          {
-            "S": "<TBC>"
-          }
-        ]
+        }
       }
-    }
+    ]
   },
   "category": {
     "L": [
@@ -339,237 +272,26 @@ resource "aws_dynamodb_table_item" "example_service" {
       }
     ]
   },
-  "type": {
-    "L": [
-      {
-        "S": "ED"
-      }
-    ]
-  },
-  "specialty": {
+  "characteristic": {
     "L": [
       {
         "M": {}
       }
     ]
   },
-  "location": {
-    "L": [
-      {
-        "M": {
-          "resourceType": {
-            "S": "Location"
-          },
-          "identifier": {
-            "S": "12344134"
-          },
-          "status": {
-            "S": "active"
-          },
-          "operationalStatus": {
-            "S": "active"
-          },
-          "name": {
-            "S": "Basildon Hospital"
-          },
-          "alias": {
-            "L": [
-              {
-                "S": "<string>"
-              }
-            ]
-          },
-          "description": {
-            "S": "Basildon Hospital"
-          },
-          "mode": {
-            "S": "instance"
-          },
-          "type": {
-            "L": [
-              {
-                "S": "Hospital"
-              }
-            ]
-          },
-          "telecom": {
-            "L": [
-              {
-                "S": "+4477723413"
-              }
-            ]
-          },
-          "address": {
-            "L": [
-              {
-                "S": "NETHERMAYNE"
-              },
-              {
-                "S": "BASILDON"
-              },
-              {
-                "S": "SS16 5NL"
-              }
-            ]
-          },
-          "physicalType": {
-            "S": "Site"
-          },
-          "position": {
-            "M": {
-              "longitude": {
-                "N": "0.4506672"
-              },
-              "latitude": {
-                "N": "51.557759"
-              },
-              "altitude": {
-                "N": "0"
-              }
-            }
-          },
-          "managingOrganization": {
-            "M": {
-              "resourceType": {
-                "S": "Organization"
-              },
-              "identifier": {
-                "S": "RAJ"
-              },
-              "active": {
-                "BOOL": true
-              },
-              "type": {
-                "L": [
-                  {
-                    "S": "NHS Trust"
-                  }
-                ]
-              },
-              "name": {
-                "S": "MID AND SOUTH ESSEX NHS FOUNDATION TRUST"
-              },
-              "alias": {
-                "L": [
-                  {
-                    "S": "<string>"
-                  }
-                ]
-              },
-              "telecom": {
-                "L": [
-                  {
-                    "S": "string>"
-                  }
-                ]
-              },
-              "address": {
-                "L": [
-                  {
-                    "S": "PRITTLEWELL CHASE"
-                  },
-                  {
-                    "S": "WESTCLIFF-ON-SEA"
-                  },
-                  {
-                    "S": "SS0 0RY"
-                  }
-                ]
-              },
-              "contact": {
-                "L": [
-                  {
-                    "M": {
-                      "purpose": {
-                        "S": "Manager"
-                      },
-                      "name": {
-                        "S": "Richard Dean"
-                      },
-                      "telecom": {
-                        "L": [
-                          {
-                            "S": "+4477723413"
-                          }
-                        ]
-                      },
-                      "address": {
-                        "L": [
-                          {
-                            "S": "NETHERMAYNE"
-                          },
-                          {
-                            "S": "BASILDON"
-                          },
-                          {
-                            "S": "SS16 5NL"
-                          }
-                        ]
-                      }
-                    }
-                  }
-                ]
-              },
-              "endpoint": {
-                "L": [
-                  {
-                    "S": "<TBC>"
-                  }
-                ]
-              }
-            }
-          },
-          "hoursOfOperation": {
-            "L": [
-              {
-                "M": {
-                  "daysOfWeek": {
-                    "L": [
-                      {
-                        "S": "mon | tue | wed | thu | fri | sat | sun"
-                      }
-                    ]
-                  },
-                  "allDay": {
-                    "BOOL": true
-                  },
-                  "openingTime": {
-                    "NULL": true
-                  },
-                  "closingTime": {
-                    "NULL": true
-                  }
-                }
-              }
-            ]
-          },
-          "availabilityExceptions": {
-            "S": "<string>"
-          },
-          "endpoint": {
-            "L": [
-              {
-                "S": "<TBC>"
-              }
-            ]
-          }
-        }
-      }
-    ]
-  },
   "comment": {
     "S": "<string>"
   },
-  "extraDetails": {
-    "S": "<markdown>"
-  },
-  "photo": {
-    "S": "<url>"
-  },
-  "telecom": {
+  "communication": {
     "L": [
       {
-        "S": "+4477723413"
+        "S": "EN"
+      },
+      {
+        "S": "FR"
+      },
+      {
+        "S": "DE"
       }
     ]
   },
@@ -577,48 +299,6 @@ resource "aws_dynamodb_table_item" "example_service" {
     "L": [
       {
         "M": {
-          "resourceType": {
-            "S": "Location"
-          },
-          "identifier": {
-            "S": "12344134"
-          },
-          "status": {
-            "S": "active"
-          },
-          "operationalStatus": {
-            "S": "active"
-          },
-          "name": {
-            "S": "Basildon Hospital"
-          },
-          "alias": {
-            "L": [
-              {
-                "S": "<string>"
-              }
-            ]
-          },
-          "description": {
-            "S": "Basildon Hospital"
-          },
-          "mode": {
-            "S": "instance"
-          },
-          "type": {
-            "L": [
-              {
-                "S": "Hospital"
-              }
-            ]
-          },
-          "telecom": {
-            "L": [
-              {
-                "S": "+4477723413"
-              }
-            ]
-          },
           "address": {
             "L": [
               {
@@ -632,46 +312,57 @@ resource "aws_dynamodb_table_item" "example_service" {
               }
             ]
           },
-          "physicalType": {
-            "S": "Site"
+          "alias": {
+            "L": [
+              {
+                "S": "<string>"
+              }
+            ]
           },
-          "position": {
-            "S": "GEOMETRY(POLYGON)"
+          "availabilityExceptions": {
+            "S": "<string>"
+          },
+          "description": {
+            "S": "Basildon Hospital"
+          },
+          "endpoint": {
+            "L": [
+              {
+                "S": "<TBC>"
+              }
+            ]
+          },
+          "hoursOfOperation": {
+            "L": [
+              {
+                "M": {
+                  "allDay": {
+                    "BOOL": true
+                  },
+                  "closingTime": {
+                    "NULL": true
+                  },
+                  "daysOfWeek": {
+                    "L": [
+                      {
+                        "S": "mon | tue | wed | thu | fri | sat | sun"
+                      }
+                    ]
+                  },
+                  "openingTime": {
+                    "NULL": true
+                  }
+                }
+              }
+            ]
+          },
+          "identifier": {
+            "S": "12344134"
           },
           "managingOrganization": {
             "M": {
-              "resourceType": {
-                "S": "Organization"
-              },
-              "identifier": {
-                "S": "RAJ"
-              },
               "active": {
                 "BOOL": true
-              },
-              "type": {
-                "L": [
-                  {
-                    "S": "NHS Trust"
-                  }
-                ]
-              },
-              "name": {
-                "S": "MID AND SOUTH ESSEX NHS FOUNDATION TRUST"
-              },
-              "alias": {
-                "L": [
-                  {
-                    "S": "<string>"
-                  }
-                ]
-              },
-              "telecom": {
-                "L": [
-                  {
-                    "S": "<string>"
-                  }
-                ]
               },
               "address": {
                 "L": [
@@ -686,23 +377,17 @@ resource "aws_dynamodb_table_item" "example_service" {
                   }
                 ]
               },
+              "alias": {
+                "L": [
+                  {
+                    "S": "<string>"
+                  }
+                ]
+              },
               "contact": {
                 "L": [
                   {
                     "M": {
-                      "purpose": {
-                        "S": "Manager"
-                      },
-                      "name": {
-                        "S": "Richard Dean"
-                      },
-                      "telecom": {
-                        "L": [
-                          {
-                            "S": "+4477723413"
-                          }
-                        ]
-                      },
                       "address": {
                         "L": [
                           {
@@ -713,6 +398,19 @@ resource "aws_dynamodb_table_item" "example_service" {
                           },
                           {
                             "S": "SS16 5NL"
+                          }
+                        ]
+                      },
+                      "name": {
+                        "S": "Richard Dean"
+                      },
+                      "purpose": {
+                        "S": "Manager"
+                      },
+                      "telecom": {
+                        "L": [
+                          {
+                            "S": "+4477723413"
                           }
                         ]
                       }
@@ -726,51 +424,68 @@ resource "aws_dynamodb_table_item" "example_service" {
                     "S": "<TBC>"
                   }
                 ]
+              },
+              "identifier": {
+                "S": "RAJ"
+              },
+              "name": {
+                "S": "MID AND SOUTH ESSEX NHS FOUNDATION TRUST"
+              },
+              "resourceType": {
+                "S": "Organization"
+              },
+              "telecom": {
+                "L": [
+                  {
+                    "S": "<string>"
+                  }
+                ]
+              },
+              "type": {
+                "L": [
+                  {
+                    "S": "NHS Trust"
+                  }
+                ]
               }
             }
           },
-          "hoursOfOperation": {
+          "mode": {
+            "S": "instance"
+          },
+          "name": {
+            "S": "Basildon Hospital"
+          },
+          "operationalStatus": {
+            "S": "active"
+          },
+          "physicalType": {
+            "S": "Site"
+          },
+          "position": {
+            "S": "GEOMETRY(POLYGON)"
+          },
+          "resourceType": {
+            "S": "Location"
+          },
+          "status": {
+            "S": "active"
+          },
+          "telecom": {
             "L": [
               {
-                "M": {
-                  "daysOfWeek": {
-                    "L": [
-                      {
-                        "S": "mon | tue | wed | thu | fri | sat | sun"
-                      }
-                    ]
-                  },
-                  "allDay": {
-                    "BOOL": true
-                  },
-                  "openingTime": {
-                    "NULL": true
-                  },
-                  "closingTime": {
-                    "NULL": true
-                  }
-                }
+                "S": "+4477723413"
               }
             ]
           },
-          "availabilityExceptions": {
-            "S": "<string>"
-          },
-          "endpoint": {
+          "type": {
             "L": [
               {
-                "S": "<TBC>"
+                "S": "Hospital"
               }
             ]
           }
         }
-      }
-    ]
-  },
-  "serviceProvisionCode": {
-    "L": [
-      {
-        "M": {}
       }
     ]
   },
@@ -788,258 +503,209 @@ resource "aws_dynamodb_table_item" "example_service" {
       }
     ]
   },
-  "referralProfiles": {
+  "endpoint": {
+    "S": "<TBC>"
+  },
+  "extraDetails": {
+    "S": "<markdown>"
+  },
+  "location": {
     "L": [
       {
         "M": {
+          "address": {
+            "L": [
+              {
+                "S": "NETHERMAYNE"
+              },
+              {
+                "S": "BASILDON"
+              },
+              {
+                "S": "SS16 5NL"
+              }
+            ]
+          },
+          "alias": {
+            "L": [
+              {
+                "S": "<string>"
+              }
+            ]
+          },
+          "availabilityExceptions": {
+            "S": "<string>"
+          },
+          "description": {
+            "S": "Basildon Hospital"
+          },
+          "endpoint": {
+            "L": [
+              {
+                "S": "<TBC>"
+              }
+            ]
+          },
+          "hoursOfOperation": {
+            "L": [
+              {
+                "M": {
+                  "allDay": {
+                    "BOOL": true
+                  },
+                  "closingTime": {
+                    "NULL": true
+                  },
+                  "daysOfWeek": {
+                    "L": [
+                      {
+                        "S": "mon | tue | wed | thu | fri | sat | sun"
+                      }
+                    ]
+                  },
+                  "openingTime": {
+                    "NULL": true
+                  }
+                }
+              }
+            ]
+          },
+          "identifier": {
+            "S": "12344134"
+          },
+          "managingOrganization": {
+            "M": {
+              "active": {
+                "BOOL": true
+              },
+              "address": {
+                "L": [
+                  {
+                    "S": "PRITTLEWELL CHASE"
+                  },
+                  {
+                    "S": "WESTCLIFF-ON-SEA"
+                  },
+                  {
+                    "S": "SS0 0RY"
+                  }
+                ]
+              },
+              "alias": {
+                "L": [
+                  {
+                    "S": "<string>"
+                  }
+                ]
+              },
+              "contact": {
+                "L": [
+                  {
+                    "M": {
+                      "address": {
+                        "L": [
+                          {
+                            "S": "NETHERMAYNE"
+                          },
+                          {
+                            "S": "BASILDON"
+                          },
+                          {
+                            "S": "SS16 5NL"
+                          }
+                        ]
+                      },
+                      "name": {
+                        "S": "Richard Dean"
+                      },
+                      "purpose": {
+                        "S": "Manager"
+                      },
+                      "telecom": {
+                        "L": [
+                          {
+                            "S": "+4477723413"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              },
+              "endpoint": {
+                "L": [
+                  {
+                    "S": "<TBC>"
+                  }
+                ]
+              },
+              "identifier": {
+                "S": "RAJ"
+              },
+              "name": {
+                "S": "MID AND SOUTH ESSEX NHS FOUNDATION TRUST"
+              },
+              "resourceType": {
+                "S": "Organization"
+              },
+              "telecom": {
+                "L": [
+                  {
+                    "S": "string>"
+                  }
+                ]
+              },
+              "type": {
+                "L": [
+                  {
+                    "S": "NHS Trust"
+                  }
+                ]
+              }
+            }
+          },
+          "mode": {
+            "S": "instance"
+          },
           "name": {
-            "S": "Emergency Department"
+            "S": "Basildon Hospital"
           },
-          "system": {
-            "S": "SNOMED CT"
+          "operationalStatus": {
+            "S": "active"
           },
-          "activitiesOffered": {
+          "physicalType": {
+            "S": "Site"
+          },
+          "position": {
+            "M": {
+              "altitude": {
+                "N": "0"
+              },
+              "latitude": {
+                "N": "51.557759"
+              },
+              "longitude": {
+                "N": "0.4506672"
+              }
+            }
+          },
+          "resourceType": {
+            "S": "Location"
+          },
+          "status": {
+            "S": "active"
+          },
+          "telecom": {
             "L": [
               {
-                "S": "3412412"
-              },
-              {
-                "S": "124523"
-              },
-              {
-                "S": "124123"
-              },
-              {
-                "S": "..."
+                "S": "+4477723413"
               }
             ]
           },
-          "acuities": {
+          "type": {
             "L": [
               {
-                "S": "14144"
-              },
-              {
-                "S": "114134"
-              },
-              {
-                "S": "563567"
-              },
-              {
-                "S": "..."
-              }
-            ]
-          },
-          "referralSpecificProperties": {
-            "L": [
-              {
-                "M": {
-                  "eligibility": {
-                    "L": [
-                      {
-                        "M": {
-                          "code": {
-                            "S": "12312444"
-                          },
-                          "comment": {
-                            "S": "15-129yr Only"
-                          }
-                        }
-                      }
-                    ]
-                  }
-                }
-              }
-            ]
-          }
-        }
-      },
-      {
-        "M": {
-          "name": {
-            "S": "Emergency Department (Children)"
-          },
-          "system": {
-            "S": "SNOMED CT"
-          },
-          "activitiesOffered": {
-            "L": [
-              {
-                "S": "3412412"
-              },
-              {
-                "S": "124523"
-              },
-              {
-                "S": "124123"
-              },
-              {
-                "S": "..."
-              }
-            ]
-          },
-          "acuities": {
-            "L": [
-              {
-                "S": "14144"
-              },
-              {
-                "S": "114134"
-              },
-              {
-                "S": "563567"
-              },
-              {
-                "S": "..."
-              }
-            ]
-          },
-          "referralSpecificProperties": {
-            "L": [
-              {
-                "M": {
-                  "eligibility": {
-                    "L": [
-                      {
-                        "M": {
-                          "code": {
-                            "S": "12312421"
-                          },
-                          "comment": {
-                            "S": "0-15yr Only"
-                          }
-                        }
-                      }
-                    ]
-                  }
-                }
-              },
-              {
-                "M": {
-                  "availableTime": {
-                    "L": [
-                      {
-                        "M": {
-                          "daysOfWeek": {
-                            "L": [
-                              {
-                                "S": "mon | tue | wed | thu | fri | sat | sun"
-                              }
-                            ]
-                          },
-                          "allDay": {
-                            "BOOL": false
-                          },
-                          "openingTime": {
-                            "S": "9:00"
-                          },
-                          "closingTime": {
-                            "S": "5:00"
-                          }
-                        }
-                      }
-                    ]
-                  }
-                }
-              }
-            ]
-          }
-        }
-      },
-      {
-        "M": {
-          "name": {
-            "S": "Emergency Department (Children)"
-          },
-          "system": {
-            "S": "LEGACY SG/SD/DX"
-          },
-          "symptomGroups": {
-            "L": [
-              {
-                "S": "SG1011"
-              },
-              {
-                "S": "SG1010"
-              },
-              {
-                "S": "..."
-              }
-            ]
-          },
-          "symptomDiscriminators": {
-            "L": [
-              {
-                "S": "SD4052"
-              },
-              {
-                "S": "SD4304"
-              },
-              {
-                "S": "..."
-              }
-            ]
-          },
-          "dispositions": {
-            "L": [
-              {
-                "S": "Dx17"
-              },
-              {
-                "S": "Dx13"
-              },
-              {
-                "S": "..."
-              }
-            ]
-          },
-          "referralSpecificProperties": {
-            "L": [
-              {
-                "M": {
-                  "eligibility": {
-                    "L": [
-                      {
-                        "M": {
-                          "code": {
-                            "S": "12312421"
-                          },
-                          "comment": {
-                            "S": "0-15yr Only"
-                          }
-                        }
-                      }
-                    ]
-                  }
-                }
-              },
-              {
-                "M": {
-                  "availableTime": {
-                    "L": [
-                      {
-                        "M": {
-                          "daysOfWeek": {
-                            "L": [
-                              {
-                                "S": "mon | tue | wed | thu | fri | sat | sun"
-                              }
-                            ]
-                          },
-                          "allDay": {
-                            "BOOL": false
-                          },
-                          "openingTime": {
-                            "S": "9:00"
-                          },
-                          "closingTime": {
-                            "S": "5:00"
-                          }
-                        }
-                      }
-                    ]
-                  }
-                }
+                "S": "Hospital"
               }
             ]
           }
@@ -1047,69 +713,8 @@ resource "aws_dynamodb_table_item" "example_service" {
       }
     ]
   },
-  "program": {
-    "L": [
-      {
-        "M": {}
-      }
-    ]
-  },
-  "characteristic": {
-    "L": [
-      {
-        "M": {}
-      }
-    ]
-  },
-  "communication": {
-    "L": [
-      {
-        "S": "EN"
-      },
-      {
-        "S": "FR"
-      },
-      {
-        "S": "DE"
-      }
-    ]
-  },
-  "referralMethod": {
-    "L": [
-      {
-        "S": "phone"
-      },
-      {
-        "S": "mail"
-      }
-    ]
-  },
-  "appointmentRequired": {
-    "BOOL": false
-  },
-  "availableTime": {
-    "L": [
-      {
-        "M": {
-          "daysOfWeek": {
-            "L": [
-              {
-                "S": "mon | tue | wed | thu | fri | sat | sun"
-              }
-            ]
-          },
-          "allDay": {
-            "BOOL": true
-          },
-          "openingTime": {
-            "NULL": true
-          },
-          "closingTime": {
-            "NULL": true
-          }
-        }
-      }
-    ]
+  "name": {
+    "S": "Emergency Department (ED) - Basildon Hospital, Basildon, Essex"
   },
   "notAvailable": {
     "L": [
@@ -1125,11 +730,374 @@ resource "aws_dynamodb_table_item" "example_service" {
       }
     ]
   },
-  "availabilityExceptions": {
-    "S": "<string>"
+  "photo": {
+    "S": "<url>"
   },
-  "endpoint": {
-    "S": "<TBC>"
+  "program": {
+    "L": [
+      {
+        "M": {}
+      }
+    ]
+  },
+  "providedBy": {
+    "M": {
+      "active": {
+        "BOOL": true
+      },
+      "address": {
+        "L": [
+          {
+            "S": "NETHERMAYNE"
+          },
+          {
+            "S": "BASILDON"
+          },
+          {
+            "S": "SS16 5NL"
+          }
+        ]
+      },
+      "alias": {
+        "L": [
+          {
+            "S": "<string>"
+          }
+        ]
+      },
+      "contact": {
+        "L": [
+          {
+            "M": {
+              "address": {
+                "L": [
+                  {
+                    "S": "NETHERMAYNE"
+                  },
+                  {
+                    "S": "BASILDON"
+                  },
+                  {
+                    "S": "SS16 5NL"
+                  }
+                ]
+              },
+              "name": {
+                "S": "Richard Dean"
+              },
+              "purpose": {
+                "S": "Manager"
+              },
+              "telecom": {
+                "L": [
+                  {
+                    "S": "+4477723413"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "endpoint": {
+        "L": [
+          {
+            "S": "<TBC>"
+          }
+        ]
+      },
+      "identifier": {
+        "S": "M8U3G"
+      },
+      "name": {
+        "S": "EMERGENCY DEPARTMENT BH"
+      },
+      "resourceType": {
+        "S": "Organization"
+      },
+      "telecom": {
+        "L": [
+          {
+            "S": "string>"
+          }
+        ]
+      },
+      "type": {
+        "L": [
+          {
+            "S": "NHS Trust Site"
+          }
+        ]
+      }
+    }
+  },
+  "referralMethod": {
+    "L": [
+      {
+        "S": "phone"
+      },
+      {
+        "S": "mail"
+      }
+    ]
+  },
+  "referralProfiles": {
+    "L": [
+      {
+        "M": {
+          "activitiesOffered": {
+            "L": [
+              {
+                "S": "3412412"
+              },
+              {
+                "S": "124523"
+              },
+              {
+                "S": "124123"
+              },
+              {
+                "S": "..."
+              }
+            ]
+          },
+          "acuities": {
+            "L": [
+              {
+                "S": "14144"
+              },
+              {
+                "S": "114134"
+              },
+              {
+                "S": "563567"
+              },
+              {
+                "S": "..."
+              }
+            ]
+          },
+          "name": {
+            "S": "Emergency Department"
+          },
+          "referralSpecificProperties": {
+            "M": {
+              "eligibility": {
+                "M": {
+                  "code": {
+                    "S": "12312421"
+                  },
+                  "comment": {
+                    "S": "15-1295yr Only"
+                  }
+                }
+              }
+            }
+          },
+          "system": {
+            "S": "SNOMED CT"
+          }
+        }
+      },
+      {
+        "M": {
+          "activitiesOffered": {
+            "L": [
+              {
+                "S": "3412412"
+              },
+              {
+                "S": "124523"
+              },
+              {
+                "S": "124123"
+              },
+              {
+                "S": "..."
+              }
+            ]
+          },
+          "acuities": {
+            "L": [
+              {
+                "S": "14144"
+              },
+              {
+                "S": "114134"
+              },
+              {
+                "S": "563567"
+              },
+              {
+                "S": "..."
+              }
+            ]
+          },
+          "name": {
+            "S": "Emergency Department (Children)"
+          },
+          "referralSpecificProperties": {
+            "M": {
+              "eligibility": {
+                "M": {
+                  "code": {
+                    "S": "12312421"
+                  },
+                  "comment": {
+                    "S": "0-15yr Only"
+                  }
+                }
+              },
+              "availableTime": {
+                "L": [
+                  {
+                    "M": {
+                      "allDay": {
+                        "BOOL": false
+                      },
+                      "closingTime": {
+                        "S": "5:00"
+                      },
+                      "daysOfWeek": {
+                        "L": [
+                          {
+                            "S": "mon | tue | wed | thu | fri | sat | sun"
+                          }
+                        ]
+                      },
+                      "openingTime": {
+                        "S": "9:00"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "system": {
+            "S": "SNOMED CT"
+          }
+        }
+      },
+      {
+        "M": {
+          "dispositions": {
+            "L": [
+              {
+                "S": "Dx17"
+              },
+              {
+                "S": "Dx13"
+              },
+              {
+                "S": "..."
+              }
+            ]
+          },
+          "name": {
+            "S": "Emergency Department (Children)"
+          },
+          "referralSpecificProperties": {
+            "M": {
+              "eligibility": {
+                "M": {
+                  "code": {
+                    "S": "12312421"
+                  },
+                  "comment": {
+                    "S": "0-15yr Only"
+                  }
+                }
+              },
+              "availableTime": {
+                "L": [
+                  {
+                    "M": {
+                      "allDay": {
+                        "BOOL": false
+                      },
+                      "closingTime": {
+                        "S": "5:00"
+                      },
+                      "daysOfWeek": {
+                        "L": [
+                          {
+                            "S": "mon | tue | wed | thu | fri | sat | sun"
+                          }
+                        ]
+                      },
+                      "openingTime": {
+                        "S": "9:00"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "symptomDiscriminators": {
+            "L": [
+              {
+                "S": "SD4052"
+              },
+              {
+                "S": "SD4304"
+              },
+              {
+                "S": "..."
+              }
+            ]
+          },
+          "symptomGroups": {
+            "L": [
+              {
+                "S": "SG1011"
+              },
+              {
+                "S": "SG1010"
+              },
+              {
+                "S": "..."
+              }
+            ]
+          },
+          "system": {
+            "S": "LEGACY SG/SD/DX"
+          }
+        }
+      }
+    ]
+  },
+  "resourceType": {
+    "S": "HealthcareService"
+  },
+  "serviceProvisionCode": {
+    "L": [
+      {
+        "M": {}
+      }
+    ]
+  },
+  "specialty": {
+    "L": [
+      {
+        "M": {}
+      }
+    ]
+  },
+  "telecom": {
+    "L": [
+      {
+        "S": "+4477723413"
+      }
+    ]
+  },
+  "type": {
+    "L": [
+      {
+        "S": "ED"
+      }
+    ]
   }
 }
 
