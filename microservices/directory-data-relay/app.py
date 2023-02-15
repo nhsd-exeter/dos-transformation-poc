@@ -57,10 +57,10 @@ def propagate_params_to_referral_profiles(service):
         'eligibility'
         ]
 
-    for referral_profile in formatted_service['referralProfiles']:
+    for i in range(len(formatted_service['referralProfiles'])):
         for property_name in list_of_referral_specific_properties:
             print(property_name)
-            if not hasattr(referral_profile['referralSpecificProperties'], property_name):
-                formatted_service['referralProfiles']['referralSpecificProperties'][property_name] = service[property_name]
+            if not hasattr(formatted_service['referralProfiles'][i]['referralSpecificProperties'], property_name):
+                formatted_service['referralProfiles'][i]['referralSpecificProperties'][property_name] = service[property_name]
 
     return formatted_service
