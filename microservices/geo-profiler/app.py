@@ -1,6 +1,7 @@
 import json
 import boto3
 import datetime
+import os
 
 index = os.environ['ES_index']
 

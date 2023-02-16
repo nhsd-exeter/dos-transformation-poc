@@ -1,4 +1,5 @@
 import json
+import os
 import boto3
 import datetime
 from boto3.dynamodb.conditions import Key
