@@ -16,23 +16,24 @@ def lambda_handler(event, context):
     search_query = input_terms["search_query"]
     api_key = input_terms["api_key"]
     
-    patient_postcode = search_query['subject']['address']['postalCode']
-    #THIS POSTCODE CAN BE USED TO SELECT AN APPROPRIATE GEO-PROFILE FOR RANKING STRATEGY  
+    # patient_postcode = search_query['subject']['address']['postalCode']
+    # #THIS POSTCODE CAN BE USED TO SELECT AN APPROPRIATE GEO-PROFILE FOR RANKING STRATEGY  
     
-    #Determine the consumer by querying the api-key 
-    consumer_resp = search_consumers_table.get_item(
-            Key={
-                'key' : api_key,
-            }
-        )
+    # #Determine the consumer by querying the api-key 
+    # consumer_resp = search_consumers_table.get_item(
+    #         Key={
+    #             'key' : api_key,
+    #         }
+    #     )
   
 
-    #locate the appropriate search profile for this consumer
-    if 'Item' in consumer_resp:
-        search_profile_id = consumer_resp['Item'].get("search-profile-id")
-    else:
-        raise ValueError('This API Key is not associated with a valid search profile.')
+    # #locate the appropriate search profile for this consumer
+    # if 'Item' in consumer_resp:
+    #     search_profile_id = consumer_resp['Item'].get("search-profile-id")
+    # else:
+    #     raise ValueError('This API Key is not associated with a valid search profile.')
  
+    search_profile_id = "x83nd93y2"
 
 
     search_profile_resp = search_profiles_table.get_item(

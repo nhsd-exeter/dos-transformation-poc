@@ -147,9 +147,6 @@ def profile_query(base_query, search_profile, geo_profiles):
     return profiled_query
 
 
-def calculate_patient_age_range(date):
-    return "0-129yrs"
-
 
 def determine_ranking_strategy(geo_profiles, profile_type):
     highest_priority_geo_profile = next((geo_profile for geo_profile in geo_profiles if geo_profile['_source']['type'] == profile_type), None)
