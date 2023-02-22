@@ -15,6 +15,9 @@ headers = { "Content-Type": "application/json" }
 
 
 def configure_elastic():
+
+    url = host + "/directory-index"
+    r = requests.delete(url, auth=awsauth, headers=headers)
    
     for index in index_names:
         if check_index_exists(index) != True:
@@ -78,6 +81,36 @@ def create_mapping(index_name):
                 "properties": {
                     "name": {"type": "keyword"},
                     "category": {"type": "keyword"},
+                    "characteristic": {"type": "keyword"},
+                    "specialty": {"type": "keyword"},
+                    "location" : {"type" : "nested",
+                        "address" : {"type" : "text"},
+                        "position" :  {"type" : "geo_point"},
+                    },
+                    "coverageArea" : {"type" : "nested",
+                        "position" :  {"type" : "geo_shape"},
+                    },
+                    "referralProfiles": {"type": "nested",
+                        "properties": {
+                            "referralSpecificProperties" : "nested",
+                                "properties" : {
+                                    'availableTime' : { "type" : "nested",
+                                        "properties" : {
+                                            "allDay" : {"type" : "boolean"},
+                                            "daysOfWeek" : {"type" : "keyword"},
+                                            "openingTime" : { "type" : "double" },
+                                            "closingTime" : { "type" : "double" }
+                                            }
+                                        },
+                                    'availabilityExceptions' : {"type" : "keyword"},
+                                    'endpoint' : {"type" : "text"},
+                                    'extraDetails' : {"type" : "text"},
+                                    'notAvailable' : {"type" : "boolean"},
+                                    'eligibility': {"type" : "keyword"}
+                                }
+                        }
+                    }
+
                 }
             }
     
