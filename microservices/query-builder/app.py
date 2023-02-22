@@ -51,7 +51,9 @@ def construct_base_query(consumer_query):
 
     query_datetime = datetime.datetime.now()
     query_day = query_datetime.strftime("%a")
-    query_time = query_datetime.strftime("%H:%M:%S")
+
+    # FOR RANGE QUERY, WE NEED THE TIME IN AN EASILY COMPARABLE NUMBER, SO CONSIDER AS A 24HR DECIMAL 
+    query_time_decimal = query_datetime.hour + ((query_datetime.minute * 60 + query_datetime.second)/3600)
 
  
     #BUILD THE BASIC ELASTIC QUERY
