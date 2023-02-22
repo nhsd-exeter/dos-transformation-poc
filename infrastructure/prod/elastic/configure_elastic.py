@@ -85,10 +85,10 @@ def create_mapping(index_name):
                     "specialty": {"type": "keyword"},
                     "location" : {"type" : "nested",
                         "address" : {"type" : "text"},
-                        "position" :  {"type" : "geo_point"},
+                        "position" :  {"type" : "geo_point"}
                     },
                     "coverageArea" : {"type" : "nested",
-                        "position" :  {"type" : "geo_shape"},
+                        "position" :  {"type" : "geo_shape"}
                     },
                     "referralProfiles": {"type": "nested",
                         "properties": {
