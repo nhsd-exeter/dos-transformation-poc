@@ -98,7 +98,7 @@ def create_mapping(index_name):
                         "properties": {
                             "referralSpecificProperties" : "nested",
                                 "properties" : {
-                                    'availableTime' : { "type" : "nested",
+                                    "availableTime" : { "type" : "nested",
                                         "properties" : {
                                             "allDay" : {"type" : "boolean"},
                                             "daysOfWeek" : {"type" : "keyword"},
@@ -106,11 +106,11 @@ def create_mapping(index_name):
                                             "closingTime" : { "type" : "double" }
                                             }
                                         },
-                                    'availabilityExceptions' : {"type" : "keyword"},
-                                    'endpoint' : {"type" : "text"},
-                                    'extraDetails' : {"type" : "text"},
-                                    'notAvailable' : {"type" : "boolean"},
-                                    'eligibility': {"type" : "keyword"}
+                                    "availabilityExceptions" : {"type" : "keyword"},
+                                    "endpoint" : {"type" : "text"},
+                                    "extraDetails" : {"type" : "text"},
+                                    "notAvailable" : {"type" : "boolean"},
+                                    "eligibility" : {"type" : "keyword"}
                                 }
                         }
                     }
