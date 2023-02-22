@@ -76,7 +76,7 @@ def construct_base_query(consumer_query):
                                             [
                                                 { "range":
                                                     { "referralProfiles.referralSpecificProperties.availableTime.openingTime": {
-                                                        "gte": query_time,
+                                                        "gte": query_time_decimal,
                                                         "lte": 0
                                                     }
                                                     }
@@ -84,7 +84,7 @@ def construct_base_query(consumer_query):
                                                 { "range":
                                                     { "referralProfiles.referralSpecificProperties.availableTime.closingTime": {
                                                         "gte": 0,
-                                                        "lte": query_time
+                                                        "lte": query_time_decimal
                                                     }
                                                     }
                                                 }
