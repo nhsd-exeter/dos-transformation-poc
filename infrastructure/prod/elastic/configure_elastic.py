@@ -96,7 +96,7 @@ def create_mapping(index_name):
                     },
                     "referralProfiles": {"type": "nested",
                         "properties": {
-                            "referralSpecificProperties" : "nested",
+                            "referralSpecificProperties" : {"type" : "nested",
                                 "properties" : {
                                     "availableTime" : { "type" : "nested",
                                         "properties" : {
@@ -112,6 +112,7 @@ def create_mapping(index_name):
                                     "notAvailable" : {"type" : "boolean"},
                                     "eligibility" : {"type" : "keyword"}
                                 }
+                            }
                         }
                     }
 
