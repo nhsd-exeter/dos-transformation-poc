@@ -125,7 +125,6 @@ def create_mapping(index_name):
         r.raise_for_status()
     except requests.exceptions.HTTPError as e:
         print (e.response.text)
-
     return
 
 
