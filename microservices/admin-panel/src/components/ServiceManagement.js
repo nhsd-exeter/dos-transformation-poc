@@ -5,6 +5,7 @@ import { Navigate } from 'react-router-dom';
 class ServiceManagement extends Component {
 
   render(){
+    console.log(this.props)
     return (
       <Fragment>
         {!this.props.auth.isAuthenticated && <Navigate to='/login' replace={true}/> }
