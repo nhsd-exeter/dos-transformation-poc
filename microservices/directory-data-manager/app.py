@@ -24,7 +24,7 @@ def get_service():
     return { "service": service }
 
 
-@app.route("/", methods=['POST'])
+@app.route("/services", methods=['POST'])
 def create_service():
 
     request = app.current_request.json_body
