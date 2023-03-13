@@ -137,10 +137,8 @@ jobs:
           SERVICE_NAME=${{ matrix.services }}
           ENVIRONMENT_NAME=${{ needs.get_updated_microservices.outputs.environment }}
           cd ./microservices/$SERVICE_NAME/
-          python3 --version
-          pip install chalice
-          ls
-          chalice --help
+          chmod +x ./deploy_service.sh
+          ./deploy_service.sh $SERVICE_NAME $ENVIRONMENT_NAME
           
 
   perform_integration_tests:

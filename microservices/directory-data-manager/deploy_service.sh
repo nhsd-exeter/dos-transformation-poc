@@ -9,6 +9,7 @@ SERVICE_NAME=$1
 ENVIRONMENT_NAME=$2
 
 pip install -r requirements.txt --target .
+pip install chalice
 chalice --help
 # package ./deploymentt
 cd ./deployment
