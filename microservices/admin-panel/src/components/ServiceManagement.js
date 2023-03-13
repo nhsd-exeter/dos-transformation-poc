@@ -5,7 +5,7 @@ import axios from 'axios';
 
 class ServiceManagement extends Component {
 
-  getService = async (id) =>
+  getService = async () =>
   {
     const APIGateway = axios.create({
       baseURL: 'https://ar7kwintik.execute-api.eu-west-2.amazonaws.com/main/services',
@@ -18,7 +18,7 @@ class ServiceManagement extends Component {
       }
     });
 
-    const {service} = await APIGateway.get('id');
+    const {service} = await APIGateway.get();
     
   }
 
