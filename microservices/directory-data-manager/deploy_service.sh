@@ -10,8 +10,7 @@ ENVIRONMENT_NAME=$2
 
 pip install -r requirements.txt --target .
 pip install chalice
-chalice --help
-# package ./deploymentt
+chalice package ./deployment
 cd ./deployment
 LAMBDA_OUTPUT=$(aws lambda update-function-code --function-name=$SERVICE_NAME --zip-file=fileb://deployment.zip --publish)
 LATEST_VERSION=$(jq -r '.Version' --compact-output <<< "$LAMBDA_OUTPUT" )
@@ -28,4 +27,4 @@ then
     aws lambda update-alias --function-name=$SERVICE_NAME --name live-service --function-version $PREVIOUS_VERSION --routing-config '{"AdditionalVersionWeights" : {$PREVIOUS_VERSION : 0.05} }'
 else
     aws lambda update-alias --function-name=$SERVICE_NAME --name live-service --function-version $LATEST_VERSION  --routing-config '{}'
-fi          #
+fi          
