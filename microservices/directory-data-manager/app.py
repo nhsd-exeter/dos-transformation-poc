@@ -8,7 +8,7 @@ app = Chalice(app_name="directory-data-manager")
 dynamodb = boto3.resource('dynamodb')
 
 
-@app.route("/services", methods=['GET'])
+@app.route("/", methods=['GET'])
 def get_service():
     service_id = app.current_request.query_params.get('id')
     services_table = dynamodb.Table('services')      
@@ -24,7 +24,7 @@ def get_service():
     return { "service": service }
 
 
-@app.route("/services", methods=['POST'])
+@app.route("/", methods=['POST'])
 def create_service():
 
     request = app.current_request.json_body
@@ -41,7 +41,7 @@ def create_service():
     return {"id" : generated_identifier}
 
 
-@app.route("/services", methods=['PUT'])
+@app.route("/", methods=['PUT'])
 def update_service():
 
     service_id = app.current_request.query_params.get('id')
@@ -66,7 +66,7 @@ def update_service():
     return {"id" : service_id}
 
 
-@app.route("/services", methods=['DELETE'])
+@app.route("/", methods=['DELETE'])
 def delete_service():
     service_id = app.current_request.query_params.get('id')
 
@@ -81,7 +81,7 @@ def delete_service():
     return {"id" : service_id}
 
 
-@app.route("/services", methods=['OPTIONS'])
+@app.route("/", methods=['OPTIONS'])
 def options_request():
     response = {
             "statusCode": 200,
