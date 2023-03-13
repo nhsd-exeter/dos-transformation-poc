@@ -10,7 +10,7 @@ ENVIRONMENT_NAME=$2
 
 pip install -r requirements.txt --target .
 chalice --help
-# package ./deployment
+# package ./deploymentt
 cd ./deployment
 LAMBDA_OUTPUT=$(aws lambda update-function-code --function-name=$SERVICE_NAME --zip-file=fileb://deployment.zip --publish)
 LATEST_VERSION=$(jq -r '.Version' --compact-output <<< "$LAMBDA_OUTPUT" )
