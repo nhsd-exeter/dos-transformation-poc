@@ -221,6 +221,14 @@ resource "aws_api_gateway_method" "services_DELETE" {
     rest_api_id   = aws_api_gateway_rest_api.DoS_REST.id
 }
 
+resource "aws_api_gateway_method" "services_OPTIONS" {
+    authorization = "COGNITO_USER_POOLS"
+    authorizer_id = aws_api_gateway_authorizer.DoS_Users.id
+    http_method   = "OPTIONS"
+    resource_id   = aws_api_gateway_resource.services.id
+    rest_api_id   = aws_api_gateway_rest_api.DoS_REST.id
+}
+
 
 resource "aws_api_gateway_integration" "services_GET_integration" {
     rest_api_id             = aws_api_gateway_rest_api.DoS_REST.id

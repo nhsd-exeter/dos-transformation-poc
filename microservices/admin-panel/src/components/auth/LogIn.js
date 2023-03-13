@@ -40,6 +40,12 @@ class LogIn extends Component {
     try {
       const user = await Auth.signIn(this.state.username, this.state.password)
       console.log(user)
+      Auth.currentSession().then(res=>{
+        // let accessToken = res.getAccessToken().jwtToken
+        let accessToken = res.getIdToken().jwtToken
+        user.token = accessToken
+
+      })
       this.props.auth.setAuthState(true)
       this.props.auth.setUser(user)
       this.setState({

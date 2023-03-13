@@ -4,7 +4,7 @@ import boto3
 import uuid
 from boto3.dynamodb.conditions import Key
 
-app = Chalice(app_name="helloworld")
+app = Chalice(app_name="directory-data-manager")
 dynamodb = boto3.resource('dynamodb')
 
 
@@ -79,3 +79,17 @@ def delete_service():
     )
 
     return {"id" : service_id}
+
+
+@app.route("/services", methods=['OPTIONS'])
+def options_request():
+    response = {
+            "statusCode": 200,
+            "headers": {
+                "Access-Control-Allow-Origin": "*", 
+                "Access-Control-Allow-Methods": "POST, PUT, GET, OPTIONS",
+                "Access-Control-Allow-Headers": "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
+            },
+            "body": "Directory Data Manager preflight request",
+        }
+    return response
