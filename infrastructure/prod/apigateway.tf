@@ -245,14 +245,6 @@ resource "aws_api_gateway_method" "services_DELETE" {
     ]
 }
 
-# resource "aws_api_gateway_method" "services_OPTIONS" {
-#     authorization = "COGNITO_USER_POOLS"
-#     authorizer_id = aws_api_gateway_authorizer.DoS_Users.id
-#     http_method   = "OPTIONS"
-#     resource_id   = aws_api_gateway_resource.services.id
-#     rest_api_id   = aws_api_gateway_rest_api.DoS_REST.id
-# }
-
 
 resource "aws_api_gateway_integration" "services_GET_integration" {
     rest_api_id             = aws_api_gateway_rest_api.DoS_REST.id
@@ -310,21 +302,6 @@ resource "aws_api_gateway_integration" "services_DELETE_integration" {
     ]
 }
 
-# resource "aws_api_gateway_method_response" "services_GET_response" {
-#     rest_api_id = aws_api_gateway_rest_api.DoS_REST.id
-#     resource_id = aws_api_gateway_resource.services.id
-#     http_method = aws_api_gateway_method.services_GET.http_method
-#     status_code = "200"
-#     response_models = {
-#         "application/json" = "Empty"
-#     }
-
-#     depends_on = [
-#         aws_api_gateway_resource.services,
-#         aws_api_gateway_method.services_GET,
-#         aws_api_gateway_integration.services_GET_integration
-#     ]
-# }
 
 module "enable_cors_on_services" {
   source = "squidfunk/api-gateway-enable-cors/aws"
