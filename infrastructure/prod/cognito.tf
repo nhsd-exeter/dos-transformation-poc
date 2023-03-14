@@ -9,5 +9,5 @@ resource "aws_cognito_user_pool" "DoS_Users" {
 resource "aws_cognito_user_pool_client" "app_Client" {
   name = "futuredos"
 
-  user_pool_id = aws_cognito_user_pool.pool.id
+  user_pool_id = aws_cognito_user_pool.DoS_Users.id
 }
