@@ -203,7 +203,12 @@ resource "aws_api_gateway_method" "services_POST" {
     http_method   = "POST"
     resource_id   = aws_api_gateway_resource.services.id
     rest_api_id   = aws_api_gateway_rest_api.DoS_REST.id
+
+    depends_on = [
+        aws_api_gateway_resource.services
+    ]
 }
+
 
 resource "aws_api_gateway_method" "services_GET" {
     authorization = "COGNITO_USER_POOLS"
@@ -211,6 +216,10 @@ resource "aws_api_gateway_method" "services_GET" {
     http_method   = "GET"
     resource_id   = aws_api_gateway_resource.services.id
     rest_api_id   = aws_api_gateway_rest_api.DoS_REST.id
+
+    depends_on = [
+        aws_api_gateway_resource.services
+    ]
 }
 
 resource "aws_api_gateway_method" "services_DELETE" {
@@ -219,6 +228,10 @@ resource "aws_api_gateway_method" "services_DELETE" {
     http_method   = "DELETE"
     resource_id   = aws_api_gateway_resource.services.id
     rest_api_id   = aws_api_gateway_rest_api.DoS_REST.id
+
+    depends_on = [
+        aws_api_gateway_resource.services
+    ]
 }
 
 # resource "aws_api_gateway_method" "services_OPTIONS" {
@@ -237,6 +250,11 @@ resource "aws_api_gateway_integration" "services_GET_integration" {
     integration_http_method = "POST"
     type                    = "AWS_PROXY"
     uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${module.directory-data-manager-lambda.lambda_function_arn}/invocations"
+
+    depends_on = [
+        aws_api_gateway_resource.services,
+        aws_api_gateway_method.services_GET
+    ]
 }
 
 resource "aws_api_gateway_integration" "services_POST_integration" {
@@ -246,6 +264,11 @@ resource "aws_api_gateway_integration" "services_POST_integration" {
     integration_http_method = "POST"
     type                    = "AWS_PROXY"
     uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${module.directory-data-manager-lambda.lambda_function_arn}/invocations"
+
+    depends_on = [
+        aws_api_gateway_resource.services,
+        aws_api_gateway_method.services_POST
+    ]
 }
 
 resource "aws_api_gateway_integration" "services_DELETE_integration" {
@@ -255,17 +278,28 @@ resource "aws_api_gateway_integration" "services_DELETE_integration" {
     integration_http_method = "DELETE"
     type                    = "AWS_PROXY"
     uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${module.directory-data-manager-lambda.lambda_function_arn}/invocations"
+
+    depends_on = [
+        aws_api_gateway_resource.services,
+        aws_api_gateway_method.services_DELETE
+    ]
 }
 
-# resource "aws_api_gateway_method_response" "services_GET_response" {
-#     rest_api_id = aws_api_gateway_rest_api.DoS_REST.id
-#     resource_id = aws_api_gateway_resource.services.id
-#     http_method = aws_api_gateway_method.services_GET.http_method
-#     status_code = "200"
-#     response_models = {
-#         "application/json" = "Empty"
-#     }
-# }
+resource "aws_api_gateway_method_response" "services_GET_response" {
+    rest_api_id = aws_api_gateway_rest_api.DoS_REST.id
+    resource_id = aws_api_gateway_resource.services.id
+    http_method = aws_api_gateway_method.services_GET.http_method
+    status_code = "200"
+    response_models = {
+        "application/json" = "Empty"
+    }
+
+    depends_on = [
+        aws_api_gateway_resource.services,
+        aws_api_gateway_method.services_GET,
+        aws_api_gateway_integration.services_GET_integration
+    ]
+}
 
 resource "aws_api_gateway_deployment" "main" {
     rest_api_id = aws_api_gateway_rest_api.DoS_REST.id
