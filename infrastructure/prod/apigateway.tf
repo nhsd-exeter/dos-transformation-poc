@@ -234,7 +234,7 @@ resource "aws_api_gateway_integration" "services_GET_integration" {
     rest_api_id             = aws_api_gateway_rest_api.DoS_REST.id
     resource_id             = aws_api_gateway_resource.services.id
     http_method             = aws_api_gateway_method.services_GET.http_method
-    integration_http_method = "GET"
+    integration_http_method = "POST"
     type                    = "AWS_PROXY"
     uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${module.directory-data-manager-lambda.lambda_function_arn}/invocations"
 }
@@ -261,7 +261,7 @@ resource "aws_api_gateway_method_response" "services_GET_response" {
     rest_api_id = aws_api_gateway_rest_api.DoS_REST.id
     resource_id = aws_api_gateway_resource.services.id
     http_method = aws_api_gateway_method.services_GET.http_method
-    status_code = "PROXY"
+    status_code = "200"
     response_models = {
         "application/json" = "Empty"
     }
