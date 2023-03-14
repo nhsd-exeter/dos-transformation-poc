@@ -261,7 +261,7 @@ resource "aws_api_gateway_method_response" "services_GET_response" {
     rest_api_id = aws_api_gateway_rest_api.DoS_REST.id
     resource_id = aws_api_gateway_resource.services.id
     http_method = aws_api_gateway_method.services_GET.http_method
-    status_code = "200"
+    status_code = "PROXY"
     response_models = {
         "application/json" = "Empty"
     }
