@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "app_name": "directory-data-manager",
+  "app_name": "directory-data-manager2",
   "stages": {
     "main": {
       "api_gateway_stage": "main"

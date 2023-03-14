@@ -7,7 +7,7 @@ from boto3.dynamodb.conditions import Key
 app = Chalice(app_name="directory-data-manager")
 dynamodb = boto3.resource('dynamodb')
 
-print('Directory-data-manager')
+print('Directory-data-manager2')
 
 
 @app.route("/services", methods=['GET'])
