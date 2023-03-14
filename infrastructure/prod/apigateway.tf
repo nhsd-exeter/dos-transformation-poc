@@ -310,19 +310,32 @@ resource "aws_api_gateway_integration" "services_DELETE_integration" {
     ]
 }
 
-resource "aws_api_gateway_method_response" "services_GET_response" {
-    rest_api_id = aws_api_gateway_rest_api.DoS_REST.id
-    resource_id = aws_api_gateway_resource.services.id
-    http_method = aws_api_gateway_method.services_GET.http_method
-    status_code = "200"
-    response_models = {
-        "application/json" = "Empty"
-    }
+# resource "aws_api_gateway_method_response" "services_GET_response" {
+#     rest_api_id = aws_api_gateway_rest_api.DoS_REST.id
+#     resource_id = aws_api_gateway_resource.services.id
+#     http_method = aws_api_gateway_method.services_GET.http_method
+#     status_code = "200"
+#     response_models = {
+#         "application/json" = "Empty"
+#     }
 
-    depends_on = [
+#     depends_on = [
+#         aws_api_gateway_resource.services,
+#         aws_api_gateway_method.services_GET,
+#         aws_api_gateway_integration.services_GET_integration
+#     ]
+# }
+
+module "enable_cors_on_services" {
+  source = "squidfunk/api-gateway-enable-cors/aws"
+  version = "0.3.3"
+
+  api_id          = aws_api_gateway_rest_api.DoS_REST.id
+  api_resource_id = resource_id = aws_api_gateway_resource.services.id
+
+  depends_on = [
         aws_api_gateway_resource.services,
-        aws_api_gateway_method.services_GET,
-        aws_api_gateway_integration.services_GET_integration
+        aws_api_gateway_rest_api.DoS_REST
     ]
 }
 
