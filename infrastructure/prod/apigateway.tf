@@ -257,15 +257,15 @@ resource "aws_api_gateway_integration" "services_DELETE_integration" {
     uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${module.directory-data-manager-lambda.lambda_function_arn}/invocations"
 }
 
-resource "aws_api_gateway_method_response" "services_GET_response" {
-    rest_api_id = aws_api_gateway_rest_api.DoS_REST.id
-    resource_id = aws_api_gateway_resource.services.id
-    http_method = aws_api_gateway_method.services_GET.http_method
-    status_code = "200"
-    response_models = {
-        "application/json" = "Empty"
-    }
-}
+# resource "aws_api_gateway_method_response" "services_GET_response" {
+#     rest_api_id = aws_api_gateway_rest_api.DoS_REST.id
+#     resource_id = aws_api_gateway_resource.services.id
+#     http_method = aws_api_gateway_method.services_GET.http_method
+#     status_code = "200"
+#     response_models = {
+#         "application/json" = "Empty"
+#     }
+# }
 
 resource "aws_api_gateway_deployment" "main" {
     rest_api_id = aws_api_gateway_rest_api.DoS_REST.id
