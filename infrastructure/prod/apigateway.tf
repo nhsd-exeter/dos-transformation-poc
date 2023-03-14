@@ -221,13 +221,13 @@ resource "aws_api_gateway_method" "services_DELETE" {
     rest_api_id   = aws_api_gateway_rest_api.DoS_REST.id
 }
 
-resource "aws_api_gateway_method" "services_OPTIONS" {
-    authorization = "COGNITO_USER_POOLS"
-    authorizer_id = aws_api_gateway_authorizer.DoS_Users.id
-    http_method   = "OPTIONS"
-    resource_id   = aws_api_gateway_resource.services.id
-    rest_api_id   = aws_api_gateway_rest_api.DoS_REST.id
-}
+# resource "aws_api_gateway_method" "services_OPTIONS" {
+#     authorization = "COGNITO_USER_POOLS"
+#     authorizer_id = aws_api_gateway_authorizer.DoS_Users.id
+#     http_method   = "OPTIONS"
+#     resource_id   = aws_api_gateway_resource.services.id
+#     rest_api_id   = aws_api_gateway_rest_api.DoS_REST.id
+# }
 
 
 resource "aws_api_gateway_integration" "services_GET_integration" {
@@ -255,6 +255,16 @@ resource "aws_api_gateway_integration" "services_DELETE_integration" {
     integration_http_method = "DELETE"
     type                    = "AWS_PROXY"
     uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${module.directory-data-manager-lambda.lambda_function_arn}/invocations"
+}
+
+resource "aws_api_gateway_method_response" "services_GET_response" {
+    rest_api_id = aws_api_gateway_rest_api.DoS_REST.id
+    resource_id = aws_api_gateway_resource.services.id
+    http_method = aws_api_gateway_method.services_GET.http_method
+    status_code = "200"
+    response_models = {
+        "application/json" = "Empty"
+    }
 }
 
 resource "aws_api_gateway_deployment" "main" {
