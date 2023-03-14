@@ -331,7 +331,7 @@ module "enable_cors_on_services" {
   version = "0.3.3"
 
   api_id          = aws_api_gateway_rest_api.DoS_REST.id
-  api_resource_id = resource_id = aws_api_gateway_resource.services.id
+  api_resource_id = aws_api_gateway_resource.services.id
 
   depends_on = [
         aws_api_gateway_resource.services,
