@@ -209,6 +209,17 @@ resource "aws_api_gateway_method" "services_POST" {
     ]
 }
 
+resource "aws_api_gateway_method" "services_PUT" {
+    authorization = "COGNITO_USER_POOLS"
+    authorizer_id = aws_api_gateway_authorizer.DoS_Users.id
+    http_method   = "PUT"
+    resource_id   = aws_api_gateway_resource.services.id
+    rest_api_id   = aws_api_gateway_rest_api.DoS_REST.id
+
+    depends_on = [
+        aws_api_gateway_resource.services
+    ]
+}
 
 resource "aws_api_gateway_method" "services_GET" {
     authorization = "COGNITO_USER_POOLS"
@@ -271,11 +282,25 @@ resource "aws_api_gateway_integration" "services_POST_integration" {
     ]
 }
 
+resource "aws_api_gateway_integration" "services_PUT_integration" {
+    rest_api_id             = aws_api_gateway_rest_api.DoS_REST.id
+    resource_id             = aws_api_gateway_resource.services.id
+    http_method             = aws_api_gateway_method.services_PUT.http_method
+    integration_http_method = "POST"
+    type                    = "AWS_PROXY"
+    uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${module.directory-data-manager-lambda.lambda_function_arn}/invocations"
+
+    depends_on = [
+        aws_api_gateway_resource.services,
+        aws_api_gateway_method.services_PUT
+    ]
+}
+
 resource "aws_api_gateway_integration" "services_DELETE_integration" {
     rest_api_id             = aws_api_gateway_rest_api.DoS_REST.id
     resource_id             = aws_api_gateway_resource.services.id
     http_method             = aws_api_gateway_method.services_DELETE.http_method
-    integration_http_method = "DELETE"
+    integration_http_method = "POST"
     type                    = "AWS_PROXY"
     uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${module.directory-data-manager-lambda.lambda_function_arn}/invocations"
 
