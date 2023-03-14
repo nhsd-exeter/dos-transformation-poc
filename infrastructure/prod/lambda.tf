@@ -49,7 +49,7 @@ module "directory-data-manager-lambda" {
 
     function_name = "directory-data-manager"
     description   = "Microservice for management of DoS data"
-    handler       = "app.lambda_handler"
+    handler       = "app.app"
     runtime       = "python3.9"
 
     publish                = true
