@@ -15,7 +15,6 @@ headers = { "Content-Type": "application/json" }
 
 
 def configure_elastic():
-
   
     for index in index_names:
         if check_index_exists(index) != True:

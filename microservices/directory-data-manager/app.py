@@ -8,7 +8,7 @@ app = Chalice(app_name="directory-data-manager")
 dynamodb = boto3.resource('dynamodb')
 
 
-@app.route("/services", methods=['GET'])
+@app.route("/", methods=['GET'])
 def get_service():
     service_id = app.current_request.query_params.get('id')
     services_table = dynamodb.Table('services')      
@@ -24,7 +24,7 @@ def get_service():
     return { "service": service }
 
 
-@app.route("/services", methods=['POST'])
+@app.route("/", methods=['POST'])
 def create_service():
 
     print("Creating service...")
