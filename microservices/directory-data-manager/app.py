@@ -26,7 +26,7 @@ def get_service():
     # search = service_resp['Item']
 
     # return { "service": service }
-    return {"get service"}
+    return {"get service":"get service"}
 
 
 @app.route("/services", methods=['POST'])
@@ -47,7 +47,7 @@ def create_service():
     # return {"id" : generated_identifier}
 
     print("post service")
-    return {"post service"}
+    return {"post service":"post service"}
 
 
 @app.route("/services", methods=['PUT'])
@@ -93,7 +93,7 @@ def delete_service():
     # return {"id" : service_id}
     
     print("delete service")
-    return {"delete service"}
+    return {"del service":"del service"}
 
 
 @app.route("/services", methods=['OPTIONS'])
@@ -110,4 +110,5 @@ def options_request():
     # return response
     
     print("ops service")
-    return {"ops service"}
+    return {"ops service":"ops service"}
+
