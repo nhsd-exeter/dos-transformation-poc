@@ -10,7 +10,7 @@ class ServiceManagement extends Component {
     console.log( this.props.auth.user.token)
     const APIGateway = axios.create({
       baseURL: 'https://ar7kwintik.execute-api.eu-west-2.amazonaws.com/main/services',
-      timeout: 1000,
+      timeout: 3000,
       headers: {
         "Authorization": this.props.auth.user.token,
         "Access-Control-Allow-Origin": "https://localhost", 
