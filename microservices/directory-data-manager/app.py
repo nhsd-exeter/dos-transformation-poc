@@ -7,26 +7,23 @@ from boto3.dynamodb.conditions import Key
 app = Chalice(app_name="directory-data-manager")
 dynamodb = boto3.resource('dynamodb')
 
-print('Directory-data-manager2')
-
 
 @app.route("/services", methods=['GET'])
 def get_service():
 
     print("get service")
-    # service_id = app.current_request.query_params.get('id')
-    # services_table = dynamodb.Table('services')      
+    service_id = app.current_request.query_params.get('id')
+    services_table = dynamodb.Table('services')      
     
-    # service_resp = services_table.get_item(
-    #         Key={
-    #             'id' : service_id,
-    #         }
-    #     )
+    service_resp = services_table.get_item(
+            Key={
+                'id' : service_id,
+            }
+        )
     
-    # search = service_resp['Item']
+    service = service_resp['Item']
 
-    # return { "service": service }
-    return {"get service":"get service"}
+    return { "service": service }
 
 
 @app.route("/services", methods=['POST'])
