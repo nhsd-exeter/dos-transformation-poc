@@ -36,7 +36,6 @@ def get_service(id):
 
 
 
-
 @app.route("/services", methods=['POST'])
 def create_service():
 
