@@ -8,16 +8,16 @@ app = Chalice(app_name="directory-data-manager")
 dynamodb = boto3.resource('dynamodb')
 
 
-@app.route("/services", methods=['GET'])
-def get_service():
+@app.route("/services/{id}", methods=['GET'])
+def get_service(id):
 
     print("get service")
-    service_id = app.current_request.query_params.get('id')
+    
     services_table = dynamodb.Table('services')      
     
     service_resp = services_table.get_item(
             Key={
-                'id' : service_id,
+                'id' : id,
             }
         )
     
