@@ -23,7 +23,18 @@ def get_service(id):
     
     service = service_resp['Item']
 
-    return { "service": service }
+    response = {
+            "statusCode": 200,
+            "headers": {
+                "Access-Control-Allow-Origin": "*", 
+                "Access-Control-Allow-Methods": "POST, PUT, GET, OPTIONS",
+                "Access-Control-Allow-Headers": "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
+            },
+            "body": service,
+        }
+    return response
+
+
 
 
 @app.route("/services", methods=['POST'])

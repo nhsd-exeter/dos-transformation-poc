@@ -9,7 +9,7 @@ class ServiceManagement extends Component {
   {
     console.log( this.props.auth.user.token)
     const APIGateway = axios.create({
-      baseURL: 'https://ar7kwintik.execute-api.eu-west-2.amazonaws.com/main/services',
+      baseURL: 'https://ar7kwintik.execute-api.eu-west-2.amazonaws.com/main/services?id=1233123',
       timeout: 1000,
       headers: {
         "Authorization": this.props.auth.user.token,
