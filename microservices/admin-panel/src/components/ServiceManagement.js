@@ -19,6 +19,7 @@ import locationIcon from '@iconify/icons-mdi/map-marker';
 import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';
 
+//ICON IMPORTS
 import LocationCityIcon from '@mui/icons-material/LocationCity';
 import RoomIcon from '@mui/icons-material/Room';
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
