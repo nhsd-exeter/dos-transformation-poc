@@ -68,7 +68,8 @@ class ServiceManagement extends Component {
 
   render(){
 
-    if(!this.state.currentService){return null}
+    if(!this.state.currentService){
+      return (<Fragment>{!this.props.auth.isAuthenticated && <Navigate to='/login' replace={true}/> }</Fragment>)}
 
     const serviceLocation = {
       center: {
@@ -384,8 +385,6 @@ class ServiceManagement extends Component {
           </AccordionSummary>
           <AccordionDetails>
             <Typography>
-
-
           <div style={{ height: '50vh', width: '100%' }}>
             <GoogleMapReact
               defaultCenter={serviceLocation.center}
@@ -405,14 +404,6 @@ class ServiceManagement extends Component {
             </Item>
           </Grid>
         </Grid>
-
-
-
-
-
-
-
-
         </div>
         </Container>
       </Fragment>
