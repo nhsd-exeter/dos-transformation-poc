@@ -631,9 +631,15 @@ resource "aws_api_gateway_authorizer" "DoS_Users" {
     provider_arns          = ["${aws_cognito_user_pool.DoS_Users.arn}"]
     }
 
+resource "aws_api_gateway_authorizer" "Capacity_Management_Users" {
+    name                   = "Capacity_Management_Users"
+    rest_api_id            = aws_api_gateway_rest_api.DoS_REST.id
+    type                   = "COGNITO_USER_POOLS"
+    provider_arns          = ["${aws_cognito_user_pool.Capacity_Management_Users.arn}"]
+    }
 
 
-    resource "aws_api_gateway_usage_plan" "standard" {
+resource "aws_api_gateway_usage_plan" "standard" {
     name         = "standard"
     description  = "Standard Usage Plan"
 
