@@ -9,8 +9,12 @@ resource "aws_api_gateway_rest_api" "DoS_REST" {
     }
 }
 
-
+/**************************
+//
 //SEARCH ENDPOINTS
+//
+**************************/
+
 
 resource "aws_api_gateway_resource" "search" {
     parent_id   = aws_api_gateway_rest_api.DoS_REST.root_resource_id
@@ -70,7 +74,12 @@ $parsedPayload
 
 }
 
+/**************************
+//
 //SEARCH PROFILE ENDPOINTS
+//
+**************************/
+
 
 resource "aws_api_gateway_resource" "searchprofiles" {
     parent_id   = aws_api_gateway_rest_api.DoS_REST.root_resource_id
@@ -129,8 +138,11 @@ resource "aws_api_gateway_integration" "searchprofiles_DELETE_integration" {
     uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${module.search-profile-manager-lambda.lambda_function_arn}/invocations"
 }
 
-
+/**************************
+//
 //SEARCH PROFILE / CONSUMER ENDPOINTS
+//
+**************************/
 
 resource "aws_api_gateway_resource" "consumers" {
     parent_id   = aws_api_gateway_resource.searchprofiles.id
@@ -189,7 +201,11 @@ resource "aws_api_gateway_integration" "consumers_DELETE_integration" {
     uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${module.search-profile-manager-lambda.lambda_function_arn}/invocations"
 }
 
+/**************************
+//
 //SERVICES ENDPOINTS
+//
+**************************/
 
 resource "aws_api_gateway_resource" "services" {
     parent_id   = aws_api_gateway_rest_api.DoS_REST.root_resource_id
@@ -315,6 +331,272 @@ module "enable_cors_on_services" {
         aws_api_gateway_rest_api.DoS_REST
     ]
 }
+
+/**************************
+//
+//CAPACITY GRID ENDPOINTS
+//
+**************************/
+
+
+resource "aws_api_gateway_resource" "capacitygrids" {
+    parent_id   = aws_api_gateway_rest_api.DoS_REST.root_resource_id
+    path_part   = "capacitygrids"
+    rest_api_id = aws_api_gateway_rest_api.DoS_REST.id
+}
+
+resource "aws_api_gateway_method" "capacitygrids_POST" {
+    authorization = "COGNITO_USER_POOLS"
+    authorizer_id = aws_api_gateway_authorizer.DoS_Users.id
+    http_method   = "POST"
+    resource_id   = aws_api_gateway_resource.capacitygrids.id
+    rest_api_id   = aws_api_gateway_rest_api.DoS_REST.id
+
+    depends_on = [
+        aws_api_gateway_resource.capacitygrids
+    ]
+}
+
+resource "aws_api_gateway_method" "capacitygrids_PUT" {
+    authorization = "COGNITO_USER_POOLS"
+    authorizer_id = aws_api_gateway_authorizer.DoS_Users.id
+    http_method   = "PUT"
+    resource_id   = aws_api_gateway_resource.capacitygrids.id
+    rest_api_id   = aws_api_gateway_rest_api.DoS_REST.id
+
+    depends_on = [
+        aws_api_gateway_resource.capacitygrids
+    ]
+}
+
+resource "aws_api_gateway_method" "capacitygrids_GET" {
+    authorization = "COGNITO_USER_POOLS"
+    authorizer_id = aws_api_gateway_authorizer.DoS_Users.id
+    http_method   = "GET"
+    resource_id   = aws_api_gateway_resource.capacitygrids.id
+    rest_api_id   = aws_api_gateway_rest_api.DoS_REST.id
+
+    depends_on = [
+        aws_api_gateway_resource.capacitygrids
+    ]
+}
+
+resource "aws_api_gateway_method" "capacitygrids_DELETE" {
+    authorization = "COGNITO_USER_POOLS"
+    authorizer_id = aws_api_gateway_authorizer.DoS_Users.id
+    http_method   = "DELETE"
+    resource_id   = aws_api_gateway_resource.capacitygrids.id
+    rest_api_id   = aws_api_gateway_rest_api.DoS_REST.id
+
+    depends_on = [
+        aws_api_gateway_resource.capacitygrids
+    ]
+}
+
+
+resource "aws_api_gateway_integration" "capacitygrids_GET_integration" {
+    rest_api_id             = aws_api_gateway_rest_api.DoS_REST.id
+    resource_id             = aws_api_gateway_resource.capacitygrids.id
+    http_method             = aws_api_gateway_method.capacitygrids_GET.http_method
+    integration_http_method = "POST"
+    type                    = "AWS_PROXY"
+    uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${module.capacity-grids-manager-lambda.lambda_function_arn}/invocations"
+
+    depends_on = [
+        aws_api_gateway_resource.capacitygrids,
+        aws_api_gateway_method.capacitygrids_GET
+    ]
+}
+
+resource "aws_api_gateway_integration" "capacitygrids_POST_integration" {
+    rest_api_id             = aws_api_gateway_rest_api.DoS_REST.id
+    resource_id             = aws_api_gateway_resource.capacitygrids.id
+    http_method             = aws_api_gateway_method.capacitygrids_POST.http_method
+    integration_http_method = "POST"
+    type                    = "AWS_PROXY"
+    uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${module.capacity-grids-manager-lambda.lambda_function_arn}/invocations"
+
+    depends_on = [
+        aws_api_gateway_resource.capacitygrids,
+        aws_api_gateway_method.capacitygrids_POST
+    ]
+}
+
+resource "aws_api_gateway_integration" "capacitygrids_PUT_integration" {
+    rest_api_id             = aws_api_gateway_rest_api.DoS_REST.id
+    resource_id             = aws_api_gateway_resource.capacitygrids.id
+    http_method             = aws_api_gateway_method.capacitygrids_PUT.http_method
+    integration_http_method = "POST"
+    type                    = "AWS_PROXY"
+    uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${module.capacity-grids-manager-lambda.lambda_function_arn}/invocations"
+
+    depends_on = [
+        aws_api_gateway_resource.capacitygrids,
+        aws_api_gateway_method.capacitygrids_PUT
+    ]
+}
+
+resource "aws_api_gateway_integration" "capacitygrids_DELETE_integration" {
+    rest_api_id             = aws_api_gateway_rest_api.DoS_REST.id
+    resource_id             = aws_api_gateway_resource.capacitygrids.id
+    http_method             = aws_api_gateway_method.capacitygrids_DELETE.http_method
+    integration_http_method = "POST"
+    type                    = "AWS_PROXY"
+    uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${module.capacity-grids-manager-lambda.lambda_function_arn}/invocations"
+
+    depends_on = [
+        aws_api_gateway_resource.capacitygrids,
+        aws_api_gateway_method.capacitygrids_DELETE
+    ]
+}
+
+
+module "enable_cors_on_capacitygrids" {
+  source = "squidfunk/api-gateway-enable-cors/aws"
+  version = "0.3.3"
+
+  api_id          = aws_api_gateway_rest_api.DoS_REST.id
+  api_resource_id = aws_api_gateway_resource.capacitygrids.id
+
+  depends_on = [
+        aws_api_gateway_resource.capacitygrids,
+        aws_api_gateway_rest_api.DoS_REST
+    ]
+}
+
+
+/**************************
+//
+//CAPACITY DATA ENDPOINTS
+//
+**************************/
+
+
+resource "aws_api_gateway_resource" "capacitydata" {
+    parent_id   = aws_api_gateway_rest_api.DoS_REST.root_resource_id
+    path_part   = "capacitydata"
+    rest_api_id = aws_api_gateway_rest_api.DoS_REST.id
+}
+
+resource "aws_api_gateway_method" "capacitydata_POST" {
+    authorization = "COGNITO_USER_POOLS"
+    authorizer_id = aws_api_gateway_authorizer.DoS_Users.id
+    http_method   = "POST"
+    resource_id   = aws_api_gateway_resource.capacitydata.id
+    rest_api_id   = aws_api_gateway_rest_api.DoS_REST.id
+
+    depends_on = [
+        aws_api_gateway_resource.capacitydata
+    ]
+}
+
+resource "aws_api_gateway_method" "capacitydata_PUT" {
+    authorization = "COGNITO_USER_POOLS"
+    authorizer_id = aws_api_gateway_authorizer.DoS_Users.id
+    http_method   = "PUT"
+    resource_id   = aws_api_gateway_resource.capacitydata.id
+    rest_api_id   = aws_api_gateway_rest_api.DoS_REST.id
+
+    depends_on = [
+        aws_api_gateway_resource.capacitydata
+    ]
+}
+
+resource "aws_api_gateway_method" "capacitydata_GET" {
+    authorization = "COGNITO_USER_POOLS"
+    authorizer_id = aws_api_gateway_authorizer.DoS_Users.id
+    http_method   = "GET"
+    resource_id   = aws_api_gateway_resource.capacitydata.id
+    rest_api_id   = aws_api_gateway_rest_api.DoS_REST.id
+
+    depends_on = [
+        aws_api_gateway_resource.capacitydata
+    ]
+}
+
+resource "aws_api_gateway_method" "capacitydata_DELETE" {
+    authorization = "COGNITO_USER_POOLS"
+    authorizer_id = aws_api_gateway_authorizer.DoS_Users.id
+    http_method   = "DELETE"
+    resource_id   = aws_api_gateway_resource.capacitydata.id
+    rest_api_id   = aws_api_gateway_rest_api.DoS_REST.id
+
+    depends_on = [
+        aws_api_gateway_resource.capacitydata
+    ]
+}
+
+
+resource "aws_api_gateway_integration" "capacitydata_GET_integration" {
+    rest_api_id             = aws_api_gateway_rest_api.DoS_REST.id
+    resource_id             = aws_api_gateway_resource.capacitydata.id
+    http_method             = aws_api_gateway_method.capacitydata_GET.http_method
+    integration_http_method = "POST"
+    type                    = "AWS_PROXY"
+    uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${module.capacity-data-manager-lambda.lambda_function_arn}/invocations"
+
+    depends_on = [
+        aws_api_gateway_resource.capacitydata,
+        aws_api_gateway_method.capacitydata_GET
+    ]
+}
+
+resource "aws_api_gateway_integration" "capacitydata_POST_integration" {
+    rest_api_id             = aws_api_gateway_rest_api.DoS_REST.id
+    resource_id             = aws_api_gateway_resource.capacitydata.id
+    http_method             = aws_api_gateway_method.capacitydata_POST.http_method
+    integration_http_method = "POST"
+    type                    = "AWS_PROXY"
+    uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${module.capacity-data-manager-lambda.lambda_function_arn}/invocations"
+
+    depends_on = [
+        aws_api_gateway_resource.capacitydata,
+        aws_api_gateway_method.capacitydata_POST
+    ]
+}
+
+resource "aws_api_gateway_integration" "capacitydata_PUT_integration" {
+    rest_api_id             = aws_api_gateway_rest_api.DoS_REST.id
+    resource_id             = aws_api_gateway_resource.capacitydata.id
+    http_method             = aws_api_gateway_method.capacitydata_PUT.http_method
+    integration_http_method = "POST"
+    type                    = "AWS_PROXY"
+    uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${module.capacity-data-manager-lambda.lambda_function_arn}/invocations"
+
+    depends_on = [
+        aws_api_gateway_resource.capacitydata,
+        aws_api_gateway_method.capacitydata_PUT
+    ]
+}
+
+resource "aws_api_gateway_integration" "capacitydata_DELETE_integration" {
+    rest_api_id             = aws_api_gateway_rest_api.DoS_REST.id
+    resource_id             = aws_api_gateway_resource.capacitydata.id
+    http_method             = aws_api_gateway_method.capacitydata_DELETE.http_method
+    integration_http_method = "POST"
+    type                    = "AWS_PROXY"
+    uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${module.capacity-data-manager-lambda.lambda_function_arn}/invocations"
+
+    depends_on = [
+        aws_api_gateway_resource.capacitydata,
+        aws_api_gateway_method.capacitydata_DELETE
+    ]
+}
+
+
+module "enable_cors_on_capacitydata" {
+  source = "squidfunk/api-gateway-enable-cors/aws"
+  version = "0.3.3"
+
+  api_id          = aws_api_gateway_rest_api.DoS_REST.id
+  api_resource_id = aws_api_gateway_resource.capacitydata.id
+
+  depends_on = [
+        aws_api_gateway_resource.capacitydata,
+        aws_api_gateway_rest_api.DoS_REST
+    ]
+}
+
 
 resource "aws_api_gateway_deployment" "main" {
     rest_api_id = aws_api_gateway_rest_api.DoS_REST.id

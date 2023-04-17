@@ -4,6 +4,12 @@
 
 
 
+/**************************
+//
+//ELASTIC SEARCH LAMBDA
+//
+**************************/
+
 module "elastic-search-lambda" {
     source  = "terraform-aws-modules/lambda/aws"
     version = "~> 2.0"
@@ -32,8 +38,6 @@ module "elastic-search-lambda" {
 }
 
 
-
-
 module "live-alias-elastic-search" {
     source = "terraform-aws-modules/lambda/aws//modules/alias"
 
@@ -42,6 +46,12 @@ module "live-alias-elastic-search" {
     refresh_alias = false
 }
 
+
+/**************************
+//
+//DIRECTORY DATA MANAGER LAMBDA
+//
+**************************/
 
 module "directory-data-manager-lambda" {
     source  = "terraform-aws-modules/lambda/aws"
@@ -101,6 +111,145 @@ module "directory-data-manager-lambda" {
     function_name = module.directory-data-manager-lambda.lambda_function_name
     refresh_alias = false
     }
+
+
+/**************************
+//
+//CAPACITY DATA MANAGER LAMBDA
+//
+**************************/
+
+module "capacity-data-manager-lambda" {
+    source  = "terraform-aws-modules/lambda/aws"
+    version = "~> 2.0"
+
+    function_name = "capacity-data-manager"
+    description   = "Microservice for updating and maintaining capacity data"
+    handler       = "app.app"
+    runtime       = "python3.9"
+
+    publish                = true
+    create_package         = false
+    local_existing_package = "./misc/init.zip"
+    ignore_source_code_hash = true
+
+    attach_policy_jsons = true
+    policy_jsons = [
+        <<-EOT
+        {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Sid": "VisualEditor0",
+                    "Effect": "Allow",
+                    "Action": [
+                        "dynamodb:PutItem",
+                        "dynamodb:DeleteItem",
+                        "dynamodb:GetItem",
+                        "dynamodb:Scan",
+                        "dynamodb:Query",
+                        "dynamodb:UpdateItem"
+                    ],
+                    "Resource": [
+                        "${module.dynamodb_capacity_table.dynamodb_table_arn}"
+                    ]
+                }
+            ]
+        }
+        EOT
+    ]
+    number_of_policy_jsons = 1
+
+
+
+    allowed_triggers = {
+        AllowExecutionFromAPIGateway = {
+        service    = "apigateway"
+        source_arn = "${aws_api_gateway_rest_api.DoS_REST.execution_arn}/*/*"
+        }
+    }
+    }
+
+    module "live-alias-capacity-data-manager" {
+    source = "terraform-aws-modules/lambda/aws//modules/alias"
+
+    name          = "live-service"
+    function_name = module.capacity-data-manager-lambda.lambda_function_name
+    refresh_alias = false
+    }
+
+
+/**************************
+//
+//CAPACITY GRIDS MANAGER LAMBDA
+//
+**************************/
+
+module "capacity-grids-manager-lambda" {
+    source  = "terraform-aws-modules/lambda/aws"
+    version = "~> 2.0"
+
+    function_name = "capacity-grids-manager"
+    description   = "Microservice for updating and maintaining capacity grids/forms"
+    handler       = "app.app"
+    runtime       = "python3.9"
+
+    publish                = true
+    create_package         = false
+    local_existing_package = "./misc/init.zip"
+    ignore_source_code_hash = true
+
+    attach_policy_jsons = true
+    policy_jsons = [
+        <<-EOT
+        {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Sid": "VisualEditor0",
+                    "Effect": "Allow",
+                    "Action": [
+                        "dynamodb:PutItem",
+                        "dynamodb:DeleteItem",
+                        "dynamodb:GetItem",
+                        "dynamodb:Scan",
+                        "dynamodb:Query",
+                        "dynamodb:UpdateItem"
+                    ],
+                    "Resource": [
+                        "${module.dynamodb_capacity_grids_table.dynamodb_table_arn}"
+                    ]
+                }
+            ]
+        }
+        EOT
+    ]
+    number_of_policy_jsons = 1
+
+
+
+    allowed_triggers = {
+        AllowExecutionFromAPIGateway = {
+        service    = "apigateway"
+        source_arn = "${aws_api_gateway_rest_api.DoS_REST.execution_arn}/*/*"
+        }
+    }
+    }
+
+    module "live-alias-capacity-grids-manager" {
+    source = "terraform-aws-modules/lambda/aws//modules/alias"
+
+    name          = "live-service"
+    function_name = module.capacity-grids-manager-lambda.lambda_function_name
+    refresh_alias = false
+    }
+
+
+/**************************
+//
+//SEARCH PROFILE MANAGER LAMBDA
+//
+**************************/
 
     module "search-profile-manager-lambda" {
     source  = "terraform-aws-modules/lambda/aws"
@@ -162,6 +311,12 @@ module "directory-data-manager-lambda" {
     }
 
 
+/**************************
+//
+//SEARCH PROFILER LAMBDA
+//
+**************************/
+
     module "search-profiler-lambda" {
     source  = "terraform-aws-modules/lambda/aws"
     version = "~> 2.0"
@@ -216,6 +371,12 @@ module "live-alias-search-profiler" {
     refresh_alias = false
 }
 
+
+/**************************
+//
+//QUERY BUILDER LAMBDA
+//
+**************************/
 
 module "query-builder-lambda" {
     source  = "terraform-aws-modules/lambda/aws"
@@ -275,6 +436,12 @@ module "live-alias-query-builder" {
     refresh_alias = false
 }
 
+
+/**************************
+//
+//GEO PROFILER LAMBDA
+//
+**************************/
 
 
     module "geo-profiler-lambda" {
@@ -336,6 +503,12 @@ module "live-alias-geo-profiler" {
 }
 
 
+/**************************
+//
+//DIRECTORY DATA RELAY LAMBDA
+//
+**************************/
+
 module "directory-data-relay-lambda" {
     source  = "terraform-aws-modules/lambda/aws"
     version = "~> 2.0"
@@ -345,10 +518,6 @@ module "directory-data-relay-lambda" {
     handler       = "app.lambda_handler"
     runtime       = "python3.9"
 
-    # We want to manage our application code using a dedicated application deployment pipeline.
-    # Therefore we want our infrastructure manifests to just build the lambda and not worry about the code inside.
-    # This block tells terraform to deploy an initial zip package when the lambda is created, 
-    # and then ignore application code on each subsequent apply
     publish                = true
     create_package         = false
     local_existing_package = "./misc/init.zip"
@@ -412,7 +581,11 @@ resource "aws_lambda_event_source_mapping" "directory_trigger" {
   }
 }
 
-
+/**************************
+//
+//GEO DATA RELAY LAMBDA
+//
+**************************/
 
 module "geo-data-relay-lambda" {
     source  = "terraform-aws-modules/lambda/aws"
@@ -423,10 +596,6 @@ module "geo-data-relay-lambda" {
     handler       = "app.lambda_handler"
     runtime       = "python3.9"
 
-    # We want to manage our application code using a dedicated application deployment pipeline.
-    # Therefore we want our infrastructure manifests to just build the lambda and not worry about the code inside.
-    # This block tells terraform to deploy an initial zip package when the lambda is created, 
-    # and then ignore application code on each subsequent apply
     publish                = true
     create_package         = false
     local_existing_package = "./misc/init.zip"

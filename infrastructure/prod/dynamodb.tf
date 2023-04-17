@@ -66,3 +66,33 @@ module "dynamodb_geo_profiles_table" {
     }
   ]
 }
+
+module "dynamodb_capacity_table" {
+  source   = "terraform-aws-modules/dynamodb-table/aws"
+
+  name     = "capacity"
+  hash_key = "id"
+  autoscaling_enabled = true
+
+  attributes = [
+    {
+      name = "id"
+      type = "S"
+    }
+  ]
+}
+
+module "dynamodb_capacity_grids_table" {
+  source   = "terraform-aws-modules/dynamodb-table/aws"
+
+  name     = "capacity_grids"
+  hash_key = "id"
+  autoscaling_enabled = true
+
+  attributes = [
+    {
+      name = "id"
+      type = "S"
+    }
+  ]
+}
