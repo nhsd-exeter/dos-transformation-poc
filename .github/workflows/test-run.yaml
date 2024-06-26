@@ -1,0 +1,45 @@
+name: Test Passthru
+on:
+  push:
+    branches:
+      - master
+jobs:
+  derive-values:
+    name: Derive Values
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Derive Service Names
+        shell: bash
+        run: |
+          	cd ./microservices
+          	SERVICES="['one','two','three']"
+            echo "services=${SERVICES}" >> $GITHUB_OUTPUT
+            
+  matrix-values:
+    name: Matrix Values
+    runs-on: ubuntu-latest
+    needs:
+      - derive-values
+    strategy:
+      matrix:
+        service: ${{ needs.derive-values.outputs.services}}
+    steps:
+      - name: matrix-names
+        shell: bash
+        run: |
+          echo ${{ matrix.service }}
+          
+  output-values:
+    name: Output Values
+    runs-on: ubuntu-latest
+    needs:
+      - derive-values
+    steps:
+      - name: output-name
+        shell: bash
+        run: |
+          echo ${{ needs.derive-values.outputs.services}}
