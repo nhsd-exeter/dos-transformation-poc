@@ -15,8 +15,8 @@ jobs:
       - name: Derive Service Names
         shell: bash
         run: |
-          	cd ./microservices
-          	SERVICES="['one','two','three']"
+            cd ./microservices 
+            SERVICES="['one','two','three']"
             echo "services=${SERVICES}" >> $GITHUB_OUTPUT
             
   matrix-values:
