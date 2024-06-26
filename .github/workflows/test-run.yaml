@@ -19,7 +19,7 @@ jobs:
         shell: bash
         run: |
             cd ./microservices 
-            SERVICES = $(ls | jq -R -s -c 'split("\n")[:-1]')
+            SERVICES=$(ls | jq -R -s -c 'split("\n")[:-1]')
             echo "services=${SERVICES}" >> $GITHUB_OUTPUT
             
   matrix-values:
