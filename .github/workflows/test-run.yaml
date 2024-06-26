@@ -8,7 +8,7 @@ jobs:
     name: Derive Values
     runs-on: ubuntu-latest
     outputs:
-      services: ${{ steps.service-names.outputs.services }}
+      services: ${{ toJson(steps.service-names.outputs.services) }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
