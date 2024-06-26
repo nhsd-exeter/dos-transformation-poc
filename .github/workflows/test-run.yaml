@@ -16,7 +16,7 @@ jobs:
         shell: bash
         run: |
             cd ./microservices 
-            echo 'SERVICES='"$(printf '%s' * | sed 's/-/_/g; s/.*/\L&/')"
+            echo 'SERVICES='"$(printf '%s' *)"
             echo "services=${SERVICES}" >> $GITHUB_OUTPUT
             
   matrix-values:
