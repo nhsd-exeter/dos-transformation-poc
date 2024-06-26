@@ -8,7 +8,7 @@ jobs:
     name: Derive Values
     runs-on: ubuntu-latest
     outputs:
-      services: ${{ toJson(steps.service-names.outputs.services) }}
+      services: ${{ steps.service-names.outputs.services }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -29,7 +29,7 @@ jobs:
       - derive-values
     strategy:
       matrix:
-        service: ${{ fromJSON(needs.derive-values.outputs.services) }}
+        service: ${{ needs.derive-values.outputs.services }}
     steps:
       - name: matrix-names
         shell: bash
