@@ -7,16 +7,19 @@ jobs:
   derive-values:
     name: Derive Values
     runs-on: ubuntu-latest
+    outputs:
+      services: ${{ steps.service-names.outputs.services }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Derive Service Names
+        id: service-names
         shell: bash
         run: |
             cd ./microservices 
-            echo 'SERVICES='"$(printf '%s' *)"
+            echo SERVICES = $(ls | jq -R -s -c 'split("\n")[:-1]')
             echo "services=${SERVICES}" >> $GITHUB_OUTPUT
             
   matrix-values:
