@@ -27,8 +27,7 @@ jobs:
             SERVICES=$(ls | jq -R -s -c 'split("\n")[:-1]')
             echo "services=${SERVICES}" >> $GITHUB_OUTPUT
           else
-            echo SERVICES=$(${{ inputs.services }} | sed "s/\"/'/g"  | sed "s/^.\(.*\).$/\1/") 
-            echo "services=${SERVICES}" >> $GITHUB_OUTPUT
+            echo "services=${{inputs.services}}" >> $GITHUB_OUTPUT
           fi
             
   matrix-values:
