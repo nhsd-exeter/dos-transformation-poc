@@ -1,6 +1,6 @@
 name: Test Passthru
 on:
-  workflow_call:
+  workflow_dispatch:
     inputs:
       services:
         description: "A list of the services to build and deploy. All services can be deployed by specifying 'all' "
