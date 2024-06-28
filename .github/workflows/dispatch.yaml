@@ -1,0 +1,13 @@
+name: Application Pipeline
+
+on:  
+  push:   
+    branches:  
+    - master
+
+jobs:  
+  call-pipeline:
+    name: Call Pipeline
+    uses: ./.github/workflows/test-run.yaml
+    with:
+      services: "['capacity-data-manager', 'capacity-grids-manager']"     
