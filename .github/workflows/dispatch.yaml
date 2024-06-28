@@ -10,4 +10,4 @@ jobs:
     name: Call Pipeline
     uses: ./.github/workflows/test-run.yaml
     with:
-      services: "['capacity-data-manager', 'capacity-grids-manager']"     
+      services: "['capacity-data-manager','capacity-grids-manager']"     
