@@ -1,26 +1,34 @@
 name: Test Passthru
 on:
-  push:
-    branches:
-      - master
+  workflow_call:
+    inputs:
+      services:
+        description: "A list of the services to build and deploy. All services can be deployed by specifying 'all' "
+        required: false
+        default: ""
+        type: string
 jobs:
   derive-values:
     name: Derive Values
     runs-on: ubuntu-latest
     outputs:
-      services: ${{ steps.service-names.outputs.services }}
+      services: ${{ steps.derive-service-names.outputs.services }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Derive Service Names
-        id: service-names
+        id: derive-service-names
         shell: bash
         run: |
-            cd ./microservices 
+          if [ ${{ inputs.services }} == 'all' ]; then
+            cd ${{ inputs.directory }}
             SERVICES=$(ls | jq -R -s -c 'split("\n")[:-1]')
             echo "services=${SERVICES}" >> $GITHUB_OUTPUT
+          else
+            echo "services=${{ inputs.services }}" >> $GITHUB_OUTPUT
+          fi
             
   matrix-values:
     name: Matrix Values
