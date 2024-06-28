@@ -56,4 +56,4 @@ jobs:
       - name: output-name
         shell: bash
         run: |
-          echo ${{ needs.derive-values.outputs.services}}
+          echo ${{ fromJSON(needs.derive-values.outputs.services) }}
