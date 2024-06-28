@@ -28,7 +28,7 @@ jobs:
             echo "services=${SERVICES}" >> $GITHUB_OUTPUT
           else
             echo ${{ inputs.services }}
-            echo "services=${{fromJSON(inputs.services)}}" >> $GITHUB_OUTPUT
+            echo "services=${{toJSON(inputs.services)}}" >> $GITHUB_OUTPUT
           fi
             
   matrix-values:
